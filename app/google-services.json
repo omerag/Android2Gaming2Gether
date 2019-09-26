@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "957284174455",
+    "firebase_url": "https://android2gaming2gether.firebaseio.com",
+    "project_id": "android2gaming2gether",
+    "storage_bucket": "android2gaming2gether.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957284174455:android:94df3175c86274ae39d472",
+        "android_client_info": {
+          "package_name": "hit.android2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957284174455-s1kn76t56hdtbo20t2168petnsfbv5nf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hit.android2",
+            "certificate_hash": "655fb4d88a76fb5bd7b6abe78ba215b29c0e612d"
+          }
+        },
+        {
+          "client_id": "957284174455-t3h64g42g2upon2doeoc9mfe22ah88n4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgrPghGhN71pTSpty4ZwOlg7TddhoVrfk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957284174455-t3h64g42g2upon2doeoc9mfe22ah88n4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
