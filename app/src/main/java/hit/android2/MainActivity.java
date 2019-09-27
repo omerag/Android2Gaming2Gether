@@ -2,6 +2,8 @@ package hit.android2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,13 +27,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
+            Fragment selectedFragment = null;
+
             switch (menuItem.getItemId())
             {
                 case R.id.nav_profile:
+                    selectedFragment = new ProfileFragment();
                     break;
                 case R.id.nav_messages:
                     break;
             }
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
             return true;
         }

@@ -3,4 +3,6 @@
     <string name="app_name">Android2Gaming2Gether</string>
     <string name="navBarMessage">הודעות</string>
     <string name="navBarProfile">פרופיל</string>
+    <string name="hello_str">שלום</string>
+    <string name="user_name_tv">משתמש</string>
 </resources>

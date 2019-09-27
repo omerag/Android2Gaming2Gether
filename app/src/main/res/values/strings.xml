@@ -2,4 +2,6 @@
     <string name="app_name">Android2Gaming2Gether</string>
     <string name="navBarMessage">Messages</string>
     <string name="navBarProfile">Profile</string>
+    <string name="hello_str">Welcome</string>
+    <string name="user_name_tv">User</string>
 </resources>
