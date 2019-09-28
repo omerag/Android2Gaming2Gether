@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
 
-    private List<GameItem> gameItemList = new ArrayList<>();
+   // private List<GameItem> gameItemList = new ArrayList<>();
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
 
@@ -85,7 +85,7 @@ public class ProfileFragment extends Fragment {
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+                List<GameItem> gameItemList = new ArrayList<>();
                 gameAdapter = new GameAdapter(getContext(),gameItemList);
 
                 recyclerView.setAdapter(gameAdapter);
