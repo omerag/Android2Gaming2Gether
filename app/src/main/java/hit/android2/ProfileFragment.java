@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment {
 
                 loader.searchGameRequest(searchText.getText().toString());
 
-                searchBtn.setVisibility(View.GONE);
+                //searchBtn.setVisibility(View.GONE);
             }
         });
 
