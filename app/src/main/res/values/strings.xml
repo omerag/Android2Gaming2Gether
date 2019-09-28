@@ -4,4 +4,5 @@
     <string name="navBarProfile">Profile</string>
     <string name="hello_str">Welcome</string>
     <string name="user_name_tv">User</string>
+    <string name="search_dialog_hint">Enter game name</string>
 </resources>
