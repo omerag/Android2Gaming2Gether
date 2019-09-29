@@ -6,4 +6,7 @@
     <string name="hello_str">שלום</string>
     <string name="user_name_tv">משתמש</string>
     <string name="search_dialog_hint">הכנס שם משחק</string>
+    <string name="drawer_sign_up">הירשם</string>
+    <string name="drawer_log_in">התחבר</string>
+    <string name="drawer_log_out">התנתק</string>
 </resources>
