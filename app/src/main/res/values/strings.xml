@@ -8,4 +8,7 @@
     <string name="drawer_sign_up">Sign up</string>
     <string name="drawer_log_in">Log in</string>
     <string name="drawer_log_out">Log out</string>
+    <string name="username_hint">Enter user name</string>
+    <string name="email_hint">Enter email address</string>
+    <string name="password_hint">Enter password</string>
 </resources>
