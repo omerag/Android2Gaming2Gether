@@ -15,7 +15,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class FireBaseManager {
 
     private FirebaseAuth fireBaseAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener authStateListener = new AuthSatateChangeListener();
+    private FirebaseAuth.AuthStateListener authStateListener = new AuthStateChangeListener();
     private String userName;
     private NavigationView navigationView;
     private TextView userTv;
@@ -52,7 +52,7 @@ public class FireBaseManager {
     }
 
 
-    class AuthSatateChangeListener implements FirebaseAuth.AuthStateListener
+    class AuthStateChangeListener implements FirebaseAuth.AuthStateListener
     {
         @Override
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -87,9 +87,17 @@ public class FireBaseManager {
         }
     }
 
-    public void getReffernce(NavigationView navigation, TextView userName)
+    public void setReference(NavigationView navigation, TextView userName)
     {
         navigationView = navigation;
         userTv = userName;
+    }
+
+    public void registerAuthListener(){
+        fireBaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    public void unRegisterAuthListener(){
+        fireBaseAuth.removeAuthStateListener(authStateListener);
     }
 }
