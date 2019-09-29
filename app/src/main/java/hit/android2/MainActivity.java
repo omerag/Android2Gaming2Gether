@@ -56,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavBarListener bottomNavBarListener = new bottomNavBarListener();
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavBarListener);
 
+        View headerView = navigationView.getHeaderView(0);
+        TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
+        fireBaseManager.getReffernce(navigationView, userNameTv);
+
     }
 
 
@@ -134,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordInput.getText().toString();
 
                 fireBaseManager.signUpUser(userName, email, password);
+                fireBaseManager.setUserName(userName);
             }
         }).show();
     }
@@ -169,43 +174,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
-    }
-
-    public static class AuthStateChangedListener implements FirebaseAuth.AuthStateListener{
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-
-            View headerView = navigationView.getHeaderView(0);
-            TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
-
-            FirebaseUser currUser = firebaseAuth.getCurrentUser();
-
-            if (currUser != null)
-            {
-                if (userName != null)
-                {
-                    currUser.updateProfile(new UserProfileChangeRequest.Builder()
-                            .setDisplayName(userName).build()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            userName = null;
-                        }
-                    });
-                }
-
-                userNameTv.setText(currUser.getDisplayName());
-                navigationView.getMenu().findItem(R.id.sign_up).setVisible(false);
-                navigationView.getMenu().findItem(R.id.log_in).setVisible(false);
-                navigationView.getMenu().findItem(R.id.log_out).setVisible(true);
-            }
-            else {
-                userNameTv.setText(R.string.user_name_tv);
-                navigationView.getMenu().findItem(R.id.sign_up).setVisible(true);
-                navigationView.getMenu().findItem(R.id.log_in).setVisible(true);
-                navigationView.getMenu().findItem(R.id.log_out).setVisible(false);
-            }
-
-        }
     }
 
 }
