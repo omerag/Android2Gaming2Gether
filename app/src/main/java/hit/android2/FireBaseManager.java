@@ -28,10 +28,17 @@ public class FireBaseManager {
         return fireBaseAuth;
     }
 
-    public void signUpUser(String username, String email, String password){
+    public void signUpUser(String username, final String email, final String password){
 
         userName = username;
-        fireBaseAuth.createUserWithEmailAndPassword(email,password);
+        fireBaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                logOutUser();
+                logInUser(email,password);
+            }
+        });
+
     }
 
     public void logInUser(String email, String password){
