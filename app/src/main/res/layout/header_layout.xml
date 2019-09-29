@@ -14,6 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_str"
+        android:textSize="25sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        />
+
+    <TextView
+        android:id="@+id/nav_header_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/user_name_tv"
         android:textSize="20sp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         />
