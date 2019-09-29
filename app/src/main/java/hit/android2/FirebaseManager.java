@@ -11,14 +11,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class FireBaseManager {
+public class FirebaseManager {
+
 
     private FirebaseAuth fireBaseAuth = FirebaseAuth.getInstance();
+
+    //UserState
     private FirebaseAuth.AuthStateListener authStateListener = new AuthStateChangeListener();
     private String userName;
     private NavigationView navigationView;
     private TextView userTv;
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
 
     public FirebaseAuth.AuthStateListener getAuthStateListener() {
         return authStateListener;
@@ -100,4 +109,11 @@ public class FireBaseManager {
     public void unRegisterAuthListener(){
         fireBaseAuth.removeAuthStateListener(authStateListener);
     }
+
+    public DatabaseReference getDatabaseReference(String data){
+        return FirebaseDatabase.getInstance().getReference(data);
+    }
+
+
+
 }

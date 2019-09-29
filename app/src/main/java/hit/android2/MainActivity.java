@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     String userName;
-    FireBaseManager fireBaseManager = new FireBaseManager();
+    FirebaseManager fireBaseManager = new FirebaseManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
