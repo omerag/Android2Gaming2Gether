@@ -29,10 +29,9 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
-    static NavigationView navigationView;
-    static String userName;
+    NavigationView navigationView;
+    String userName;
     FireBaseManager fireBaseManager = new FireBaseManager();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
                 String password = passwordInput.getText().toString();
 
                 fireBaseManager.signUpUser(userName, email, password);
-                fireBaseManager.setUserName(userName);
             }
         }).show();
     }

@@ -1,6 +1,5 @@
 package hit.android2;
 
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -8,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -30,8 +30,8 @@ public class FireBaseManager {
 
     public void signUpUser(String username, String email, String password){
 
+        userName = username;
         fireBaseAuth.createUserWithEmailAndPassword(email,password);
-
     }
 
     public void logInUser(String email, String password){
@@ -44,9 +44,6 @@ public class FireBaseManager {
         fireBaseAuth.signOut();
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     class AuthSatateChangeListener implements FirebaseAuth.AuthStateListener
     {
