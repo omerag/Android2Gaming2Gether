@@ -1,21 +1,15 @@
 package hit.android2;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,16 +21,17 @@ import java.util.List;
 
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.gaintbomb.game.GameAdapter;
-import hit.android2.gaintbomb.game.GameItem;
+import hit.android2.Database.GameData;
 
 public class ProfileFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
 
-   // private List<GameItem> gameItemList = new ArrayList<>();
+    private List<GameData> gameDataList;
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
 
+    private boolean isLogIn = false;
 
 
     @Nullable
@@ -62,7 +57,7 @@ public class ProfileFragment extends Fragment {
         public void onClick(View v) {
             showSearchDialog();
 
-            Toast.makeText(getContext(), "Action Clicked", Toast.LENGTH_LONG).show();
+           // Toast.makeText(getContext(), "Action Clicked", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -84,14 +79,14 @@ public class ProfileFragment extends Fragment {
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                List<GameItem> gameItemList = new ArrayList<>();
-                gameAdapter = new GameAdapter(getContext(),gameItemList);
+                List<GameData> gameDataList = new ArrayList<>();
+                gameAdapter = new GameAdapter(getContext(), gameDataList);
 
                 recyclerView.setAdapter(gameAdapter);
                 recyclerView.setHasFixedSize(true);
                 gameAdapter.notifyDataSetChanged();
 
-                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext(),gameItemList, gameAdapter);
+                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext(), gameDataList, gameAdapter);
 
                 loader.searchGameRequest(searchText.getText().toString());
 

@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import hit.android2.Database.FirebaseManager;
+
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;

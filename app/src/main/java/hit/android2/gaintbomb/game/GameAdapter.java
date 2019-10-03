@@ -14,16 +14,17 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import hit.android2.Database.GameData;
 import hit.android2.R;
 
-public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHolder>{
+public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHolder> implements View.OnClickListener {
 
     private Context context;
-    private List<GameItem> gameItemList;
+    private List<GameData> gameDataList;
 
-    public GameAdapter(Context context, List<GameItem> gameItemList) {
+    public GameAdapter(Context context, List<GameData> gameDataList) {
         this.context = context;
-        this.gameItemList = gameItemList;
+        this.gameDataList = gameDataList;
 
         System.out.println("GameAdapter created");
 
@@ -40,18 +41,29 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
     @Override
     public void onBindViewHolder(@NonNull GameItemViewHolder holder, int position) {
 
-        Glide.with(context).load(gameItemList.get(position).getImageUrl()).into(holder.imageViewGame);
+        Glide.with(context).load(gameDataList.get(position).getImageUrl()).into(holder.imageViewGame);
 
-        holder.textViewName.setText(gameItemList.get(position).getName());
+        holder.textViewName.setText(gameDataList.get(position).getName());
+
+
+        ;
+
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        if(gameItemList != null){
-            return gameItemList.size();
+        if(gameDataList != null){
+            return gameDataList.size();
         }
         return 0;
+    }
+
+    @Override
+    public void onClick(View view) {
+
     }
 
     public class GameItemViewHolder extends RecyclerView.ViewHolder{

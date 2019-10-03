@@ -1,21 +1,28 @@
-package hit.android2.gaintbomb.game;
+package hit.android2.Database;
 
-public class GameItem {
+import java.util.List;
+
+public class GameData {
 
     private String gameId;
     private String name;
     private String imageUrl;
 
-    public GameItem(String gameId) {
+    private List<String> usersList;
+
+    public GameData() {
+    }
+
+    public GameData(String gameId) {
         this.gameId = gameId;
     }
 
-    public GameItem(String name, String imageUrl) {
+    public GameData(String name, String imageUrl) {
         this.name = name;
         this.imageUrl = imageUrl;
     }
 
-    public GameItem(String gameId, String name, String imageUrl) {
+    public GameData(String gameId, String name, String imageUrl) {
         this.gameId = gameId;
         this.name = name;
         this.imageUrl = imageUrl;
@@ -43,5 +50,13 @@ public class GameItem {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public List<String> getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(List<String> usersList) {
+        this.usersList = usersList;
     }
 }

@@ -1,4 +1,4 @@
-package hit.android2;
+package hit.android2.Database;
 
 import android.widget.TextView;
 
@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import hit.android2.R;
 
 public class FirebaseManager {
 
@@ -110,9 +112,7 @@ public class FirebaseManager {
         fireBaseAuth.removeAuthStateListener(authStateListener);
     }
 
-    public DatabaseReference getDatabaseReference(String data){
-        return FirebaseDatabase.getInstance().getReference(data);
-    }
+
 
 
 

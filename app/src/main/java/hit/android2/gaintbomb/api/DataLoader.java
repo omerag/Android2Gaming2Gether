@@ -15,24 +15,24 @@ import org.json.JSONObject;
 import java.util.List;
 
 import hit.android2.gaintbomb.game.GameAdapter;
-import hit.android2.gaintbomb.game.GameItem;
+import hit.android2.Database.GameData;
 
 public class DataLoader {
 
     private String API_KEY;
 
-    private GameItem gameItem = null;
+    private GameData gameData = null;
 
     private Context context;
 
     private GameAdapter gameAdapter;
 
-    private List<GameItem> gameItemList = null;
+    private List<GameData> gameDataList = null;
 
-    public DataLoader(String API_KEY, Context context, List<GameItem> gameItemList, GameAdapter gameAdapter) {
+    public DataLoader(String API_KEY, Context context, List<GameData> gameDataList, GameAdapter gameAdapter) {
         this.API_KEY = API_KEY;
         this.context = context;
-        this.gameItemList = gameItemList;
+        this.gameDataList = gameDataList;
         this.gameAdapter = gameAdapter;
 
         System.out.println("DataLoader created");
@@ -54,7 +54,7 @@ public class DataLoader {
 
                 try {
                     JSONObject rootObject = new JSONObject(response);
-                    createGameItemList(rootObject,gameItemList);
+                    createGameItemList(rootObject, gameDataList);
                     gameAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -111,7 +111,7 @@ public class DataLoader {
         }
     }
 
-    private void createGameItemList(JSONObject rootObject, List<GameItem> gameItemList){
+    private void createGameItemList(JSONObject rootObject, List<GameData> gameDataList){
 
         try {
             JSONArray resultArray =rootObject.getJSONArray("results");
@@ -125,8 +125,8 @@ public class DataLoader {
                 String gameName = jsonObject.getString("name");
                 String gameImageUrl = imageObject.getString("thumb_url");
 
-                GameItem gameItem = new GameItem(gameId,gameName,gameImageUrl);
-                gameItemList.add(gameItem);
+                GameData gameData = new GameData(gameId,gameName,gameImageUrl);
+                gameDataList.add(gameData);
             }
 
 
