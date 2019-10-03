@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
         TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
         fireBaseManager.setReference(navigationView, userNameTv);
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+
     }
 
 
@@ -69,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new ProfileFragment();
                     break;
                 case R.id.nav_messages:
+                    selectedFragment = new MessagesFragment();
+                    break;
+                case R.id.nav_friends:
+                    selectedFragment = new FriendsFragment();
+                    break;
+                case R.id.nav_home:
+                    selectedFragment = new HomeFragment();
                     break;
             }
 

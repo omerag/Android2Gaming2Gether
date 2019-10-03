@@ -11,4 +11,6 @@
     <string name="username_hint">Enter user name</string>
     <string name="email_hint">Enter email address</string>
     <string name="password_hint">Enter password</string>
+    <string name="friends_str">Friends</string>
+    <string name="home_str">Home</string>
 </resources>

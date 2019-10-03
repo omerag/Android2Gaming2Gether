@@ -12,4 +12,6 @@
     <string name="username_hint">הכנס שם משתמש</string>
     <string name="email_hint">הכנס כתובת מייל</string>
     <string name="password_hint">הכנס סיסמא</string>
+    <string name="friends_str">חברים</string>
+    <string name="home_str">בית</string>
 </resources>

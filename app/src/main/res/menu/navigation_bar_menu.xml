@@ -5,6 +5,14 @@
         android:id="@+id/nav_messages"
         android:icon="@drawable/ic_message_black_24dp"/>
 
+    <item android:title="@string/friends_str"
+        android:id="@+id/nav_friends"
+        android:icon="@drawable/ic_friends"/>
+
+    <item android:title="@string/home_str"
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"/>
+
     <item android:title="@string/navBarProfile"
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person_black_24dp"/>
