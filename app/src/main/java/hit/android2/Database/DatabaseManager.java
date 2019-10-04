@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -74,24 +75,26 @@ public class DatabaseManager {
 
 
     //need to add adapter to notify after updates
+    //search for users by game guid
+    //fill the list players with user
     public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
-        database.collection("games").document(gameGuid).collection("players")
+        database.collection("users").whereArrayContains("games",gameGuid).orderBy("totalRank")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                for (QueryDocumentSnapshot playerDocument : queryDocumentSnapshots) {
-                    UserData player = playerDocument.toObject(UserData.class);
-                    players.add(player);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("DatabaseManager", e.getMessage());
-            }
-        });
+                        for (QueryDocumentSnapshot playerDocument : queryDocumentSnapshots) {
+                            UserData player = playerDocument.toObject(UserData.class);
+                            players.add(player);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DatabaseManager", e.getMessage());
+                    }
+                });
     }
 
     public void userAddFriend(String userId, final String friendID) {
@@ -99,12 +102,12 @@ public class DatabaseManager {
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                UserData user = documentSnapshot.toObject(UserData.class);
+       /*         UserData user = documentSnapshot.toObject(UserData.class);
 
                 List<String> friends = user.getFriends();
-                friends.add(friendID);
+                friends.add(friendID);*/
 
-                userRef.update("friends",friends);
+                userRef.update("friends", FieldValue.arrayUnion(friendID));
 
             }
         }).addOnFailureListener(new OnFailureListener() {
