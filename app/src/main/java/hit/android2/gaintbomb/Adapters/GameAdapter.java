@@ -1,4 +1,4 @@
-package hit.android2.gaintbomb.game;
+package hit.android2.gaintbomb.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -44,12 +44,6 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
         Glide.with(context).load(gameDataList.get(position).getImageUrl()).into(holder.imageViewGame);
 
         holder.textViewName.setText(gameDataList.get(position).getName());
-
-
-        ;
-
-
-
 
     }
 

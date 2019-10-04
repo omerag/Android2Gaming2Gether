@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.gaintbomb.api.DataLoader;
-import hit.android2.gaintbomb.game.GameAdapter;
+import hit.android2.gaintbomb.Adapters.GameAdapter;
 import hit.android2.Database.GameData;
 
 public class ProfileFragment extends Fragment {

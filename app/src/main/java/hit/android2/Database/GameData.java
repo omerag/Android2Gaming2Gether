@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GameData {
 
-    private String gameId;
+    private String guid;
     private String name;
     private String imageUrl;
 
@@ -13,8 +13,8 @@ public class GameData {
     public GameData() {
     }
 
-    public GameData(String gameId) {
-        this.gameId = gameId;
+    public GameData(String guid) {
+        this.guid = guid;
     }
 
     public GameData(String name, String imageUrl) {
@@ -22,18 +22,18 @@ public class GameData {
         this.imageUrl = imageUrl;
     }
 
-    public GameData(String gameId, String name, String imageUrl) {
-        this.gameId = gameId;
+    public GameData(String guid, String name, String imageUrl) {
+        this.guid = guid;
         this.name = name;
         this.imageUrl = imageUrl;
     }
 
-    public String getGameId() {
-        return gameId;
+    public String getGuid() {
+        return guid;
     }
 
-    public void setGameId(String gameId) {
-        this.gameId = gameId;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public String getName() {

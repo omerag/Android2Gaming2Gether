@@ -7,10 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -22,18 +18,9 @@ import java.util.List;
 
 public class DatabaseManager {
 
-    private FirebaseAuth firebaseAuth;
-
-    private FirebaseFirestore database = FirebaseFirestore.getInstance();
-
-    public DatabaseManager(FirebaseAuth firebaseAuth) {
-        this.firebaseAuth = firebaseAuth;
-    }
-
-
     //need to add adapter to notify after updates
-    public void getGameFromDatabase(String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
-        database.document(gameGuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    static public void getGameFromDatabase(String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
+        FirebaseFirestore.getInstance().document(gameGuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
@@ -52,9 +39,9 @@ public class DatabaseManager {
         });
     }
 
-    public void addGameToDatabase(final GameData game) {
+    static public void addGameToDatabase(final GameData game) {
 
-        final DocumentReference gameRef = database.collection("games").document(game.getGameId());
+        final DocumentReference gameRef = FirebaseFirestore.getInstance().collection("games").document(game.getGuid());
         gameRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -77,8 +64,8 @@ public class DatabaseManager {
     //need to add adapter to notify after updates
     //search for users by game guid
     //fill the list players with user
-    public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
-        database.collection("users").whereArrayContains("games",gameGuid).orderBy("totalRank")
+    static public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
+        FirebaseFirestore.getInstance().collection("users").whereArrayContains("games",gameGuid).orderBy("totalRank")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -97,8 +84,8 @@ public class DatabaseManager {
                 });
     }
 
-    public void userAddFriend(String userId, final String friendID) {
-        final DocumentReference userRef = database.collection("users").document(userId);
+    static public void userAddFriend(String userId, final String friendID) {
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -118,9 +105,9 @@ public class DatabaseManager {
         });
     }
 
-    public void userAddGame(String userId, final String game){
+   static public void userAddGame(String userId, final String game){
 
-        final DocumentReference userRef = database.collection("users").document(userId);
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

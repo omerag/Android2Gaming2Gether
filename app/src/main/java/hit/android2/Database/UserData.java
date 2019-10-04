@@ -5,10 +5,10 @@ import java.util.List;
 
 public class UserData {
 
-    private String username;
+    private String name;
     private String aboutMe;
 
-    private String avatarUrl;
+    private String imageUrl;
 
     private List<String> games = new ArrayList<>(); //gameId list
     private List<String> friends = new ArrayList<>();   //userId list
@@ -21,8 +21,8 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(String username) {
-        this.username = username;
+    public UserData(String name) {
+        this.name = name;
 
         leader = 0;
         teammate = 0;
@@ -32,12 +32,12 @@ public class UserData {
 
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAboutMe() {
@@ -48,12 +48,12 @@ public class UserData {
         this.aboutMe = aboutMe;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public List<String> getGames() {
