@@ -1,10 +1,13 @@
 package hit.android2.Database;
 
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
@@ -39,14 +42,23 @@ public class FirebaseManager {
         return fireBaseAuth;
     }
 
-    public void signUpUser(String username, final String email, final String password){
+    public void signUpUser(final String username, final String email, final String password){
 
         userName = username;
         fireBaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                logOutUser();
-                logInUser(email,password);
+
+     /*           logOutUser();
+                logInUser(email,password);*/
+
+                UserData user = new UserData(username,fireBaseAuth.getCurrentUser().getUid());
+                DatabaseManager.addUserToDatabase(user);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("FirebaseManager",e.getMessage());
             }
         });
 

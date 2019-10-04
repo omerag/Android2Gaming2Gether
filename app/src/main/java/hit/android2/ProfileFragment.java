@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,17 +39,27 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
-        return rootView;
-    }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        floatingActionButton = getView().findViewById(R.id.floating_action_btn);
+        floatingActionButton = rootView.findViewById(R.id.floating_action_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
+
+
+        RecyclerView recyclerView =rootView.findViewById(R.id.profile_fragment_recycler_games);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        gameAdapter = new GameAdapter(getActivity(),gameDataList,"profile"); //gameDataList is empty, needs to be loaded from server
+
+        recyclerView.setAdapter(gameAdapter);
+        gameAdapter.notifyDataSetChanged();
+
+
+
+
+
+        return rootView;
     }
 
 
@@ -80,7 +91,7 @@ public class ProfileFragment extends Fragment {
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
                 List<GameData> gameDataList = new ArrayList<>();
-                gameAdapter = new GameAdapter(getContext(), gameDataList);
+                gameAdapter = new GameAdapter(getContext(), gameDataList,"search game");
 
                 recyclerView.setAdapter(gameAdapter);
                 recyclerView.setHasFixedSize(true);

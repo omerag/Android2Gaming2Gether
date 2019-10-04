@@ -68,6 +68,13 @@
 
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/profile_fragment_recycler_games"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

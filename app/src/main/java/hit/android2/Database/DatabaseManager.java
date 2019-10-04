@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
@@ -58,6 +59,11 @@ public class DatabaseManager {
                 Log.d("Database", e.getMessage());
             }
         });
+    }
+
+    static public void addUserToDatabase(final UserData user){
+        System.out.println("ERROR - user id = " + user.getKey());
+        FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user);
     }
 
 
@@ -111,12 +117,15 @@ public class DatabaseManager {
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                UserData user = documentSnapshot.toObject(UserData.class);
+
+                System.out.println("userAddGame - onSuccess game name = " + game);
+
+              /*  UserData user = documentSnapshot.toObject(UserData.class);
 
                 List<String> games = user.getGames();
-                games.add(game);
+                games.add(game);*/
 
-                userRef.update("games",games);
+                userRef.update("games",FieldValue.arrayUnion("games",game));
 
             }
         }).addOnFailureListener(new OnFailureListener() {

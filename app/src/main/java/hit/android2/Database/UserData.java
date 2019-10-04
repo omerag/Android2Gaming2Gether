@@ -5,6 +5,7 @@ import java.util.List;
 
 public class UserData {
 
+    private String key;
     private String name;
     private String aboutMe;
 
@@ -21,8 +22,9 @@ public class UserData {
     public UserData() {
     }
 
-    public UserData(String name) {
+    public UserData(String name,String key) {
         this.name = name;
+        this.key = key;
 
         leader = 0;
         teammate = 0;
@@ -106,5 +108,9 @@ public class UserData {
 
     public void setFriends(List<String> friends) {
         this.friends = friends;
+    }
+
+    public String getKey() {
+        return key;
     }
 }
