@@ -16,10 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hit.android2.Database.DatabaseManager;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.gaintbomb.Adapters.GameAdapter;
 import hit.android2.Database.GameData;
@@ -28,7 +30,7 @@ public class ProfileFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
 
-    private List<GameData> gameDataList;
+    private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
 
@@ -55,8 +57,7 @@ public class ProfileFragment extends Fragment {
         recyclerView.setAdapter(gameAdapter);
         gameAdapter.notifyDataSetChanged();
 
-
-
+        loadUserGames();
 
 
         return rootView;
@@ -106,6 +107,10 @@ public class ProfileFragment extends Fragment {
         });
 
         dialog.show();
+    }
+
+    private void loadUserGames(){
+        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
     }
 
 }

@@ -18,17 +18,31 @@ import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
+import hit.android2.gaintbomb.Adapters.GameAdapter;
+
 public class DatabaseManager {
 
+
+
     //need to add adapter to notify after updates
-    static public void getGameFromDatabase(String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
-        FirebaseFirestore.getInstance().document(gameGuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    static public void getGameFromDatabase(final String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
+        Log.d("DatabaseManager","getGameFromDatabase called");
+
+        FirebaseFirestore.getInstance().collection("games").document(gameGuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getGameFromDatabase onSuccess called");
 
-                GameData gameData = documentSnapshot.toObject(GameData.class);
-                gameDataList.add(gameData);
-                adapter.notifyItemInserted(gameDataList.size()-1);
+                if(documentSnapshot.exists()){
+                    Log.d("DatabaseManager","getGameFromDatabase documentSnapshot is exists");
+
+
+                    GameData gameData = documentSnapshot.toObject(GameData.class);
+                    gameDataList.add(gameData);
+                    adapter.notifyItemInserted(gameDataList.size()-1);
+                }
+
+
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -42,6 +56,7 @@ public class DatabaseManager {
     }
 
     static public void addGameToDatabase(final GameData game) {
+        Log.d("DatabaseManager","addGameToDatabase called");
 
         final DocumentReference gameRef = FirebaseFirestore.getInstance().collection("games").document(game.getGuid());
         gameRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -67,7 +82,7 @@ public class DatabaseManager {
     }
 
     static public void addUserToDatabase(final UserData user){
-        System.out.println("ERROR - user id = " + user.getKey());
+        System.out.println("user id = " + user.getKey());
         FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user);
     }
 
@@ -140,6 +155,28 @@ public class DatabaseManager {
             }
         });
 
+    }
+
+    static public void getUserGames(String userId, final List<GameData> games, final RecyclerView.Adapter adapter){
+
+        Log.d("DatabaseManager","getUserGames called");
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserGames OnSuccess called");
+
+                UserData user = documentSnapshot.toObject(UserData.class);
+                List<String> gameKeys = user.getGames();
+
+                for(String gameKey : gameKeys){
+                    getGameFromDatabase(gameKey,games,adapter);
+                }
+
+               // adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
