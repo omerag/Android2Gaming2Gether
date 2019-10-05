@@ -49,6 +49,8 @@ public class DatabaseManager {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     Log.d("DatabaseManager", "game already exists in database");
+
+                    gameRef.update("games",FieldValue.arrayUnion(FirebaseAuth.getInstance().getCurrentUser().getUid()));
                 } else {
                     List<String> users = game.getUsersList();
                     users.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
