@@ -9,7 +9,7 @@ public class GameData {
     private String name;
     private String imageUrl;
 
-    private List<String> usersList = new ArrayList<>();
+    private List<String> users = new ArrayList<>();
 
     public GameData() {
     }
@@ -42,8 +42,8 @@ public class GameData {
         this.imageUrl = imageUrl;
     }
 
-    public List<String> getUsersList() {
-        return usersList;
+    public List<String> getUsers() {
+        return users;
     }
 
 }

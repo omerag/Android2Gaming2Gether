@@ -14,11 +14,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
-
-import hit.android2.gaintbomb.Adapters.GameAdapter;
 
 public class DatabaseManager {
 
@@ -55,6 +52,34 @@ public class DatabaseManager {
         });
     }
 
+    static public void getUserFromDatabase(String userId, final List<UserData> users, final RecyclerView.Adapter adapter){
+        Log.d("DatabaseManager","getUserFromDatabase called");
+
+        FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserFromDatabase onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    Log.d("DatabaseManager","getUserFromDatabase documentSnapshot is exists");
+
+
+                    UserData user = documentSnapshot.toObject(UserData.class);
+                    users.add(user);
+                    adapter.notifyItemInserted(users.size()-1);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
+    }
+
     static public void addGameToDatabase(final GameData game) {
         Log.d("DatabaseManager","addGameToDatabase called");
 
@@ -65,9 +90,9 @@ public class DatabaseManager {
                 if (documentSnapshot.exists()) {
                     Log.d("DatabaseManager", "game already exists in database");
 
-                    gameRef.update("games",FieldValue.arrayUnion(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    gameRef.update("users",FieldValue.arrayUnion(FirebaseAuth.getInstance().getCurrentUser().getUid()));
                 } else {
-                    List<String> users = game.getUsersList();
+                    List<String> users = game.getUsers();
                     users.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     gameRef.set(game);
                 }
@@ -179,5 +204,25 @@ public class DatabaseManager {
         });
     }
 
+    static public void getUserFriends(final String userId, final List<UserData> users, final RecyclerView.Adapter adapter){
+        Log.d("DatabaseManager","getUserFriends called");
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserFriends OnSuccess called");
+
+                UserData user = documentSnapshot.toObject(UserData.class);
+                List<String> freinds = user.getFriends();
+
+                for(String friend : freinds){
+                    getUserFromDatabase(friend,users,adapter);
+                }
+
+                // adapter.notifyDataSetChanged();
+            }
+        });
+    }
 
 }

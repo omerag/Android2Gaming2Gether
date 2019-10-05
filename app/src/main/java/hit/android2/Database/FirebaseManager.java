@@ -51,9 +51,11 @@ public class FirebaseManager {
 
      /*           logOutUser();
                 logInUser(email,password);*/
-
-                UserData user = new UserData(username,fireBaseAuth.getCurrentUser().getUid());
-                DatabaseManager.addUserToDatabase(user);
+                FirebaseUser firebaseUser = fireBaseAuth.getCurrentUser();
+                if(firebaseUser != null){
+                    UserData user = new UserData(username,fireBaseAuth.getCurrentUser().getUid());
+                    DatabaseManager.addUserToDatabase(user);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
