@@ -14,14 +14,6 @@ public class GameData {
     public GameData() {
     }
 
-    public GameData(String guid) {
-        this.guid = guid;
-    }
-
-    public GameData(String name, String imageUrl) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
 
     public GameData(String guid, String name, String imageUrl) {
         this.guid = guid;
@@ -32,10 +24,6 @@ public class GameData {
 
     public String getGuid() {
         return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
     }
 
     public String getName() {
@@ -58,7 +46,4 @@ public class GameData {
         return usersList;
     }
 
-    public void setUsersList(List<String> usersList) {
-        this.usersList = usersList;
-    }
 }
