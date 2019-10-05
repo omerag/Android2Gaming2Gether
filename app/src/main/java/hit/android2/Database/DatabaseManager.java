@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -49,6 +50,8 @@ public class DatabaseManager {
                 if (documentSnapshot.exists()) {
                     Log.d("DatabaseManager", "game already exists in database");
                 } else {
+                    List<String> users = game.getUsersList();
+                    users.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     gameRef.set(game);
                 }
 

@@ -31,7 +31,7 @@
             />
 
         <TextView
-            android:id="@+id/game_guid"
+            android:id="@+id/game_position"
             android:layout_width="0dp"
             android:layout_height="0dp"
             />

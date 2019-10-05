@@ -1,5 +1,6 @@
 package hit.android2.Database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameData {
@@ -8,7 +9,7 @@ public class GameData {
     private String name;
     private String imageUrl;
 
-    private List<String> usersList;
+    private List<String> usersList = new ArrayList<>();
 
     public GameData() {
     }
@@ -26,6 +27,7 @@ public class GameData {
         this.guid = guid;
         this.name = name;
         this.imageUrl = imageUrl;
+
     }
 
     public String getGuid() {

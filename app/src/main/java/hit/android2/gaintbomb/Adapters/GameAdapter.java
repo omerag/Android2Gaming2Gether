@@ -47,7 +47,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
     public void onBindViewHolder(@NonNull GameItemViewHolder holder, int position) {
 
         Glide.with(context).load(gameDataList.get(position).getImageUrl()).into(holder.imageViewGame);
-        holder.guidTextView.setText(gameDataList.get(position).getGuid());
+        holder.positionTextView.setText(String.valueOf(position));
         holder.textViewName.setText(gameDataList.get(position).getName());
 
     }
@@ -69,13 +69,13 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
 
         TextView textViewName;
         ImageView imageViewGame;
-        TextView guidTextView;
+        TextView positionTextView;
 
         public GameItemViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.game_name);
             imageViewGame = itemView.findViewById(R.id.game_image);
-            guidTextView = itemView.findViewById(R.id.game_guid);
+            positionTextView = itemView.findViewById(R.id.game_position);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -87,7 +87,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
                     }
                     else if(state.equals("search game")){
 
-                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(),guidTextView.getText().toString());
+                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList.get(Integer.parseInt(positionTextView.getText().toString())).getGuid());
+                        DatabaseManager.addGameToDatabase(gameDataList.get(Integer.parseInt(positionTextView.getText().toString())));
 
                         Toast.makeText(context, "search game", Toast.LENGTH_SHORT).show();
 

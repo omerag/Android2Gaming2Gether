@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     android:background="#FF3333">
 
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/friends_fragment_recycler_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+
 </LinearLayout>
