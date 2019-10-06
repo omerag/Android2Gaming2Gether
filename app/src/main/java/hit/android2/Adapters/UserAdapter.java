@@ -1,4 +1,4 @@
-package hit.android2.gaintbomb.Adapters;
+package hit.android2.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

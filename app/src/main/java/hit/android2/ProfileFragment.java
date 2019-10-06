@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +22,7 @@ import java.util.List;
 
 import hit.android2.Database.DatabaseManager;
 import hit.android2.gaintbomb.api.DataLoader;
-import hit.android2.gaintbomb.Adapters.GameAdapter;
+import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.GameData;
 
 public class ProfileFragment extends Fragment {

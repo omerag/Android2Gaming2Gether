@@ -18,7 +18,7 @@ import java.util.List;
 
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.UserData;
-import hit.android2.gaintbomb.Adapters.UserAdapter;
+import hit.android2.Adapters.UserAdapter;
 
 public class FriendsFragment extends Fragment {
 
