@@ -48,12 +48,12 @@ public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.Par
     @Override
     public void onBindChildViewHolder(ChildViewHolders holder, int flatPosition, ExpandableGroup group, int childIndex) {
         final ChildData childData = ((ParentData)group).getItems().get(childIndex);
-        holder.setChildText(childData.getName());
+        holder.setChildText(childData.getMassage());
         holder.textView_child.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(context, "Selected : " + childData.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Selected : " + childData.getMassage(), Toast.LENGTH_SHORT).show();
 
             }
         });

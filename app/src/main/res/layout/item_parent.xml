@@ -33,7 +33,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="#0784b1"
-                android:text="topic's name"
+                android:text="topic's massage"
 
                 />
 
@@ -67,7 +67,7 @@
                 android:padding="10dp"
                 android:textSize="14sp"
                 android:textColor="#0784b1"
-                android:text="topic's owner name"
+                android:text="topic's owner massage"
                 />
 
             <TextView

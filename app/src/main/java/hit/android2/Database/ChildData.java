@@ -5,23 +5,25 @@ import android.os.Parcelable;
 
 public class ChildData implements Parcelable{
 
-    String name;
+    private String massage;
+    private String time;
+    private String id;
 
     public ChildData(Parcel parcel){
 
-        name = parcel.readString();
+        massage = parcel.readString();
     }
 
     public ChildData(String name) {
-        this.name = name;
+        this.massage = name;
     }
 
-    public String getName() {
-        return name;
+    public String getMassage() {
+        return massage;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMassage(String massage) {
+        this.massage = massage;
     }
 
     public static final Parcelable.Creator<ChildData> CREATOR = new Parcelable.Creator<ChildData>() {
@@ -43,7 +45,22 @@ public class ChildData implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(name);
+        parcel.writeString(massage);
     }
 
+    public static Creator<ChildData> getCREATOR() {
+        return CREATOR;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Android2Gaming2Gether</string>
-    <string name="navBarMessage">הודעות</string>
-    <string name="navBarProfile">פרופיל</string>
-    <string name="hello_str">שלום</string>
-    <string name="user_name_tv">משתמש</string>
-    <string name="search_dialog_hint">הכנס שם משחק</string>
-    <string name="drawer_sign_up">הירשם</string>
-    <string name="drawer_log_in">התחבר</string>
-    <string name="drawer_log_out">התנתק</string>
-    <string name="username_hint">הכנס שם משתמש</string>
-    <string name="email_hint">הכנס כתובת מייל</string>
-    <string name="password_hint">הכנס סיסמא</string>
-    <string name="friends_str">חברים</string>
-    <string name="home_str">בית</string>
+    <string massage="app_name">Android2Gaming2Gether</string>
+    <string massage="navBarMessage">הודעות</string>
+    <string massage="navBarProfile">פרופיל</string>
+    <string massage="hello_str">שלום</string>
+    <string massage="user_name_tv">משתמש</string>
+    <string massage="search_dialog_hint">הכנס שם משחק</string>
+    <string massage="drawer_sign_up">הירשם</string>
+    <string massage="drawer_log_in">התחבר</string>
+    <string massage="drawer_log_out">התנתק</string>
+    <string massage="username_hint">הכנס שם משתמש</string>
+    <string massage="email_hint">הכנס כתובת מייל</string>
+    <string massage="password_hint">הכנס סיסמא</string>
+    <string massage="friends_str">חברים</string>
+    <string massage="home_str">בית</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -221,6 +222,64 @@ public class DatabaseManager {
                 }
 
                 // adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    static public void getTopicsByGame(String guid, final List<ParentData> topics, final RecyclerView.Adapter adapter){
+        Log.d("DatabaseManager","getTopicsByGame called");
+
+        CollectionReference topicsReff = FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics");
+
+        topicsReff.orderBy("time").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d("DatabaseManager","getTopicsByGame onSuccess called");
+
+                for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                    ParentData topic = document.toObject(ParentData.class);
+                    topic.setId(document.getId());
+
+                    topics.add(topic);
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager",e.getMessage());
+            }
+        });
+
+    }
+
+    static public void getTopicComments(String guid, String topicId, final List<ChildData> comments, final RecyclerView.Adapter adapter){
+        Log.d("DatabaseManager","getTopicComments called");
+
+
+        CollectionReference commentsReff = FirebaseFirestore.getInstance().collection("games").document(guid)
+                .collection("topics").document(topicId).collection("comments");
+
+        commentsReff.orderBy("time").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d("DatabaseManager","getTopicComments - onSuccess called");
+
+                for(QueryDocumentSnapshot document : queryDocumentSnapshots){
+                    ChildData comment = document.toObject(ChildData.class);
+                    comment.setId(document.getId());
+                    comments.add(comment);
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager",e.getMessage());
+
+
             }
         });
     }
