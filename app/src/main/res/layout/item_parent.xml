@@ -6,6 +6,7 @@
     android:padding="10dp">
 
     <TableLayout
+        android:id="@+id/parent_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -82,10 +83,37 @@
                 android:text="06\\06\\2006"/>
 
         </TableRow>
-
-
-
     </TableLayout>
+
+
+    <LinearLayout
+        android:id="@+id/parent_item_comment_layout"
+        android:layout_below="@id/parent_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <EditText
+            android:id="@+id/home_fragment_comment_edit_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="enter your comment here"
+
+            />
+
+        <ImageButton
+            android:id="@+id/home_fragment_comment_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send"
+            />
+
+
+
+    </LinearLayout>
 
 
 

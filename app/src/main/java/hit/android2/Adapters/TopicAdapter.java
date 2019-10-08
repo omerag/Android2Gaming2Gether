@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,22 +70,27 @@ public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.Par
     public class ParentViewHolder extends GroupViewHolder {
 
         public TextView textView_parent;
+        public LinearLayout commentLayout;
 
         public ParentViewHolder(View itemView) {
             super(itemView);
             textView_parent = itemView.findViewById(R.id.tv_parent_item_topic_name);
+            commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
         }
 
         @Override
         public void expand() {
             super.expand();
-            textView_parent.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_arrow_down,0);
+            textView_parent.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_arrow_down,0);
+            commentLayout.setVisibility(View.GONE);
         }
 
         @Override
         public void collapse() {
             super.collapse();
-            textView_parent.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_arrow_up,0);
+            textView_parent.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_arrow_up,0);
+            commentLayout.setVisibility(View.VISIBLE);
+
         }
 
         public void setGroupName(ExpandableGroup groupName){
