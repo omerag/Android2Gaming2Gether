@@ -5,9 +5,10 @@ import android.os.Parcelable;
 
 public class ChildData implements Parcelable{
 
+    private String id;
     private String massage;
     private String time;
-    private String id;
+    private String user_key;
 
     public ChildData(Parcel parcel){
 
@@ -62,5 +63,9 @@ public class ChildData implements Parcelable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUser_key() {
+        return user_key;
     }
 }

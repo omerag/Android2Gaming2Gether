@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -282,6 +283,21 @@ public class DatabaseManager {
 
             }
         });
+    }
+
+    static public void addTopicToDatabase(String guid, ParentData topic){
+        Log.d("DatabaseManager","addTopicToDatabase called");
+
+        FirebaseFirestore.getInstance().collection("games")
+                .document(guid).collection("topics").add(topic);
+
+    }
+
+    static public void addCommentToDatabase(String guid, String topicId,ChildData comment){
+        Log.d("DatabaseManager","addCommentToDatabase called");
+
+        FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics")
+                .document(topicId).collection("comments").add(comment);
     }
 
 }

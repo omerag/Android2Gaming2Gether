@@ -9,6 +9,7 @@ public class ParentData extends ExpandableGroup<ChildData> {
     private String name;
     private String time;
     private String id;
+    private String user_key;
 
     public ParentData(String title, List<ChildData> items){
         super(title,items);
@@ -36,5 +37,9 @@ public class ParentData extends ExpandableGroup<ChildData> {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUser_key() {
+        return user_key;
     }
 }
