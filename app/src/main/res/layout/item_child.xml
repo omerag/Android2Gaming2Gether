@@ -5,13 +5,44 @@
     android:padding="5dp"
     android:layout_height="wrap_content">
 
+
+    <ImageView
+        android:id="@+id/tv_child_item_user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+
+        />
+
     <TextView
-        android:id="@+id/tv_child_item"
+        android:id="@+id/tv_child_item_user_name"
+        android:layout_toEndOf="@id/tv_child_item_user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="5dp"
+        android:gravity="start|center"
+        android:padding="10dp"
+        android:textSize="16sp"
+        android:textColor="#0784b1"
+        android:text="user name"
+
+        />
+
+
+
+    <TextView
+        android:id="@+id/tv_child_item_massage"
+        android:layout_below="@id/tv_child_item_user_name"
+        android:layout_toEndOf="@id/tv_child_item_user_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="18dp"
+        android:textSize="12sp"
         android:textColor="#ca2450"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:text="blah blah blah blah blahb albh g"/>
+
+
+
+
 
 </RelativeLayout>

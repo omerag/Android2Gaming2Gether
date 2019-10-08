@@ -5,16 +5,90 @@
     android:layout_height="wrap_content"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/tv_parent_item"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:drawablePadding="5dp"
-        android:drawableRight="@drawable/ic_arrow_down"
-        android:gravity="end|center"
-        android:padding="10dp"
-        android:textSize="20dp"
-        android:textColor="#0784b1" />
+        android:orientation="horizontal"
+        >
+
+        <TableRow
+            android:gravity="start|center"
+            >
+
+            <ImageView
+                android:id="@+id/tv_parent_item_game_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                />
+
+            <TextView
+                android:id="@+id/tv_parent_item_topic_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_arrow_down"
+                android:drawablePadding="5dp"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textColor="#0784b1"
+                android:text="topic's name"
+
+                />
+
+        </TableRow>
+
+
+        <TableRow
+            android:gravity="start|center">
+
+
+        <TextView
+                android:id="@+id/tv_parent_item_game_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textColor="#0784b1"
+                android:text="game"
+                />
+
+            <TextView
+                android:id="@+id/tv_parent_item_topic_owner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#0784b1"
+                android:text="topic's owner name"
+                />
+
+            <TextView
+                android:id="@+id/tv_parent_item_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="5dp"
+                android:gravity="start|center"
+                android:padding="10dp"
+                android:textSize="14sp"
+                android:textColor="#0784b1"
+                android:text="06\\06\\2006"/>
+
+        </TableRow>
+
+
+
+    </TableLayout>
+
+
+
+
 
 </RelativeLayout>

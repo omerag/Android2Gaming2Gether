@@ -22,9 +22,9 @@ import hit.android2.Adapters.UserAdapter;
 
 public class FriendsFragment extends Fragment {
 
-    UserAdapter userAdapter;
-    List<UserData> friendsList = new ArrayList<>();
-    RecyclerView recyclerView;
+    private UserAdapter userAdapter;
+    private List<UserData> friendsList = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override

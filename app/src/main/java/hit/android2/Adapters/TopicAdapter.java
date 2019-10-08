@@ -27,9 +27,6 @@ public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.Par
         this.context = context;
     }
 
-    public TopicAdapter(List<? extends ExpandableGroup> groups) {
-        super(groups);
-    }
 
     @Override
     public ParentViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
@@ -75,7 +72,7 @@ public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.Par
 
         public ParentViewHolder(View itemView) {
             super(itemView);
-            textView_parent = itemView.findViewById(R.id.tv_parent_item);
+            textView_parent = itemView.findViewById(R.id.tv_parent_item_topic_name);
         }
 
         @Override
@@ -101,7 +98,7 @@ public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.Par
 
         public ChildViewHolders(View itemView) {
             super(itemView);
-            textView_child = itemView.findViewById(R.id.tv_child_item);
+            textView_child = itemView.findViewById(R.id.tv_child_item_massage);
         }
 
         public void setChildText(String name){
