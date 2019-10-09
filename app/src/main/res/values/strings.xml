@@ -1,16 +1,16 @@
 <resources>
-    <string massage="app_name">Android2Gaming2Gether</string>
-    <string massage="navBarMessage">Messages</string>
-    <string massage="navBarProfile">Profile</string>
-    <string massage="hello_str">Welcome</string>
-    <string massage="user_name_tv">User</string>
-    <string massage="search_dialog_hint">Enter game massage</string>
-    <string massage="drawer_sign_up">Sign up</string>
-    <string massage="drawer_log_in">Log in</string>
-    <string massage="drawer_log_out">Log out</string>
-    <string massage="username_hint">Enter user massage</string>
-    <string massage="email_hint">Enter email address</string>
-    <string massage="password_hint">Enter password</string>
-    <string massage="friends_str">Friends</string>
-    <string massage="home_str">Home</string>
+    <string name="app_name">Android2Gaming2Gether</string>
+    <string name="navBarMessage">Messages</string>
+    <string name="navBarProfile">Profile</string>
+    <string name="hello_str">Welcome</string>
+    <string name="user_name_tv">User</string>
+    <string name="search_dialog_hint">Enter game massage</string>
+    <string name="drawer_sign_up">Sign up</string>
+    <string name="drawer_log_in">Log in</string>
+    <string name="drawer_log_out">Log out</string>
+    <string name="username_hint">Enter user massage</string>
+    <string name="email_hint">Enter email address</string>
+    <string name="password_hint">Enter password</string>
+    <string name="friends_str">Friends</string>
+    <string name="home_str">Home</string>
 </resources>
