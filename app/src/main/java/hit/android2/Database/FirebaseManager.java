@@ -126,8 +126,13 @@ public class FirebaseManager {
         fireBaseAuth.removeAuthStateListener(authStateListener);
     }
 
+    public static boolean isLoged(){
 
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            return true;
+        }
 
-
+        return false;
+    }
 
 }

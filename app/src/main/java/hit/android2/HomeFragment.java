@@ -25,6 +25,7 @@ import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.TopicAdapter;
 import hit.android2.Database.ChildData;
 import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.GameData;
 import hit.android2.Database.ParentData;
 
@@ -59,8 +60,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
-        DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(),topics,topicAdapter);
+        if(FirebaseManager.isLoged()){
+            DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(),topics,topicAdapter);
+        }
 
         return rootView;
     }
