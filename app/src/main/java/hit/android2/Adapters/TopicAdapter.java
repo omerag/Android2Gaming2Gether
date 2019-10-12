@@ -24,6 +24,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     private Context context;
     private List<ParentData> topics;
 
+    private int counter = 0;
+
     public TopicAdapter(Context context,List<ParentData> topics) {
         this.context = context;
         this.topics = topics;
@@ -42,6 +44,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
+
 
         holder.massage.setText(topics.get(position).getTitle());
     }
@@ -62,12 +65,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         CommentAdapter commentAdapter;
         List<ChildData> comments;
 
+
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
             massage = itemView.findViewById(R.id.tv_parent_item_topic_name);
             recyclerView = itemView.findViewById(R.id.item_parent_recycler);
             commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
-            comments = new ArrayList<>();
+            comments = topics.get(counter).getItems();
+            counter++;
             commentAdapter = new CommentAdapter(context,comments);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(commentAdapter);
