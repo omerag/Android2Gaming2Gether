@@ -64,7 +64,8 @@
             android:layout_toStartOf="@id/send_btn"
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
-            android:hint="@string/text_send"/>
+            android:hint="@string/text_send"
+            android:layout_marginStart="5dp"/>
 
         <ImageButton
             android:id="@+id/send_btn"
@@ -72,7 +73,6 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/ic_action_name"/>
-
 
     </RelativeLayout>
 
