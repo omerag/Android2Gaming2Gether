@@ -16,6 +16,7 @@
                 android:id="@+id/tv_parent_item_game_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
@@ -48,7 +49,7 @@
                 android:padding="10dp"
                 android:text="game"
                 android:textColor="#0784b1"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_parent_item_topic_owner"
