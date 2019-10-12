@@ -14,4 +14,5 @@
     <string name="password_hint">הכנס סיסמא</string>
     <string name="friends_str">חברים</string>
     <string name="home_str">בית</string>
+    <string name="text_send">הקלד הודעה</string>
 </resources>

@@ -6,6 +6,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +25,9 @@ public class MessagingActivity extends AppCompatActivity {
 
     CircleImageView profile_img;
     TextView user_name;
+    ImageButton send_btn;
+    EditText text_send;
+    String userId;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -41,16 +46,19 @@ public class MessagingActivity extends AppCompatActivity {
 
         profile_img = findViewById(R.id.profile_image);
         user_name = findViewById(R.id.username);
+        send_btn = findViewById(R.id.send_btn);
+        text_send = findViewById(R.id.text_send);
+
         userData = new UserData();
         firebaseManager = new FirebaseManager();
 
-        String userId = getIntent().getStringExtra("user_id");
-        Log.d("userID", userId);
+        userId = getIntent().getStringExtra("user_id");
 
         fuser = firebaseManager.getFireBaseAuth().getCurrentUser();
         getUserFromDatabase(userId, userData, user_name, profile_img,MessagingActivity.this);
 
-
+        SendBtnListener sendBtnListener = new SendBtnListener();
+        send_btn.setOnClickListener(sendBtnListener);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,5 +66,19 @@ public class MessagingActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    class SendBtnListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+
+            String msg = text_send.getText().toString();
+            if (!msg.equals("")){
+                firebaseManager.sendMessage(fuser.getUid(), userId, msg);
+            }
+
+            text_send.setText("");
+        }
     }
 }

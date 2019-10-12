@@ -17,6 +17,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 import hit.android2.R;
 
 public class FirebaseManager {
@@ -133,6 +135,19 @@ public class FirebaseManager {
         }
 
         return false;
+    }
+
+    public void sendMessage(String sender, String receiver, String message){
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+
+        databaseReference.child("Chats").push().setValue(hashMap);
     }
 
 }
