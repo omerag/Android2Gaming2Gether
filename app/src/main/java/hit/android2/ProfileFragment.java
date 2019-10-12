@@ -76,11 +76,11 @@ public class ProfileFragment extends Fragment {
 
         final Dialog dialog = new Dialog(getActivity());
 
-        dialog.setContentView(R.layout.search_dialog_layout);
+        dialog.setContentView(R.layout.search_game_dialog_layout);
 
         dialog.setTitle("Search Dialog");
 
-        final EditText searchText = dialog.findViewById(R.id.search_dialog_edit_text);
+        final EditText searchText = dialog.findViewById(R.id.search_game_dialog_edit_text);
         final ImageButton searchBtn = dialog.findViewById(R.id.search_button);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {

@@ -29,12 +29,23 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     private Context context;
     private List<ParentData> topics;
+    private AdapterListener listener;
 
     private int counter = 0;
 
     public TopicAdapter(Context context,List<ParentData> topics) {
         this.context = context;
         this.topics = topics;
+    }
+
+    interface AdapterListener{
+        void onClick(View view, int position);
+
+    }
+
+    public void setListener(AdapterListener listener){
+        this.listener = listener;
+
     }
 
     @NonNull

@@ -26,6 +26,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
     private List<GameData> gameDataList;
     private String state;
     private GameData game = null;
+    private AdapterListener listener;
 
     public GameAdapter(Context context, List<GameData> gameDataList, String state) {
         this.context = context;
@@ -33,6 +34,16 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
         this.state = state;
 
         System.out.println("GameAdapter created");
+    }
+
+    public interface AdapterListener{
+        void onClick(View view, int position);
+
+    }
+
+    public void setListener(AdapterListener listener){
+        this.listener = listener;
+
     }
 
     public GameAdapter(Context context, List<GameData> gameDataList, String state,GameData game) {
@@ -88,6 +99,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    if(listener != null){
+                        listener.onClick(view,getAdapterPosition());
+                    }
+
 
                     if(state.equals("profile")){
                         Toast.makeText(context, "profile game", Toast.LENGTH_SHORT).show();

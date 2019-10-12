@@ -24,12 +24,23 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
 
     private Context context;
     private List<UserData> userDataList;
+    private AdapterListener listener;
 
     public UserAdapter(Context context, List<UserData> userDataList) {
         this.context = context;
         this.userDataList = userDataList;
 
         System.out.println("UserAdapter created");
+
+    }
+
+    public interface AdapterListener{
+        void onClick(View view, int position);
+
+    }
+
+    public void setListener(AdapterListener listener){
+        this.listener = listener;
 
     }
 
@@ -81,6 +92,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
             super(itemView);
             textViewName = itemView.findViewById(R.id.game_name);
             imageViewGame = itemView.findViewById(R.id.game_image);
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener != null){
+                        listener.onClick(view,getAdapterPosition());
+                    }
+
+                }
+            });
         }
     }
 }

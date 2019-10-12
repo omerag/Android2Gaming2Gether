@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -226,7 +227,10 @@ public class DatabaseManager {
     //search for users by game guid
     //fill the list players with user
     static public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
-        FirebaseFirestore.getInstance().collection("users").whereArrayContains("games",gameGuid).orderBy("totalRank")
+        Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
+
+
+        FirebaseFirestore.getInstance().collection("users").whereArrayContains("games",gameGuid).orderBy("totalRank", Query.Direction.DESCENDING)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {

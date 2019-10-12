@@ -4,7 +4,7 @@
     <string name="navBarProfile">Profile</string>
     <string name="hello_str">Welcome</string>
     <string name="user_name_tv">User</string>
-    <string name="search_dialog_hint">Enter game massage</string>
+    <string name="search_game_dialog_hint">Enter game massage</string>
     <string name="drawer_sign_up">Sign up</string>
     <string name="drawer_log_in">Log in</string>
     <string name="drawer_log_out">Log out</string>

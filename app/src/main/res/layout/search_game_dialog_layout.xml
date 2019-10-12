@@ -12,12 +12,12 @@
         android:gravity="center">
 
     <EditText
-        android:id="@+id/search_dialog_edit_text"
+        android:id="@+id/search_game_dialog_edit_text"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:hint="@string/search_dialog_hint"
+        android:hint="@string/search_game_dialog_hint"
         android:gravity="center"/>
 
     <ImageButton
