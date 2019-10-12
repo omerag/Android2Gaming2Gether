@@ -2,6 +2,7 @@ package hit.android2.Database;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -119,7 +120,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final CircleImageView imageView, final Context context){
+    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final ImageView imageView, final Context context){
         Log.d("DatabaseManager","getUserFromDatabase called");
 
         FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
