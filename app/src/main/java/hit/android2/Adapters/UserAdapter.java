@@ -1,6 +1,7 @@
 package hit.android2.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import hit.android2.Database.UserData;
+import hit.android2.MessagingActivity;
 import hit.android2.R;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHolder> implements View.OnClickListener{
@@ -39,11 +42,20 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserDataViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UserDataViewHolder holder, final int position) {
 
         Glide.with(context).load(userDataList.get(position).getImageUrl()).into(holder.imageViewGame);
 
         holder.textViewName.setText(userDataList.get(position).getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MessagingActivity.class);
+                intent.putExtra("user_id", userDataList.get(position).getKey());
+                context.startActivity(intent);
+            }
+        });
 
     }
 
