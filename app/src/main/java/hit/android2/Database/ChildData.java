@@ -5,21 +5,16 @@ public class ChildData{
 
     private String id;
     private String massage;
-    private String time;
+    private long timestamp;
     private String user_key;
 
     public ChildData() {
     }
 
-    public ChildData(String user_key,String massage) {
-        this.user_key = user_key;
-        this.massage = massage;
 
-    }
-
-    public ChildData(String massage, String time, String user_key) {
+    public ChildData(String massage, long timestamp, String user_key) {
         this.massage = massage;
-        this.time = time;
+        this.timestamp = timestamp;
         this.user_key = user_key;
     }
 
@@ -32,8 +27,8 @@ public class ChildData{
     }
 
 
-    public String getTime() {
-        return time;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public String getId() {

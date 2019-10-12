@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 List<ChildData> comments = new ArrayList<>();
-                comments.add(new ChildData(FirebaseAuth.getInstance().getCurrentUser().getUid(),massageEt.getText().toString()));
+                comments.add(new ChildData(massageEt.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
                 ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
                 DatabaseManager.addTopicToDatabase(chosenGame.getGuid(),topic);
             }

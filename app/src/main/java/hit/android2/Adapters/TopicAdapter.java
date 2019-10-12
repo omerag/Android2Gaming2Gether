@@ -123,8 +123,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 @Override
                 public void onClick(View view) {
 
-                    comments.add(new ChildData(FirebaseAuth.getInstance().getCurrentUser().getUid(),commentEditText.getText().toString()));
-                    //DatabaseManager.updateTopic("",topics.get(pos).getId(),comments);
+                    comments.add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    DatabaseManager.updateTopic(topics.get(pos).getGame_key(),topics.get(pos).getId(),comments);
                 }
             });
         }
