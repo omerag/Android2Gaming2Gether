@@ -1,10 +1,13 @@
 package hit.android2.Database;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,6 +20,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DatabaseManager {
 
@@ -101,6 +106,39 @@ public class DatabaseManager {
                     UserData user = documentSnapshot.toObject(UserData.class);
                     users.add(user);
                     adapter.notifyItemInserted(users.size()-1);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
+    }
+
+    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final CircleImageView imageView, final Context context){
+        Log.d("DatabaseManager","getUserFromDatabase called");
+
+        FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserFromDatabase onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    Log.d("DatabaseManager","getUserFromDatabase documentSnapshot is exists");
+
+                    UserData user = documentSnapshot.toObject(UserData.class);
+                    friend.setName(user.getName());
+                    friend.setImageUrl(user.getImageUrl());
+                    friend.setKey(user.getKey());
+
+                    friendName.setText(friend.getName());
+
+                    Glide.with(context).load(friend.getImageUrl()).into(imageView);
+
                 }
 
             }
