@@ -43,5 +43,4 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.android.volley:volley:1.1.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
-    implementation 'com.thoughtbot:expandablerecyclerview:1.0'
 }

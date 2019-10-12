@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -52,6 +51,39 @@ public class DatabaseManager {
 
             }
         });
+    }
+
+    static public void getHomeTopics(String userId, final List<ParentData> topics, final RecyclerView.Adapter adapter){
+        Log.d("DatabaseManager","getUserGamesGUID called");
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserGamesGUID onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    UserData user = documentSnapshot.toObject(UserData.class);
+                    List<String> games = user.getGames();
+
+                    for(String game : games){
+                        DatabaseManager.getTopicsByGame(game,topics,adapter);
+                    }
+
+
+                    //games.addAll(user.getGames());
+                }
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager",e.getMessage());
+            }
+        });
+
+
     }
 
     static public void getUserFromDatabase(String userId, final List<UserData> users, final RecyclerView.Adapter adapter){
@@ -241,6 +273,8 @@ public class DatabaseManager {
                     ParentData topic = document.toObject(ParentData.class);
                     topic.setId(document.getId());
 
+                    Log.d("DatabaseManager","topic name = " + topic.getTitle());
+
                     topics.add(topic);
                 }
 
@@ -255,35 +289,6 @@ public class DatabaseManager {
 
     }
 
-    static public void getTopicComments(String guid, String topicId, final List<ChildData> comments, final RecyclerView.Adapter adapter){
-        Log.d("DatabaseManager","getTopicComments called");
-
-
-        CollectionReference commentsReff = FirebaseFirestore.getInstance().collection("games").document(guid)
-                .collection("topics").document(topicId).collection("comments");
-
-        commentsReff.orderBy("time").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.d("DatabaseManager","getTopicComments - onSuccess called");
-
-                for(QueryDocumentSnapshot document : queryDocumentSnapshots){
-                    ChildData comment = document.toObject(ChildData.class);
-                    comment.setId(document.getId());
-                    comments.add(comment);
-                }
-                adapter.notifyDataSetChanged();
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("DatabaseManager",e.getMessage());
-
-
-            }
-        });
-    }
 
     static public void addTopicToDatabase(String guid, ParentData topic){
         Log.d("DatabaseManager","addTopicToDatabase called");
@@ -293,11 +298,7 @@ public class DatabaseManager {
 
     }
 
-    static public void addCommentToDatabase(String guid, String topicId,ChildData comment){
-        Log.d("DatabaseManager","addCommentToDatabase called");
 
-        FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics")
-                .document(topicId).collection("comments").add(comment);
-    }
+
 
 }

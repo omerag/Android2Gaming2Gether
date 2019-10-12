@@ -8,110 +8,92 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter;
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
-import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
-import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.Database.ChildData;
 import hit.android2.Database.ParentData;
 import hit.android2.R;
 
-public class TopicAdapter extends ExpandableRecyclerViewAdapter<TopicAdapter.ParentViewHolder, TopicAdapter.ChildViewHolders> {
+public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
-    public Context context;
+    private Context context;
+    private List<ParentData> topics;
 
-    public TopicAdapter(Context context, List<? extends ExpandableGroup> groups) {
-        super(groups);
+    public TopicAdapter(Context context,List<ParentData> topics) {
         this.context = context;
+        this.topics = topics;
     }
 
-
+    @NonNull
     @Override
-    public ParentViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_parent,parent,false);
+    public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_parent,parent,false);
+        TopicViewHolder viewHolder = new TopicViewHolder(view);
 
-        return new ParentViewHolder(view);
-    }
 
-    @Override
-    public ChildViewHolders onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.item_child,parent,false);
 
-        return new ChildViewHolders(view);
+        return viewHolder;
     }
 
     @Override
-    public void onBindChildViewHolder(ChildViewHolders holder, int flatPosition, ExpandableGroup group, int childIndex) {
-        final ChildData childData = ((ParentData)group).getItems().get(childIndex);
-        holder.setChildText(childData.getMassage());
-        holder.textView_child.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
 
-                Toast.makeText(context, "Selected : " + childData.getMassage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
+        holder.massage.setText(topics.get(position).getTitle());
     }
 
     @Override
-    public void onBindGroupViewHolder(ParentViewHolder holder, int flatPosition, ExpandableGroup group) {
-
-        holder.setGroupName(group);
-
+    public int getItemCount() {
+        return topics.size();
     }
 
-    public class ParentViewHolder extends GroupViewHolder {
 
-        public TextView textView_parent;
-        public LinearLayout commentLayout;
 
-        public ParentViewHolder(View itemView) {
+    class TopicViewHolder extends RecyclerView.ViewHolder {
+
+        TextView massage;
+        LinearLayout commentLayout;
+
+        RecyclerView recyclerView;
+        CommentAdapter commentAdapter;
+        List<ChildData> comments;
+
+        public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView_parent = itemView.findViewById(R.id.tv_parent_item_topic_name);
+            massage = itemView.findViewById(R.id.tv_parent_item_topic_name);
+            recyclerView = itemView.findViewById(R.id.item_parent_recycler);
             commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
+            comments = new ArrayList<>();
+            commentAdapter = new CommentAdapter(context,comments);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(commentAdapter);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, massage.getText().toString() + " clicked", Toast.LENGTH_SHORT).show();
+
+                    if(commentAdapter.isOpen()){
+                        commentLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.GONE);
+                        commentAdapter.setOpen(false);
+                    }
+                    else {
+                        commentLayout.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+
+                        commentAdapter.setOpen(true);
+                    }
+                    commentAdapter.notifyDataSetChanged();
+
+                }
+            });
         }
 
-        @Override
-        public void expand() {
-            super.expand();
-            textView_parent.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_arrow_down,0);
-            commentLayout.setVisibility(View.GONE);
-        }
 
-        @Override
-        public void collapse() {
-            super.collapse();
-            textView_parent.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_arrow_up,0);
-            commentLayout.setVisibility(View.VISIBLE);
-
-        }
-
-        public void setGroupName(ExpandableGroup groupName){
-            textView_parent.setText(groupName.getTitle());
-        }
     }
-
-    public class ChildViewHolders extends ChildViewHolder {
-
-        public TextView textView_child;
-
-        public ChildViewHolders(View itemView) {
-            super(itemView);
-            textView_child = itemView.findViewById(R.id.tv_child_item_massage);
-        }
-
-        public void setChildText(String name){
-            textView_child.setText(name);
-        }
-    }
-
-
-
 }

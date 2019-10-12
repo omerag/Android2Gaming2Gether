@@ -1,26 +1,28 @@
 package hit.android2.Database;
 
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup;
 
 import java.util.List;
 
-public class ParentData extends ExpandableGroup<ChildData> {
+public class ParentData  {
 
-    private String name;
+    private String title;
     private String time;
     private String id;
     private String user_key;
 
+    public ParentData(){
+    }
+
     public ParentData(String title, List<ChildData> items){
-        super(title,items);
+
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTime() {
@@ -41,5 +43,9 @@ public class ParentData extends ExpandableGroup<ChildData> {
 
     public String getUser_key() {
         return user_key;
+    }
+
+    public void setUser_key(String user_key) {
+        this.user_key = user_key;
     }
 }

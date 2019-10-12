@@ -5,9 +5,9 @@ import java.util.List;
 
 public class GameData {
 
-    private String guid;
-    private String name;
-    private String imageUrl;
+    private String guid = null;
+    private String name = null;
+    private String imageUrl = null;
 
     private List<String> users = new ArrayList<>();
 
@@ -20,6 +20,10 @@ public class GameData {
         this.name = name;
         this.imageUrl = imageUrl;
 
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public String getGuid() {

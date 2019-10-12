@@ -1,22 +1,20 @@
 package hit.android2.Database;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
-public class ChildData implements Parcelable{
+public class ChildData{
 
     private String id;
     private String massage;
     private String time;
     private String user_key;
 
-    public ChildData(Parcel parcel){
-
-        massage = parcel.readString();
+    public ChildData() {
     }
 
-    public ChildData(String name) {
-        this.massage = name;
+    public ChildData(String user_key,String massage) {
+        this.user_key = user_key;
+        this.massage = massage;
+
     }
 
     public String getMassage() {
@@ -27,31 +25,6 @@ public class ChildData implements Parcelable{
         this.massage = massage;
     }
 
-    public static final Parcelable.Creator<ChildData> CREATOR = new Parcelable.Creator<ChildData>() {
-        @Override
-        public ChildData createFromParcel(Parcel in) {
-            return new ChildData(in);
-        }
-
-        @Override
-        public ChildData[] newArray(int size) {
-            return new ChildData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(massage);
-    }
-
-    public static Creator<ChildData> getCREATOR() {
-        return CREATOR;
-    }
 
     public String getTime() {
         return time;
