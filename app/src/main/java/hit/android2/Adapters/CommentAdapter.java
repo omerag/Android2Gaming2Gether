@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import hit.android2.Database.ChildData;
+import hit.android2.Database.DatabaseManager;
 import hit.android2.R;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
@@ -42,6 +44,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         }
 
         holder.massage.setText(comments.get(position).getMassage());
+        DatabaseManager.getUserFromDatabase(comments.get(position).getUser_key(),null,holder.userName,holder.userImage,context);
 
     }
 
@@ -61,12 +64,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     class CommentViewHolder extends RecyclerView.ViewHolder{
 
         TextView massage;
+        TextView userName;
+        ImageView userImage;
 
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            userName = itemView.findViewById(R.id.tv_child_item_user_name);
             massage = itemView.findViewById(R.id.tv_child_item_massage);
+            userImage = itemView.findViewById(R.id.tv_child_item_user_image);
+
         }
     }
 

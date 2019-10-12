@@ -59,6 +59,39 @@ public class DatabaseManager {
         });
     }
 
+
+    static public void loadGameIntoViews(final String gameGuid, final TextView gameName, final ImageView gameImage, final Context context) {
+        Log.d("DatabaseManager","loadGameIntoViews called");
+
+        FirebaseFirestore.getInstance().collection("games").document(gameGuid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","loadGameIntoViews onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    Log.d("DatabaseManager","loadGameIntoViews documentSnapshot is exists");
+
+                    GameData gameData = documentSnapshot.toObject(GameData.class);
+                    gameName.setText(gameData.getName());
+                    Glide.with(context).load(gameData.getImageUrl()).into(gameImage);
+
+                }
+
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
+    }
+
+
+
     static public void getHomeTopics(String userId, final List<ParentData> topics, final RecyclerView.Adapter adapter){
         Log.d("DatabaseManager","getUserGamesGUID called");
 
@@ -132,13 +165,17 @@ public class DatabaseManager {
                     Log.d("DatabaseManager","getUserFromDatabase documentSnapshot is exists");
 
                     UserData user = documentSnapshot.toObject(UserData.class);
-                    friend.setName(user.getName());
-                    friend.setImageUrl(user.getImageUrl());
-                    friend.setKey(user.getKey());
 
-                    friendName.setText(friend.getName());
+                    if(friend != null){
+                        friend.setName(user.getName());
+                        friend.setImageUrl(user.getImageUrl());
+                        friend.setKey(user.getKey());
+                    }
 
-                    Glide.with(context).load(friend.getImageUrl()).into(imageView);
+
+                    friendName.setText(user.getName());
+
+                    Glide.with(context).load(user.getImageUrl()).into(imageView);
 
                 }
 
@@ -303,7 +340,7 @@ public class DatabaseManager {
 
         CollectionReference topicsReff = FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics");
 
-        topicsReff.orderBy("time").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        topicsReff.orderBy("timestamp").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d("DatabaseManager","getTopicsByGame onSuccess called");
@@ -334,6 +371,33 @@ public class DatabaseManager {
 
         FirebaseFirestore.getInstance().collection("games")
                 .document(guid).collection("topics").add(topic);
+
+    }
+
+    static public void updateTopic(String guid, String topicID , final List<ChildData> comments){
+        Log.d("DatabaseManager","UpdateTopic called");
+
+        final DocumentReference topicReff = FirebaseFirestore.getInstance().collection("games")
+                .document(guid).collection("topics").document(topicID);
+
+        topicReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","UpdateTopic onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    topicReff.update("items",comments);
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager",e.getMessage());
+
+            }
+        });
+
 
     }
 

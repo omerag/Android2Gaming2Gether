@@ -17,6 +17,12 @@ public class ChildData{
 
     }
 
+    public ChildData(String massage, String time, String user_key) {
+        this.massage = massage;
+        this.time = time;
+        this.user_key = user_key;
+    }
+
     public String getMassage() {
         return massage;
     }

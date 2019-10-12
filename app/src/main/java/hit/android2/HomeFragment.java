@@ -67,25 +67,6 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    private List<ParentData> getList() {
-
-        List<ParentData> list_parent =new ArrayList<>();
-        List<ChildData> list_data_child = new ArrayList<>();
-
-        list_data_child.add(new ChildData("bob","First"));
-        list_data_child.add(new ChildData("bob","Second"));
-        list_data_child.add(new ChildData("bob","Third"));
-        list_data_child.add(new ChildData("bob","Four"));
-
-        list_parent.add(new ParentData("Parent 1",list_data_child));
-        list_parent.add(new ParentData("Parent 2",list_data_child));
-        list_parent.add(new ParentData("Parent 3",list_data_child));
-        list_parent.add(new ParentData("Parent 4",list_data_child));
-
-
-        return list_parent;
-    }
-
 
     private void showCreateTopicDialog() {
 
@@ -117,7 +98,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 List<ChildData> comments = new ArrayList<>();
                 comments.add(new ChildData(FirebaseAuth.getInstance().getCurrentUser().getUid(),massageEt.getText().toString()));
-                ParentData topic = new ParentData(topicEt.getText().toString(),comments);
+                ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
                 DatabaseManager.addTopicToDatabase(chosenGame.getGuid(),topic);
             }
         });
