@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,6 +105,16 @@ public class FriendsFragment extends Fragment {
                 userAdapter.notifyDataSetChanged();
                 DatabaseManager.searchPlayers(gameGUID[0],users,userAdapter);
 
+            }
+        });
+
+        userAdapter.setListener(new UserAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+
+                DatabaseManager.userAddFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(),users.get(position).getKey());
+                Toast.makeText(getActivity(), users.get(position).getName() + "was added to friends list", Toast.LENGTH_SHORT).show();
             }
         });
 
