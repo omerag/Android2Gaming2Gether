@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,14 @@ public class FriendsFragment extends Fragment {
         recyclerView.setAdapter(userAdapter);
         userAdapter.notifyDataSetChanged();
 
-
+        userAdapter.setListener(new UserAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                intent.putExtra("user_id", friendsList.get(position).getKey());
+                getActivity().startActivity(intent);
+            }
+        });
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
