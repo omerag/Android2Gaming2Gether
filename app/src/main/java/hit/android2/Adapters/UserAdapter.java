@@ -59,15 +59,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
 
         holder.textViewName.setText(userDataList.get(position).getName());
 
-/*        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, MessagingActivity.class);
-                intent.putExtra("user_id", userDataList.get(position).getKey());
-                context.startActivity(intent);
-            }
-        });*/
-
     }
 
     @Override
