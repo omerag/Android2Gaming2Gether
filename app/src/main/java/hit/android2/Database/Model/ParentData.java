@@ -1,4 +1,4 @@
-package hit.android2.Database;
+package hit.android2.Database.Model;
 
 
 import java.util.List;

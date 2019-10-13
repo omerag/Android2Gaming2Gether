@@ -23,11 +23,11 @@ import java.util.List;
 
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.TopicAdapter;
-import hit.android2.Database.ChildData;
+import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
-import hit.android2.Database.GameData;
-import hit.android2.Database.ParentData;
+import hit.android2.Database.Model.GameData;
+import hit.android2.Database.Model.ParentData;
 
 public class HomeFragment extends Fragment {
 
