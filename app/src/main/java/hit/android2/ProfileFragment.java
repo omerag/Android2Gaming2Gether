@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +31,9 @@ public class ProfileFragment extends Fragment {
 
     private FloatingActionButton floatingActionButton;
 
+    private TextView usernameTv;
+    private ImageView userIv;
+
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
@@ -42,6 +47,8 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
 
         floatingActionButton = rootView.findViewById(R.id.floating_action_btn);
+        usernameTv = rootView.findViewById(R.id.profile_fragment_user_name);
+        userIv = rootView.findViewById(R.id.user_profile_img);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
@@ -109,6 +116,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserGames(){
+        DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(),null, usernameTv, userIv,getActivity());
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
     }
 

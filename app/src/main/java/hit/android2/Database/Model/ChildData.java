@@ -3,7 +3,6 @@ package hit.android2.Database.Model;
 
 public class ChildData{
 
-    private String id;
     private String massage;
     private long timestamp;
     private String user_key;
@@ -31,13 +30,6 @@ public class ChildData{
         return timestamp;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getUser_key() {
         return user_key;
