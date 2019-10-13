@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.List;
 
@@ -340,6 +341,32 @@ public class DatabaseManager {
                 // adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    static public void getUsersFromList(List<String> userId, final List<UserData> users){
+        Log.d("DatabaseManager", "getUsersFromList called");
+
+        FirebaseFirestore.getInstance().collection("users").whereArrayContains("key",userId)
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d("DatabaseManager", "getUsersFromList onSuccess called");
+
+                for(QueryDocumentSnapshot userDocument : queryDocumentSnapshots){
+                    UserData user = userDocument.toObject(UserData.class);
+
+                    users.add(user);
+                }
+                
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
+
     }
 
     static public void getTopicsByGame(String guid, final List<ParentData> topics, final RecyclerView.Adapter adapter){
