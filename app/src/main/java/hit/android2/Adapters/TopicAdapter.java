@@ -1,5 +1,7 @@
 package hit.android2.Adapters;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,13 +115,60 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                     Toast.makeText(context, title.getText().toString() + " clicked", Toast.LENGTH_SHORT).show();
 
                     if(commentAdapter.isOpen()){
-                        commentLayout.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.GONE);
+
+                        recyclerView.animate()
+                                .alpha(0.0f)
+                                .setDuration(300)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        recyclerView.setVisibility(View.GONE);
+                                    }
+                                });
+
+                        commentLayout.animate()
+                                .alpha(0.0f)
+                                .setDuration(300)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        commentLayout.setVisibility(View.GONE);
+                                    }
+                                });
+
+
+                        // commentLayout.setVisibility(View.GONE);
+                       // recyclerView.setVisibility(View.GONE);
                         commentAdapter.setOpen(false);
                     }
                     else {
-                        commentLayout.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        recyclerView.animate()
+                                .alpha(1.0f)
+                                .setDuration(300)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        recyclerView.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+                        commentLayout.animate()
+                                .alpha(1.0f)
+                                .setDuration(300)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        commentLayout.setVisibility(View.VISIBLE);
+                                    }
+                                });
+
+
+                        //commentLayout.setVisibility(View.VISIBLE);
+                        //recyclerView.setVisibility(View.VISIBLE);
 
                         commentAdapter.setOpen(true);
                     }
