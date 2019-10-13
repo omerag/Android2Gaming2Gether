@@ -23,7 +23,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import hit.android2.Database.Model.ChildData;
+import hit.android2.Database.Model.GameData;
+import hit.android2.Database.Model.ParentData;
+import hit.android2.Database.Model.UserData;
 
 public class DatabaseManager {
 

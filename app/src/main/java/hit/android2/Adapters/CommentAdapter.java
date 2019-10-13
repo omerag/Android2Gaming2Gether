@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import hit.android2.Database.ChildData;
+import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.R;
 

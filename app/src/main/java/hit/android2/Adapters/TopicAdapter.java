@@ -17,12 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import hit.android2.Database.ChildData;
+import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.ParentData;
+import hit.android2.Database.Model.ParentData;
 import hit.android2.R;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {

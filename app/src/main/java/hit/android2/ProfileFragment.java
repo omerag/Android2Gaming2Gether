@@ -23,7 +23,7 @@ import java.util.List;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.Adapters.GameAdapter;
-import hit.android2.Database.GameData;
+import hit.android2.Database.Model.GameData;
 
 public class ProfileFragment extends Fragment {
 

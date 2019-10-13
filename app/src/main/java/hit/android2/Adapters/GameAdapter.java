@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.GameData;
+import hit.android2.Database.Model.GameData;
 import hit.android2.R;
 
 public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHolder> implements View.OnClickListener {
