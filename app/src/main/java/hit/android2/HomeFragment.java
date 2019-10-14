@@ -40,9 +40,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
 
-        FloatingActionButton addBtn = rootView.findViewById(R.id.home_fragment_add_btn);
 
-        recyclerView = rootView.findViewById(R.id.home_recycler);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        FloatingActionButton addBtn = getActivity().findViewById(R.id.home_fragment_add_btn);
+
+        recyclerView = getActivity().findViewById(R.id.home_recycler);
 
         List<ParentData> topics = new ArrayList<>(); //getList();
 
@@ -64,9 +72,7 @@ public class HomeFragment extends Fragment {
             DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(),topics,topicAdapter);
         }
 
-        return rootView;
     }
-
 
     private void showCreateTopicDialog() {
 

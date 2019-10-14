@@ -8,6 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -25,7 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    ViewPager pager;
+
+
     String userName;
+
+
     FirebaseManager fireBaseManager = new FirebaseManager();
 
     @Override
@@ -42,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
+        pager = findViewById(R.id.fragment_container);
+        PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
+        pager.setAdapter(pagerAdapter);
 
         NavigationViewListener navigationViewListener = new NavigationViewListener();
         navigationView.setNavigationItemSelectedListener(navigationViewListener);
@@ -54,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
         TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
         fireBaseManager.setReference(navigationView, userNameTv);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        //bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        pager.setCurrentItem(2);
 
     }
 
@@ -71,20 +84,24 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId())
             {
                 case R.id.nav_profile:
-                    selectedFragment = new ProfileFragment();
+                    //selectedFragment = new ProfileFragment();
+                    pager.setCurrentItem(3);
                     break;
                 case R.id.nav_messages:
-                    selectedFragment = new MessagesFragment();
+                    //selectedFragment = new MessagesFragment();
+                    pager.setCurrentItem(0);
                     break;
                 case R.id.nav_friends:
-                    selectedFragment = new FriendsFragment();
+                   // selectedFragment = new FriendsFragment();
+                    pager.setCurrentItem(1);
                     break;
                 case R.id.nav_home:
-                    selectedFragment = new HomeFragment();
+                    //selectedFragment = new HomeFragment();
+                    pager.setCurrentItem(2);
                     break;
             }
 
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+           //     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
             return true;
         }
@@ -179,6 +196,43 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         fireBaseManager.unRegisterAuthListener();
         // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
+    }
+
+    public static class PageAdapter extends FragmentPagerAdapter{
+
+        public PageAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return FragmentFactory.getFragment(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+
+
+    }
+
+    public static class FragmentFactory{
+
+        public static Fragment getFragment(int index){
+
+            switch (index){
+                case 0: return new MessagesFragment();
+                case 1: return new FriendsFragment();
+                case 2: return new HomeFragment();
+                case 3: return new ProfileFragment();
+
+            }
+            return null;
+        }
+
     }
 
 }

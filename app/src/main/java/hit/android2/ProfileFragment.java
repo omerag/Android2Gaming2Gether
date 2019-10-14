@@ -46,15 +46,22 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
 
-        floatingActionButton = rootView.findViewById(R.id.floating_action_btn);
-        usernameTv = rootView.findViewById(R.id.profile_fragment_user_name);
-        userIv = rootView.findViewById(R.id.user_profile_img);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        floatingActionButton = getView().findViewById(R.id.floating_action_btn);
+        usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
+        userIv = getView().findViewById(R.id.user_profile_img);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
 
 
-        RecyclerView recyclerView =rootView.findViewById(R.id.profile_fragment_recycler_games);
+        RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -64,9 +71,6 @@ public class ProfileFragment extends Fragment {
         gameAdapter.notifyDataSetChanged();
 
         loadUserGames();
-
-
-        return rootView;
     }
 
 
@@ -117,7 +121,7 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserGames(){
         DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(),null, usernameTv, userIv,getActivity());
-        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
+        if(gameDataList.size() < 1 )DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
     }
 
 }

@@ -40,8 +40,18 @@ public class FriendsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.friends_fragment,container,false);
 
 
-        recyclerView =rootView.findViewById(R.id.friends_fragment_recycler_users);
-        floatingActionButton = rootView.findViewById(R.id.friends_fragment_floating_action_btn);
+
+
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        recyclerView =getView().findViewById(R.id.friends_fragment_recycler_users);
+        floatingActionButton = getView().findViewById(R.id.friends_fragment_floating_action_btn);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -67,13 +77,10 @@ public class FriendsFragment extends Fragment {
 
 
         loadFriends();
-
-
-        return rootView;
     }
 
     private void loadFriends(){
-        DatabaseManager.getUserFriends(FirebaseAuth.getInstance().getCurrentUser().getUid(),friendsList,userAdapter);
+        if(friendsList.size() < 1 ) DatabaseManager.getUserFriends(FirebaseAuth.getInstance().getCurrentUser().getUid(),friendsList,userAdapter);
 
 
     }
