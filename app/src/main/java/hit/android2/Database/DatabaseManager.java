@@ -343,28 +343,35 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUsersFromList(List<String> userId, final List<UserData> users){
+    static public void getUsersFromList(List<String> usersList, final List<UserData> users){
         Log.d("DatabaseManager", "getUsersFromList called");
 
-        FirebaseFirestore.getInstance().collection("users").whereArrayContains("key",userId)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.d("DatabaseManager", "getUsersFromList onSuccess called");
+        for(String userId : usersList){
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("key",userId)
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    Log.d("DatabaseManager", "getUsersFromList onSuccess called");
 
-                for(QueryDocumentSnapshot userDocument : queryDocumentSnapshots){
-                    UserData user = userDocument.toObject(UserData.class);
+                    for(QueryDocumentSnapshot userDocument : queryDocumentSnapshots){
+                        UserData user = userDocument.toObject(UserData.class);
 
-                    users.add(user);
+                        Log.d("DatabaseManager", "name  = " + user.getName());
+
+
+
+                        users.add(user);
+                    }
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("DatabaseManager", e.getMessage());
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("DatabaseManager", e.getMessage());
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     static public void getTopicsByGame(String guid, final List<ParentData> topics, final RecyclerView.Adapter adapter){
