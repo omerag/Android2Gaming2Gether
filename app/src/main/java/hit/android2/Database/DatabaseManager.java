@@ -33,7 +33,6 @@ public class DatabaseManager {
 
 
 
-    //need to add adapter to notify after updates
     static public void getGameFromDatabase(final String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
         Log.d("DatabaseManager","getGameFromDatabase called");
 
@@ -64,7 +63,6 @@ public class DatabaseManager {
         });
     }
 
-
     static public void loadGameIntoViews(final String gameGuid, final TextView gameName, final ImageView gameImage, final Context context) {
         Log.d("DatabaseManager","loadGameIntoViews called");
 
@@ -94,8 +92,6 @@ public class DatabaseManager {
             }
         });
     }
-
-
 
     static public void getHomeTopics(String userId, final List<ParentData> topics, final RecyclerView.Adapter adapter){
         Log.d("DatabaseManager","getUserGamesGUID called");
@@ -226,10 +222,6 @@ public class DatabaseManager {
         FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user);
     }
 
-
-    //need to add adapter to notify after updates
-    //search for users by game guid
-    //fill the list players with user
     static public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
@@ -274,7 +266,7 @@ public class DatabaseManager {
         });
     }
 
-   static public void userAddGame(String userId, final String game){
+    static public void userAddGame(String userId, final String game){
 
         final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -403,7 +395,6 @@ public class DatabaseManager {
         });
 
     }
-
 
     static public void addTopicToDatabase(String guid, ParentData topic){
         Log.d("DatabaseManager","addTopicToDatabase called");
