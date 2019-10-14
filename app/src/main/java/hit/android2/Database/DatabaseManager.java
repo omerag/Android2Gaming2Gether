@@ -31,6 +31,10 @@ import hit.android2.Database.Model.UserData;
 
 public class DatabaseManager {
 
+    public interface Listener{
+        void onSuccess(Object object);
+    }
+
 
 
     static public void getGameFromDatabase(final String gameGuid, final List<GameData> gameDataList, final RecyclerView.Adapter adapter) {
@@ -191,6 +195,44 @@ public class DatabaseManager {
         });
     }
 
+    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final ImageView imageView, final Context context, final Listener listener){
+        Log.d("DatabaseManager","getUserFromDatabase called");
+
+        FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserFromDatabase onSuccess called");
+
+                if(documentSnapshot.exists()){
+                    Log.d("DatabaseManager","getUserFromDatabase documentSnapshot is exists");
+
+                    UserData user = documentSnapshot.toObject(UserData.class);
+
+                    if(friend != null){
+                        friend.setName(user.getName());
+                        friend.setImageUrl(user.getImageUrl());
+                        friend.setKey(user.getKey());
+                    }
+
+
+                    friendName.setText(user.getName());
+
+                    Glide.with(context).load(user.getImageUrl()).into(imageView);
+                    listener.onSuccess(user);
+
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
+    }
+
     static public void addGameToDatabase(final GameData game) {
         Log.d("DatabaseManager","addGameToDatabase called");
 
@@ -310,6 +352,29 @@ public class DatabaseManager {
                 }
 
                // adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    static public void getUserGames(String userId, final List<GameData> games, final RecyclerView.Adapter adapter, final Listener listener){
+
+        Log.d("DatabaseManager","getUserGames called");
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager","getUserGames OnSuccess called");
+
+                UserData user = documentSnapshot.toObject(UserData.class);
+                List<String> gameKeys = user.getGames();
+
+                for(String gameKey : gameKeys){
+                    getGameFromDatabase(gameKey,games,adapter);
+                }
+                listener.onSuccess(null);
+
+                // adapter.notifyDataSetChanged();
             }
         });
     }

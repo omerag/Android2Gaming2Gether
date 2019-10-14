@@ -133,4 +133,11 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
         }
     }
 
+    public List<GameData> getGameDataList() {
+        return gameDataList;
+    }
+
+    public void setGameDataList(List<GameData> gameDataList) {
+        this.gameDataList = gameDataList;
+    }
 }

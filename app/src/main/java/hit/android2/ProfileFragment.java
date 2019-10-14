@@ -2,6 +2,7 @@ package hit.android2;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.Model.UserData;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Model.GameData;
@@ -38,6 +42,8 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
 
+    private ProfileFragmentLiveData liveData;
+
     private boolean isLogIn = false;
 
 
@@ -52,6 +58,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        liveData = ViewModelProviders.of(this).get(ProfileFragmentLiveData.class);
 
         floatingActionButton = getView().findViewById(R.id.floating_action_btn);
         usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
@@ -120,8 +128,38 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadUserGames(){
-        DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(),null, usernameTv, userIv,getActivity());
-        if(gameDataList.size() < 1 )DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
+
+        if(liveData.getUserIv() == null || liveData.getUsernameTv() == null){
+            final UserData user = new UserData();
+            DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess(Object object) {
+
+                    liveData.setUsernameTv(user.getName());
+                    liveData.setUserIv(user.getImageUrl());
+
+                }
+            });
+        }
+        else {
+            usernameTv.setText(liveData.getUsernameTv());
+            Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
+        }
+        if(liveData.getGameDataList() == null ){
+            DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess(Object object) {
+                    liveData.setGameDataList(gameDataList);
+
+                    Log.d("ProfileFragment","Loading List from server");
+                }
+            });
+        }
+        else {
+            gameDataList = liveData.getGameDataList();
+            gameAdapter.setGameDataList(gameDataList);
+            gameAdapter.notifyDataSetChanged();
+        }
     }
 
 }
