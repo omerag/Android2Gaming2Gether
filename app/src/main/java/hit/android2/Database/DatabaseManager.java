@@ -357,7 +357,6 @@ public class DatabaseManager {
 
                     users.add(user);
                 }
-                
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -366,7 +365,6 @@ public class DatabaseManager {
 
             }
         });
-
     }
 
     static public void getTopicsByGame(String guid, final List<ParentData> topics, final RecyclerView.Adapter adapter){

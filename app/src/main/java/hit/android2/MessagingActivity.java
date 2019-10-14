@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,8 +76,8 @@ public class MessagingActivity extends AppCompatActivity {
         userId = getIntent().getStringExtra("user_id");
 
         fuser = firebaseManager.getFireBaseAuth().getCurrentUser();
+        readMessages(fuser.getUid(), userId);
         getUserFromDatabase(userId, userData, user_name, profile_img,MessagingActivity.this);
-        readMessages(fuser.getUid(), userId, userData.getImageUrl());
 
         SendBtnListener sendBtnListener = new SendBtnListener();
         send_btn.setOnClickListener(sendBtnListener);
@@ -103,7 +104,7 @@ public class MessagingActivity extends AppCompatActivity {
         }
     }
 
-    private void readMessages(final String myId, final String friendId, final String imageUrl){
+    private void readMessages(final String myId, final String friendId){
 
         mChat = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference("Chats");
@@ -125,7 +126,6 @@ public class MessagingActivity extends AppCompatActivity {
 
                     messageAdapter = new MessageAdapter(MessagingActivity.this, mChat);
                     recyclerView.setAdapter(messageAdapter);
-
                 }
             }
 

@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.Adapters.UserAdapter;
+import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chat;
@@ -69,6 +71,7 @@ public class MessagesFragment extends Fragment {
                     }
                 }
 
+
                 readChats();
             }
 
@@ -84,9 +87,11 @@ public class MessagesFragment extends Fragment {
     private void readChats()
     {
         mUsers = new ArrayList<>();
-        mUsers.clear();
 
+        DatabaseManager.getUsersFromList(usersList,mUsers);
 
+        userAdapter = new UserAdapter(getContext(), mUsers);
+        recyclerView.setAdapter(userAdapter);
     }
 
 }
