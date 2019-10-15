@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.Adapters.GameAdapter;
@@ -77,8 +78,9 @@ public class ProfileFragment extends Fragment {
 
         recyclerView.setAdapter(gameAdapter);
         gameAdapter.notifyDataSetChanged();
-
-        loadUserGames();
+        if(FirebaseManager.isLoged()){
+            loadUserGames();
+        }
     }
 
 
