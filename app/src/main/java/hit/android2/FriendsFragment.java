@@ -23,6 +23,7 @@ import java.util.List;
 
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Adapters.UserAdapter;
@@ -75,8 +76,9 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-
-        loadFriends();
+        if(FirebaseManager.isLoged()){
+            loadFriends();
+        }
     }
 
     private void loadFriends(){
