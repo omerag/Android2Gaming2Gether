@@ -97,7 +97,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void getHomeTopics(String userId, final List<ParentData> topics, final RecyclerView.Adapter adapter){
+    static public void getHomeTopics(String userId, final List<ParentData> topics, final Listener listener){
         Log.d("DatabaseManager","getUserGamesGUID called");
 
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
@@ -111,13 +111,12 @@ public class DatabaseManager {
                     List<String> games = user.getGames();
 
                     for(String game : games){
-                        DatabaseManager.getTopicsByGame(game,topics,adapter);
+                        DatabaseManager.getTopicsByGame(game,topics,listener);
                     }
 
 
                     //games.addAll(user.getGames());
                 }
-
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -130,7 +129,7 @@ public class DatabaseManager {
 
     }
 
-    static public void getUserFromDatabase(String userId, final List<UserData> users, final RecyclerView.Adapter adapter){
+    static public void getUserFromDatabase(String userId, final List<UserData> users, final Listener listener){
         Log.d("DatabaseManager","getUserFromDatabase called");
 
         FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -144,8 +143,9 @@ public class DatabaseManager {
 
                     UserData user = documentSnapshot.toObject(UserData.class);
                     users.add(user);
-                    adapter.notifyItemInserted(users.size()-1);
                 }
+
+                listener.onSuccess();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -379,7 +379,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUserFriends(final String userId, final List<UserData> users, final RecyclerView.Adapter adapter){
+    static public void getUserFriends(final String userId, final List<UserData> users, final Listener listener){
         Log.d("DatabaseManager","getUserFriends called");
 
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
@@ -392,7 +392,7 @@ public class DatabaseManager {
                 List<String> freinds = user.getFriends();
 
                 for(String friend : freinds){
-                    getUserFromDatabase(friend,users,adapter);
+                    getUserFromDatabase(friend,users,listener);
                 }
 
                 // adapter.notifyDataSetChanged();
@@ -433,7 +433,7 @@ public class DatabaseManager {
 
     }
 
-    static public void getTopicsByGame(String guid, final List<ParentData> topics, final RecyclerView.Adapter adapter){
+    static public void getTopicsByGame(String guid, final List<ParentData> topics, final Listener listener){
         Log.d("DatabaseManager","getTopicsByGame called");
 
         CollectionReference topicsReff = FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics");
@@ -452,7 +452,7 @@ public class DatabaseManager {
                     topics.add(topic);
                 }
 
-                adapter.notifyDataSetChanged();
+                listener.onSuccess();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -41,6 +41,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
 
     }
 
+    public List<UserData> getUserDataList() {
+        return userDataList;
+    }
+
+    public void setUserDataList(List<UserData> userDataList) {
+        this.userDataList = userDataList;
+    }
+
     @NonNull
     @Override
     public UserDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
