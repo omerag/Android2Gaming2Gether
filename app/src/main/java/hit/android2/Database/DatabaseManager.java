@@ -32,7 +32,7 @@ import hit.android2.Database.Model.UserData;
 public class DatabaseManager {
 
     public interface Listener{
-        void onSuccess(Object object);
+        void onSuccess();
     }
 
 
@@ -218,7 +218,7 @@ public class DatabaseManager {
                     friendName.setText(user.getName());
 
                     Glide.with(context).load(user.getImageUrl()).into(imageView);
-                    listener.onSuccess(user);
+                    listener.onSuccess();
 
                 }
 
@@ -372,7 +372,7 @@ public class DatabaseManager {
                 for(String gameKey : gameKeys){
                     getGameFromDatabase(gameKey,games,adapter);
                 }
-                listener.onSuccess(null);
+                listener.onSuccess();
 
                 // adapter.notifyDataSetChanged();
             }
@@ -400,7 +400,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUsersFromList(List<String> usersList, final List<UserData> users){
+    static public void getUsersFromList(List<String> usersList, final List<UserData> users, final Listener listener){
         Log.d("DatabaseManager", "getUsersFromList called");
 
         for(String userId : usersList){
@@ -419,6 +419,8 @@ public class DatabaseManager {
 
                         users.add(user);
                     }
+
+                    listener.onSuccess();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

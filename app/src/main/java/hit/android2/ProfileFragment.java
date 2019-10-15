@@ -135,7 +135,7 @@ public class ProfileFragment extends Fragment {
             final UserData user = new UserData();
             DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.Listener() {
                 @Override
-                public void onSuccess(Object object) {
+                public void onSuccess() {
 
                     liveData.setUsernameTv(user.getName());
                     liveData.setUserIv(user.getImageUrl());
@@ -150,7 +150,7 @@ public class ProfileFragment extends Fragment {
         if(liveData.getGameDataList() == null ){
             DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
                 @Override
-                public void onSuccess(Object object) {
+                public void onSuccess() {
                     liveData.setGameDataList(gameDataList);
 
                     Log.d("ProfileFragment","Loading List from server");
