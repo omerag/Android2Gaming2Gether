@@ -68,11 +68,26 @@ public class MessagesFragment extends Fragment {
 
                     if (chat.getSender().equals(fuser.getUid()))
                     {
-                        usersList.add(chat.getReceiver());
+                        if (usersList.size() == 0)
+                        {
+                            usersList.add(chat.getReceiver());
+                        }
+                        else if (!userExist(chat.getReceiver()))
+                        {
+                            usersList.add(chat.getReceiver());
+                        }
                     }
-                    if (chat.getReceiver().equals(fuser.getUid()))
+
+                    if (usersList.size() == 0)
                     {
                         usersList.add(chat.getSender());
+                    }
+                    else if (chat.getReceiver().equals(fuser.getUid()))
+                    {
+                        if (!userExist(chat.getSender()))
+                        {
+                            usersList.add(chat.getSender());
+                        }
                     }
                 }
 
@@ -108,5 +123,19 @@ public class MessagesFragment extends Fragment {
             }
         });
     }
+
+    private boolean userExist(String id)
+    {
+        for (int i = 0; i < usersList.size(); i++)
+        {
+            if (usersList.get(i).equals(id))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }
