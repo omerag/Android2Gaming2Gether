@@ -49,6 +49,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     }
 
+    public List<ParentData> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<ParentData> topics) {
+        this.topics = topics;
+    }
+
     @NonNull
     @Override
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

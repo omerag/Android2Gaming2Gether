@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +36,8 @@ public class FriendsFragment extends Fragment {
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
 
+    private FriendsFragmentLiveData liveData;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +52,8 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        liveData = ViewModelProviders.of(this).get(FriendsFragmentLiveData.class);
 
 
         recyclerView =getView().findViewById(R.id.friends_fragment_recycler_users);
@@ -82,7 +87,20 @@ public class FriendsFragment extends Fragment {
     }
 
     private void loadFriends(){
-        if(friendsList.size() < 1 ) DatabaseManager.getUserFriends(FirebaseAuth.getInstance().getCurrentUser().getUid(),friendsList,userAdapter);
+        if(liveData.friendsList == null ){
+            DatabaseManager.getUserFriends(FirebaseAuth.getInstance().getCurrentUser().getUid(), friendsList, new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess() {
+                    liveData.setFriendsList(friendsList);
+                    userAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        else {
+            friendsList = liveData.getFriendsList();
+            userAdapter.setUserDataList(friendsList);
+            userAdapter.notifyDataSetChanged();
+        }
 
 
     }

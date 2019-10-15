@@ -2,6 +2,7 @@ package hit.android2;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,9 @@ import hit.android2.Database.Model.ParentData;
 
 public class HomeFragment extends Fragment {
 
+    List<ParentData> topics;
+    HomeFragmentLiveData liveData;
+
     RecyclerView recyclerView;
     private GameData chosenGame = new GameData();
 
@@ -48,15 +53,17 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        liveData = ViewModelProviders.of(this).get(HomeFragmentLiveData.class);
+
         FloatingActionButton addBtn = getActivity().findViewById(R.id.home_fragment_add_btn);
 
         recyclerView = getActivity().findViewById(R.id.home_recycler);
 
-        List<ParentData> topics = new ArrayList<>(); //getList();
+        topics = new ArrayList<>(); //getList();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        TopicAdapter topicAdapter = new TopicAdapter(getActivity(),topics);
+        final TopicAdapter topicAdapter = new TopicAdapter(getActivity(),topics);
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
@@ -69,7 +76,22 @@ public class HomeFragment extends Fragment {
         });
 
         if(FirebaseManager.isLoged()){
-            DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(),topics,topicAdapter);
+            if(liveData.getTopics() == null){
+                DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(), topics, new DatabaseManager.Listener() {
+                    @Override
+                    public void onSuccess() {
+                        liveData.setTopics(topics);
+                        topicAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                Log.d("HomeFragment", "livedata set list");
+            }
+            else {
+                topics = liveData.getTopics();
+                topicAdapter.setTopics(topics);
+                topicAdapter.notifyDataSetChanged();
+            }
         }
 
     }
