@@ -1,5 +1,6 @@
 package hit.android2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +83,15 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+
+        userAdapter.setListener(new UserAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                intent.putExtra("user_id", mUsers.get(position).getKey());
+                getActivity().startActivity(intent);
             }
         });
 
