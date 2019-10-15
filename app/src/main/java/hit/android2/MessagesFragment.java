@@ -48,6 +48,10 @@ public class MessagesFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mUsers = new ArrayList<>();
+        userAdapter = new UserAdapter(getContext(), mUsers);
+        recyclerView.setAdapter(userAdapter);
+
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
         usersList = new ArrayList<>();
@@ -71,8 +75,8 @@ public class MessagesFragment extends Fragment {
                     }
                 }
 
-
                 readChats();
+
             }
 
             @Override
@@ -86,12 +90,13 @@ public class MessagesFragment extends Fragment {
 
     private void readChats()
     {
-        mUsers = new ArrayList<>();
-
-        DatabaseManager.getUsersFromList(usersList,mUsers);
-
-        userAdapter = new UserAdapter(getContext(), mUsers);
-        recyclerView.setAdapter(userAdapter);
+        mUsers.clear();
+        DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
+            @Override
+            public void onSuccess() {
+                userAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }

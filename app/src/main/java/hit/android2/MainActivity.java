@@ -67,8 +67,8 @@ public class MainActivity extends AppCompatActivity {
         fireBaseManager.setReference(navigationView, userNameTv);
 
         //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
-        //bottomNavigationView.setSelectedItemId(R.id.nav_home);
         pager.setCurrentItem(2);
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
     }
 
