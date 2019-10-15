@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,8 @@ public class MessagesFragment extends Fragment {
     private List<UserData> mUsers;
     private List<String> usersList;
 
+    MassagesFragmentLiveData liveData;
+
     FirebaseUser fuser;
     FirebaseManager manager = new FirebaseManager();
     DatabaseReference reference;
@@ -44,6 +47,9 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.messages_fragment, container, false);
+
+        liveData = ViewModelProviders.of(this).get(MassagesFragmentLiveData.class);
+
 
         recyclerView = rootView.findViewById(R.id.messages_fragment_recycler);
         recyclerView.setHasFixedSize(true);
@@ -115,13 +121,23 @@ public class MessagesFragment extends Fragment {
 
     private void readChats()
     {
-        mUsers.clear();
-        DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
-            @Override
-            public void onSuccess() {
-                userAdapter.notifyDataSetChanged();
-            }
-        });
+
+        if(liveData.getmUsers() == null){
+            mUsers.clear();
+            DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess() {
+                    liveData.setmUsers(mUsers);
+                    userAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+        else {
+            mUsers = liveData.getmUsers();
+            userAdapter.setUserDataList(mUsers);
+            userAdapter.notifyDataSetChanged();
+        }
+
     }
 
     private boolean userExist(String id)
