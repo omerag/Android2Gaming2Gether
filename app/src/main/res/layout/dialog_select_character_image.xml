@@ -2,13 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="350dp"
+    android:layout_width="330dp"
     android:layout_height="350dp"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:gravity="center"
+    android:padding="5dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dialog_character_select_recycler_view"
-        android:layout_width="350dp"
-        android:layout_height="350dp"/>
+        android:layout_width="320dp"
+        android:layout_height="350dp" />
 
 </LinearLayout>
