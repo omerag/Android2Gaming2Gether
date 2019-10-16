@@ -31,6 +31,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.io.IOException;
 import java.security.Permission;
@@ -43,6 +49,7 @@ import hit.android2.Adapters.CharacterSelectAdapter;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Database.StorageManager;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Model.GameData;
@@ -59,7 +66,10 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private GameAdapter gameAdapter;
 
+
+    private ListenerRegistration listenerRegistration;
     private ProfileFragmentLiveData liveData;
+    private DocumentReference userReff;
 
     private boolean isLogIn = false;
 
@@ -107,8 +117,51 @@ public class ProfileFragment extends Fragment {
         if(FirebaseManager.isLoged()){
             loadUserGames();
         }
+
+
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if( e != null){
+
+                    Log.d("DatabaseManager",e.getMessage());
+                    return;
+                }
+                UserData user = documentSnapshot.toObject(UserData.class);
+
+               // listener.onSuccess(user);
+                usernameTv.setText(user.getName());
+                liveData.setUsernameTv(user.getName());
+                Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
+                liveData.setUserIv(user.getImageUrl());
+/*
+                DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d("ProfilFragment","userReff EventListener on Success 2");
+
+                        liveData.setGameDataList(gameDataList);
+                    }
+                });*/
+
+            }//
+        });
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        listenerRegistration.remove();
+
+    }
 
     class FloatingBtnListener implements View.OnClickListener {
         @Override
@@ -137,23 +190,37 @@ public class ProfileFragment extends Fragment {
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                final List<GameData> gameDataList = new ArrayList<>();
-                gameAdapter = new GameAdapter(getContext(), gameDataList);
-                gameAdapter.setListener(new GameAdapter.AdapterListener() {
+                final List<GameData> gameSearchList = new ArrayList<>();
+                final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
+                gameSearchAdapter.setListener(new GameAdapter.AdapterListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList.get(position).getGuid());
-                        DatabaseManager.addGameToDatabase(gameDataList.get(position));
+                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
+                                new DatabaseManager.Listener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                liveData.setGameDataList(gameDataList);
+
+                                                Log.d("ProfileFragment","Loading List from server");
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                    }
+                                });
+                        DatabaseManager.addGameToDatabase(gameSearchList.get(position));
                     }
                 });
 
-                recyclerView.setAdapter(gameAdapter);
+                recyclerView.setAdapter(gameSearchAdapter);
                 recyclerView.setHasFixedSize(true);
-                gameAdapter.notifyDataSetChanged();
+                gameSearchAdapter.notifyDataSetChanged();
 
                 DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
 
-                loader.searchGameRequest(searchText.getText().toString(),gameDataList,gameAdapter);
+                loader.searchGameRequest(searchText.getText().toString(),gameSearchList,gameSearchAdapter);
 
                 //searchBtn.setVisibility(View.GONE);
             }
@@ -298,6 +365,7 @@ public class ProfileFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap image_bitmap = (Bitmap) extras.get("data");
                 userIv.setImageBitmap(image_bitmap);
+                StorageManager.uploadImageFromImageview(userIv);
             }
         }
 
@@ -312,6 +380,7 @@ public class ProfileFragment extends Fragment {
                     double height = bitmap.getHeight() * 0.5;
                     Bitmap resize = Bitmap.createScaledBitmap(bitmap,(int)width,(int)height,true);
                     userIv.setImageBitmap(resize);
+                    StorageManager.uploadImageFromImageview(userIv);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

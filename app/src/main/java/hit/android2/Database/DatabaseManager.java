@@ -1,11 +1,13 @@
 package hit.android2.Database;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -15,8 +17,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -28,12 +33,35 @@ import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
+import hit.android2.MainActivity;
 import hit.android2.Model.Chatlist;
 
 public class DatabaseManager {
 
     public interface Listener{
         void onSuccess();
+    }
+
+    public interface UserDataListener{
+        void onSuccess(UserData user);
+
+    }
+
+    static public void getDocumentEventListener(DocumentReference userReff, final UserDataListener listener){
+
+        ListenerRegistration listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if( e != null){
+
+                    Log.d("DatabaseManager",e.getMessage());
+                    return;
+                }
+                UserData user = documentSnapshot.toObject(UserData.class);
+
+                listener.onSuccess(user);
+            }
+        });
     }
 
 
@@ -53,6 +81,8 @@ public class DatabaseManager {
                     GameData gameData = documentSnapshot.toObject(GameData.class);
                     gameDataList.add(gameData);
                     adapter.notifyDataSetChanged();
+
+                    System.out.println("games.size() = " + gameDataList.size());
                 }
 
 
@@ -309,7 +339,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void userAddGame(String userId, final String game){
+    static public void userAddGame(String userId, final String game, final Listener listener){
 
         final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -323,8 +353,13 @@ public class DatabaseManager {
                 List<String> games = user.getGames();
                 games.add(game);*/
 
-                userRef.update("games",FieldValue.arrayUnion("games",game));
-
+                userRef.update("games",FieldValue.arrayUnion("games",game))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                listener.onSuccess();
+                            }
+                        });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -370,6 +405,8 @@ public class DatabaseManager {
                 UserData user = documentSnapshot.toObject(UserData.class);
                 List<String> gameKeys = user.getGames();
 
+                games.clear();
+                adapter.notifyDataSetChanged();
                 for(String gameKey : gameKeys){
                     getGameFromDatabase(gameKey,games,adapter);
                 }

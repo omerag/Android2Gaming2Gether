@@ -4,18 +4,21 @@ import android.util.Log;
 
 import androidx.lifecycle.ViewModel;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.List;
 
 import hit.android2.Database.Model.GameData;
 
 public class ProfileFragmentLiveData extends ViewModel {
 
-    String usernameTv;
-    String userIv;
-    List<GameData> gameDataList;
+    private String usernameTv;
+    private String userIv;
+    private List<GameData> gameDataList;
 
     public ProfileFragmentLiveData() {
         Log.d("LiveData","ProfileFragmentLiveData constructor called");
+
     }
 
     public String getUsernameTv() {
