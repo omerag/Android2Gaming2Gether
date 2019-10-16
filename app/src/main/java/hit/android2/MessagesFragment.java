@@ -84,50 +84,6 @@ public class MessagesFragment extends Fragment {
 
             }
         });
-/*        reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usersList.clear();
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                {
-                    Chat chat = snapshot.getValue(Chat.class);
-
-                    if (chat.getSender().equals(fuser.getUid()))
-                    {
-                        if (usersList.size() == 0)
-                        {
-                            usersList.add(chat.getReceiver());
-                        }
-                        else if (!userExist(chat.getReceiver()))
-                        {
-                            usersList.add(chat.getReceiver());
-                        }
-                    }
-
-                    if (usersList.size() == 0)
-                    {
-                        usersList.add(chat.getSender());
-                    }
-                    else if (chat.getReceiver().equals(fuser.getUid()))
-                    {
-                        if (!userExist(chat.getSender()))
-                        {
-                            usersList.add(chat.getSender());
-                        }
-                    }
-                }
-
-                readChats();
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 
         userAdapter.setListener(new UserAdapter.AdapterListener() {
             @Override
