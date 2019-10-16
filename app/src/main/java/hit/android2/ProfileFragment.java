@@ -1,14 +1,18 @@
 package hit.android2;
 
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,6 +42,7 @@ public class ProfileFragment extends Fragment {
 
     private TextView usernameTv;
     private ImageView userIv;
+    private ImageButton pic_edit_btn;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -65,9 +70,13 @@ public class ProfileFragment extends Fragment {
         floatingActionButton = getView().findViewById(R.id.floating_action_btn);
         usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
         userIv = getView().findViewById(R.id.user_profile_img);
+        pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
+
+        ProfileImageEditListener profileImageEditListener = new ProfileImageEditListener();
+        pic_edit_btn.setOnClickListener(profileImageEditListener);
 
 
         RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
@@ -163,5 +172,35 @@ public class ProfileFragment extends Fragment {
             gameAdapter.notifyDataSetChanged();
         }
     }
+
+    class ProfileImageEditListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View view) {
+
+            PopupMenu popupMenu = new PopupMenu(getContext(),pic_edit_btn);
+            popupMenu.getMenuInflater().inflate(R.menu.poupup_menu,popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+
+                    switch (menuItem.getItemId())
+                    {
+                        case R.id.menu_item_camera:
+                            break;
+                        case R.id.menu_item_gallery:
+                            break;
+                        case R.id.menu_item_figures:
+                            break;
+                    }
+                    return true;
+                }
+            });
+
+            popupMenu.show();
+        }
+    }
+
 
 }

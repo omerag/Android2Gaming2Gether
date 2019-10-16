@@ -17,4 +17,7 @@
     <string name="text_send">הקלד הודעה</string>
     <string name="my_games">המשחקים שלי :</string>
     <string name="about_me">קצת עלי :</string>
+    <string name="popup_menu_camera">מצלמה</string>
+    <string name="popup_menu_gallery">גלריה</string>
+    <string name="popup_menu_figures">דמויות</string>
 </resources>
