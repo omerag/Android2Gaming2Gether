@@ -45,7 +45,7 @@ public class DataLoader {
 
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(createStringForRequest(gameName), new Response.Listener<String>() {
+        StringRequest request = new StringRequest(createStringForSearchRequest(gameName), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -83,13 +83,33 @@ public class DataLoader {
 
     }
 
-    private String createStringForRequest(String gameName){
+    private String createStringForSearchRequest(String gameName){
 
-        System.out.println("createStringForRequest called");
+        System.out.println("createStringForSearchRequest called");
 
         String baseUrl = "https://www.giantbomb.com/api/search";
 
         return baseUrl + "?api_key=" + API_KEY + "&format=json&query=" + gameName + "&resources=game";
+
+    }
+
+    private String createStringForGameRequest(String gameGuid){
+
+        System.out.println("createStringForGameRequest called");
+
+        String baseUrl = "https://www.giantbomb.com/api/game/";
+
+        return baseUrl + gameGuid + "/?api_key=" + API_KEY + "&format=json&";
+
+    }
+
+    private String createStringForCharacterRequest(String characterGuid){
+
+        System.out.println("createStringForCharacterRequest called");
+
+        String baseUrl = "https://www.giantbomb.com/api/character/";
+
+        return baseUrl + characterGuid + "/?api_key=" + API_KEY + "&format=json&";
 
     }
 
