@@ -23,19 +23,21 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hit.android2.Database.FirebaseManager;
 
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    BottomNavigationView bottomNavigationView;
     ViewPager pager;
-
-
     String userName;
-
-
     FirebaseManager fireBaseManager = new FirebaseManager();
+
+    private MenuItem prevMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
         PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
         pager.setAdapter(pagerAdapter);
 
+        PageViewChangeListener pageViewChangeListener = new PageViewChangeListener();
+        pager.addOnPageChangeListener(pageViewChangeListener);
+
+
         NavigationViewListener navigationViewListener = new NavigationViewListener();
         navigationView.setNavigationItemSelectedListener(navigationViewListener);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
         bottomNavBarListener bottomNavBarListener = new bottomNavBarListener();
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavBarListener);
 
@@ -233,6 +239,30 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+    }
+
+    class PageViewChangeListener implements ViewPager.OnPageChangeListener
+    {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (prevMenuItem != null)
+                prevMenuItem.setChecked(false);
+            else
+                bottomNavigationView.getMenu().getItem(0).setChecked(false);
+
+            bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            prevMenuItem = bottomNavigationView.getMenu().getItem(position);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 
 }
