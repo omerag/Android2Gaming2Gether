@@ -1,8 +1,13 @@
 package hit.android2;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,8 +32,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.IOException;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.Result;
 
 import hit.android2.Adapters.CharacterSelectAdapter;
 import hit.android2.Database.DatabaseManager;
@@ -55,6 +64,9 @@ public class ProfileFragment extends Fragment {
     private boolean isLogIn = false;
 
     private boolean isGameRecycleOnScreen = true;
+
+    private int CAMERA_CODE = 0;
+    private int GALLERY_CODE = 1;
 
 
 
@@ -200,8 +212,12 @@ public class ProfileFragment extends Fragment {
                     switch (menuItem.getItemId())
                     {
                         case R.id.menu_item_camera:
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_CODE);
                             break;
                         case R.id.menu_item_gallery:
+                            Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pickPhoto, GALLERY_CODE);
                             break;
                         case R.id.menu_item_figures:
                             createCharacterImageSelectDialog();
@@ -266,5 +282,40 @@ public class ProfileFragment extends Fragment {
         recyclerView.setAdapter(gameAdapter);
         gameAdapter.notifyDataSetChanged();
         dialog.show();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                Bundle extras = data.getExtras();
+                Bitmap image_bitmap = (Bitmap) extras.get("data");
+                userIv.setImageBitmap(image_bitmap);
+            }
+        }
+
+        if (requestCode == GALLERY_CODE)
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                Uri selectedImage = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
+                    double width = bitmap.getWidth() * 0.5;
+                    double height = bitmap.getHeight() * 0.5;
+                    Bitmap resize = Bitmap.createScaledBitmap(bitmap,(int)width,(int)height,true);
+                    userIv.setImageBitmap(resize);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
     }
 }
