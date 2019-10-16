@@ -28,6 +28,7 @@ import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Model.Chatlist;
 
 public class DatabaseManager {
 
@@ -400,11 +401,11 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUsersFromList(List<String> usersList, final List<UserData> users, final Listener listener){
+    static public void getUsersFromList(List<Chatlist> chats, final List<UserData> users, final Listener listener){
         Log.d("DatabaseManager", "getUsersFromList called");
 
-        for(String userId : usersList){
-            FirebaseFirestore.getInstance().collection("users").whereEqualTo("key",userId)
+        for(int i = 0; i < chats.size(); i++){
+            FirebaseFirestore.getInstance().collection("users").whereEqualTo("key",chats.get(i).getId())
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
