@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,8 +112,19 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<GameData> gameDataList = new ArrayList<>();
-        GameAdapter gameAdapter = new GameAdapter(getContext(), gameDataList,"home", chosenGame);
+        final List<GameData> gameDataList = new ArrayList<>();
+        GameAdapter gameAdapter = new GameAdapter(getContext(), gameDataList, chosenGame);
+        gameAdapter.setListener(new GameAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                GameData tempGame = gameDataList.get(position);
+                chosenGame.setName(tempGame.getName());
+                chosenGame.setImageUrl(tempGame.getImageUrl());
+                chosenGame.setGuid(tempGame.getGuid());
+
+                Toast.makeText(getActivity(), chosenGame.getName() + " picked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         recyclerView.setAdapter(gameAdapter);
         recyclerView.setHasFixedSize(true);

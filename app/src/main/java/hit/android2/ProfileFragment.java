@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import hit.android2.Adapters.CharacterSelectAdapter;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.UserData;
@@ -51,6 +53,9 @@ public class ProfileFragment extends Fragment {
     private ProfileFragmentLiveData liveData;
 
     private boolean isLogIn = false;
+
+    private boolean isGameRecycleOnScreen = true;
+
 
 
     @Nullable
@@ -83,7 +88,7 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        gameAdapter = new GameAdapter(getActivity(),gameDataList,"profile"); //gameDataList is empty, needs to be loaded from server
+        gameAdapter = new GameAdapter(getActivity(),gameDataList); //gameDataList is empty, needs to be loaded from server
 
         recyclerView.setAdapter(gameAdapter);
         gameAdapter.notifyDataSetChanged();
@@ -120,16 +125,23 @@ public class ProfileFragment extends Fragment {
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                List<GameData> gameDataList = new ArrayList<>();
-                gameAdapter = new GameAdapter(getContext(), gameDataList,"search game");
+                final List<GameData> gameDataList = new ArrayList<>();
+                gameAdapter = new GameAdapter(getContext(), gameDataList);
+                gameAdapter.setListener(new GameAdapter.AdapterListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList.get(position).getGuid());
+                        DatabaseManager.addGameToDatabase(gameDataList.get(position));
+                    }
+                });
 
                 recyclerView.setAdapter(gameAdapter);
                 recyclerView.setHasFixedSize(true);
                 gameAdapter.notifyDataSetChanged();
 
-                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext(), gameDataList, gameAdapter);
+                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
 
-                loader.searchGameRequest(searchText.getText().toString());
+                loader.searchGameRequest(searchText.getText().toString(),gameDataList,gameAdapter);
 
                 //searchBtn.setVisibility(View.GONE);
             }
@@ -192,6 +204,7 @@ public class ProfileFragment extends Fragment {
                         case R.id.menu_item_gallery:
                             break;
                         case R.id.menu_item_figures:
+                            createCharacterImageSelectDialog();
                             break;
                     }
                     return true;
@@ -202,5 +215,56 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    void createCharacterImageSelectDialog(){
 
+
+        final Dialog dialog = new Dialog(getActivity());
+
+        dialog.setContentView(R.layout.dialog_select_character_image);
+
+        dialog.setTitle("Select Character Dialog");
+
+
+        final RecyclerView recyclerView = dialog.findViewById(R.id.dialog_character_select_recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext()));
+
+        final List<String> characterUrlList = new ArrayList<>();
+        final CharacterSelectAdapter characterSelectAdapter = new CharacterSelectAdapter(dialog.getContext(),characterUrlList);
+        characterSelectAdapter.setListener(new CharacterSelectAdapter.Listener() {
+            @Override
+            public void onClick(String s) {
+                DatabaseManager.updateProfileImage(FirebaseAuth.getInstance().getCurrentUser().getUid(),s);
+                dialog.dismiss();
+            }
+        });
+
+
+        GameAdapter gameAdapter = new GameAdapter(dialog.getContext(), gameDataList);
+        gameAdapter.setListener(new GameAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,dialog.getContext());
+                loader.getCharactersByGameRequest(gameDataList.get(position).getGuid(), new DataLoader.Listener() {
+                    @Override
+                    public void onSuccess(String string) {
+
+                        if(isGameRecycleOnScreen){
+                            recyclerView.setAdapter(characterSelectAdapter);
+                            recyclerView.setLayoutManager(new GridLayoutManager(dialog.getContext(),4));
+                            isGameRecycleOnScreen = false;
+                        }
+
+
+                        characterUrlList.add(string);
+                        characterSelectAdapter.notifyDataSetChanged();
+                    }
+                });
+
+            }
+        });
+        recyclerView.setAdapter(gameAdapter);
+        gameAdapter.notifyDataSetChanged();
+        dialog.show();
+    }
 }

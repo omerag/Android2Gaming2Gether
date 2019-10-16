@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -25,21 +26,28 @@ public class DataLoader {
 
     private Context context;
 
-    private GameAdapter gameAdapter;
+   // private GameAdapter gameAdapter;
 
-    private List<GameData> gameDataList = null;
+    //private List<GameData> gameDataList = null;
 
-    public DataLoader(String API_KEY, Context context, List<GameData> gameDataList, GameAdapter gameAdapter) {
+    public DataLoader(String API_KEY, Context context) {
         this.API_KEY = API_KEY;
         this.context = context;
-        this.gameDataList = gameDataList;
-        this.gameAdapter = gameAdapter;
+      //  this.gameDataList = gameDataList;
+      //  this.gameAdapter = gameAdapter;
 
         System.out.println("DataLoader created");
 
+
+
     }
 
-    public void searchGameRequest(final String gameName){
+    public interface Listener{
+
+        void onSuccess(String string);
+    }
+
+    public void searchGameRequest(final String gameName, final List<GameData> gameDataList, final GameAdapter gameAdapter){
 
         System.out.println("searchGameRequest called");
 
@@ -77,11 +85,92 @@ public class DataLoader {
 
         //queue.start();
 
+    }
+
+    public void getCharactersByGameRequest(final String gameName, final Listener listener){
+
+        System.out.println("getCharacterImagesByGame called");
 
 
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(createStringForGameRequest(gameName), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
+                System.out.println("getCharacterImagesByGame  onResponse called");
+
+
+                try {
+                    JSONObject rootObject = new JSONObject(response);
+                    createGameItem(rootObject,listener);
+                    //gameAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                System.out.println("getCharacterImagesByGame  onErrorResponse called");
+
+
+                error.printStackTrace();
+
+            }
+        });
+
+        queue.add(request);
+
+        //queue.start();
 
     }
+
+    public void getCharactersRequest(final String id, final Listener listener){
+
+        System.out.println("getCharacterImagesByGame called");
+
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(createStringForCharacterRequest(id), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                System.out.println("getCharacterImagesByGame  onResponse called");
+
+
+                try {
+                    JSONObject rootObject = new JSONObject(response);
+                    JSONObject resultsObject = rootObject.getJSONObject("results");
+                    JSONObject imageObject = resultsObject.getJSONObject("image");
+                    String thumb_url = imageObject.getString("thumb_url");
+
+                    listener.onSuccess(thumb_url);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                System.out.println("getCharacterImagesByGame  onErrorResponse called");
+
+
+                error.printStackTrace();
+
+            }
+        });
+
+        queue.add(request);
+
+        //queue.start();
+
+    }
+
+
 
     private String createStringForSearchRequest(String gameName){
 
@@ -115,17 +204,25 @@ public class DataLoader {
 
 
 
-    void createGameItem(JSONObject rootObject){
+    void createGameItem(JSONObject rootObject,Listener listener){
 
         try {
-            JSONObject resultObject = rootObject.getJSONObject("result");
+            JSONObject resultObject = rootObject.getJSONObject("results");
 
             JSONObject imageObject = resultObject.getJSONObject("image");
 
-            String gameId = resultObject.getString("guide");
-            String gameName = resultObject.getString("name");
-            String gameImageUrl = imageObject.getString("thumb_url");
+            JSONArray charactersArray = resultObject.getJSONArray("characters");
 
+
+         //   String gameId = resultObject.getString("guide");
+          //  String gameName = resultObject.getString("name");
+          //  String gameImageUrl = imageObject.getString("thumb_url");
+
+            System.out.println();
+            for(int i = 0; i < charactersArray.length(); i++){
+                JSONObject characterObject = charactersArray.getJSONObject(i);
+                String charcarterGuid = "3005-" + characterObject.getString("id");
+                getCharactersRequest(charcarterGuid,listener);            }
         } catch (JSONException e) {
             e.printStackTrace();
         }

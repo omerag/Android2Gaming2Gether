@@ -24,14 +24,12 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
 
     private Context context;
     private List<GameData> gameDataList;
-    private String state;
     private GameData game = null;
     private AdapterListener listener;
 
-    public GameAdapter(Context context, List<GameData> gameDataList, String state) {
+    public GameAdapter(Context context, List<GameData> gameDataList) {
         this.context = context;
         this.gameDataList = gameDataList;
-        this.state = state;
 
         System.out.println("GameAdapter created");
     }
@@ -46,10 +44,9 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
 
     }
 
-    public GameAdapter(Context context, List<GameData> gameDataList, String state,GameData game) {
+    public GameAdapter(Context context, List<GameData> gameDataList,GameData game) {
         this.context = context;
         this.gameDataList = gameDataList;
-        this.state = state;
         this.game = game;
 
         System.out.println("GameAdapter created");
@@ -104,30 +101,6 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
                         listener.onClick(view,getAdapterPosition());
                     }
 
-
-                    if(state.equals("profile")){
-                        Toast.makeText(context, "profile game", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                    else if(state.equals("search game")){
-
-                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList.get(Integer.parseInt(positionTextView.getText().toString())).getGuid());
-                        DatabaseManager.addGameToDatabase(gameDataList.get(Integer.parseInt(positionTextView.getText().toString())));
-
-                        Toast.makeText(context, "search game", Toast.LENGTH_SHORT).show();
-
-                    }
-                    else if(state.equals("home")){
-
-                        GameData tempGame = gameDataList.get(Integer.parseInt(positionTextView.getText().toString()));
-                        game.setName(tempGame.getName());
-                        game.setImageUrl(tempGame.getImageUrl());
-                        game.setGuid(tempGame.getGuid());
-
-                        Toast.makeText(context, game.getName() + " picked", Toast.LENGTH_SHORT).show();
-
-                    }
                 }
             });
         }

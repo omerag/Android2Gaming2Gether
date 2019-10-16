@@ -120,7 +120,7 @@ public class FriendsFragment extends Fragment {
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
-        GameAdapter gameAdapter = new GameAdapter(getActivity(),games,"");
+        GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
         final UserAdapter userAdapter = new UserAdapter(getActivity(),users);
         recycler.setAdapter(gameAdapter);
 
@@ -150,6 +150,7 @@ public class FriendsFragment extends Fragment {
 
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),games,gameAdapter);
         dialog.show();
+        dialog.getCurrentFocus();
     }
 
 

@@ -51,7 +51,7 @@ public class DatabaseManager {
 
                     GameData gameData = documentSnapshot.toObject(GameData.class);
                     gameDataList.add(gameData);
-                    adapter.notifyItemInserted(gameDataList.size()-1);
+                    adapter.notifyDataSetChanged();
                 }
 
 
@@ -494,6 +494,28 @@ public class DatabaseManager {
 
             }
         });
+
+
+    }
+
+    static public void updateProfileImage(String userId, final String imageUrl){
+
+        final DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            userReff.update("imageUrl",imageUrl);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
 
 
     }
