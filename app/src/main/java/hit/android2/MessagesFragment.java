@@ -38,7 +38,7 @@ public class MessagesFragment extends Fragment {
     private List<UserData> mUsers;
     private List<Chatlist> usersList;
 
-    MassagesFragmentLiveData liveData;
+    private MassagesFragmentLiveData liveData;
 
     FirebaseUser fuser;
     FirebaseManager manager = new FirebaseManager();

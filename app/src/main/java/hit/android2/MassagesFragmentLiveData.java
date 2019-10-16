@@ -5,11 +5,12 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import hit.android2.Database.Model.UserData;
+import hit.android2.Model.Chatlist;
 
 public class MassagesFragmentLiveData extends ViewModel {
 
     private List<UserData> mUsers;
-    private List<String> usersList;
+    private List<Chatlist> usersList;
 
 
     public MassagesFragmentLiveData() {
@@ -23,11 +24,11 @@ public class MassagesFragmentLiveData extends ViewModel {
         this.mUsers = mUsers;
     }
 
-    public List<String> getUsersList() {
+    public List<Chatlist> getUsersList() {
         return usersList;
     }
 
-    public void setUsersList(List<String> usersList) {
+    public void setUsersList(List<Chatlist> usersList) {
         this.usersList = usersList;
     }
 }
