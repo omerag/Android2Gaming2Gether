@@ -121,26 +121,39 @@ public class FriendsFragment extends Fragment {
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
         GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
-        final UserAdapter userAdapter = new UserAdapter(getActivity(),users);
+        final UserAdapter userSearchAdapter = new UserAdapter(getActivity(),users);
         recycler.setAdapter(gameAdapter);
 
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
                 gameGUID[0] = games.get(position).getGuid();
-                recycler.setAdapter(userAdapter);
-                userAdapter.notifyDataSetChanged();
-                DatabaseManager.searchPlayers(gameGUID[0],users,userAdapter);
+                recycler.setAdapter(userSearchAdapter);
+                userSearchAdapter.notifyDataSetChanged();
+                DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
 
             }
         });
 
-        userAdapter.setListener(new UserAdapter.AdapterListener() {
+        userSearchAdapter.setListener(new UserAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
 
 
-                DatabaseManager.userAddFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(),users.get(position).getKey());
+                DatabaseManager.userAddFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(), users.get(position).getKey(),
+                        new DatabaseManager.Listener() {
+                            @Override
+                            public void onSuccess() {
+                                DatabaseManager.getUserFriends(FirebaseAuth.getInstance().getCurrentUser().getUid(), friendsList, new DatabaseManager.Listener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        liveData.setFriendsList(friendsList);
+                                        userAdapter.notifyDataSetChanged();
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+                        });
                 Toast.makeText(getActivity(), users.get(position).getName() + "was added to friends list", Toast.LENGTH_SHORT).show();
             }
         });

@@ -318,7 +318,7 @@ public class DatabaseManager {
                 });
     }
 
-    static public void userAddFriend(String userId, final String friendID) {
+    static public void userAddFriend(String userId, final String friendID, final Listener listener) {
         final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -328,7 +328,13 @@ public class DatabaseManager {
                 List<String> friends = user.getFriends();
                 friends.add(friendID);*/
 
-                userRef.update("friends", FieldValue.arrayUnion(friendID));
+                userRef.update("friends", FieldValue.arrayUnion(friendID))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                listener.onSuccess();
+                            }
+                        });
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -429,6 +435,7 @@ public class DatabaseManager {
                 UserData user = documentSnapshot.toObject(UserData.class);
                 List<String> freinds = user.getFriends();
 
+                users.clear();
                 for(String friend : freinds){
                     getUserFromDatabase(friend,users,listener);
                 }
