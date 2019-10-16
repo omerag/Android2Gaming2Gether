@@ -14,4 +14,6 @@
     <string name="friends_str">Friends</string>
     <string name="home_str">Home</string>
     <string name="text_send">Type a message</string>
+    <string name="my_games">My Games :</string>
+    <string name="about_me">About me :</string>
 </resources>

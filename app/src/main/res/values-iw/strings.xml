@@ -15,4 +15,6 @@
     <string name="friends_str">חברים</string>
     <string name="home_str">בית</string>
     <string name="text_send">הקלד הודעה</string>
+    <string name="my_games">המשחקים שלי :</string>
+    <string name="about_me">קצת עלי :</string>
 </resources>
