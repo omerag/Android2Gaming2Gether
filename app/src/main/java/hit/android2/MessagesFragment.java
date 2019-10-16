@@ -29,13 +29,14 @@ import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chat;
+import hit.android2.Model.Chatlist;
 
 public class MessagesFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<UserData> mUsers;
-    private List<String> usersList;
+    private List<Chatlist> usersList;
 
     MassagesFragmentLiveData liveData;
 
@@ -62,7 +63,28 @@ public class MessagesFragment extends Fragment {
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
         usersList = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child(fuser.getUid());
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                usersList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                    usersList.add(chatlist);
+                }
+
+                readChats();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+/*        reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -105,7 +127,7 @@ public class MessagesFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
         userAdapter.setListener(new UserAdapter.AdapterListener() {
             @Override
