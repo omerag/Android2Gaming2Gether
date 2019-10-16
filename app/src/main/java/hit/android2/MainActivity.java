@@ -25,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import hit.android2.Database.FirebaseManager;
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         pager = findViewById(R.id.fragment_container);
+        if (Locale.getDefault().toString().equals("iw_IL")) pager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
         pager.setAdapter(pagerAdapter);
 
