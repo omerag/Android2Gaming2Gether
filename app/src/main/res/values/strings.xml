@@ -19,4 +19,6 @@
     <string name="popup_menu_camera">Camera</string>
     <string name="popup_menu_gallery">Gallery</string>
     <string name="popup_menu_figures">Figures</string>
+    <string name="game_dialog_choose">Choose a game</string>
+    <string name="character_choose">Choose a character</string>
 </resources>

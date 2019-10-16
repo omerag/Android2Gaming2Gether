@@ -239,6 +239,7 @@ public class ProfileFragment extends Fragment {
         dialog.setContentView(R.layout.dialog_select_character_image);
 
         dialog.setTitle("Select Character Dialog");
+        final TextView dialog_title_tv = dialog.findViewById(R.id.dialog_title_tv);
 
 
         final RecyclerView recyclerView = dialog.findViewById(R.id.dialog_character_select_recycler_view);
@@ -266,6 +267,7 @@ public class ProfileFragment extends Fragment {
                     public void onSuccess(String string) {
 
                         if(isGameRecycleOnScreen){
+                            dialog_title_tv.setText(R.string.character_choose);
                             recyclerView.setAdapter(characterSelectAdapter);
                             recyclerView.setLayoutManager(new GridLayoutManager(dialog.getContext(),4));
                             isGameRecycleOnScreen = false;

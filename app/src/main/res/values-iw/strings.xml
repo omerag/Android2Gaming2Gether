@@ -20,4 +20,6 @@
     <string name="popup_menu_camera">מצלמה</string>
     <string name="popup_menu_gallery">גלריה</string>
     <string name="popup_menu_figures">דמויות</string>
+    <string name="game_dialog_choose">בחר משחק</string>
+    <string name="character_choose">בחר דמות</string>
 </resources>
