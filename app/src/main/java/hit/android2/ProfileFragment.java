@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -142,7 +143,7 @@ public class ProfileFragment extends Fragment {
                 liveData.setUsernameTv(user.getName());
                 aboutMeTv.setText(user.getAboutMe());
                 liveData.setAboutMeTv(user.getAboutMe());
-                Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
+               // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                 liveData.setUserIv(user.getImageUrl());
 /*
                 DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
@@ -384,12 +385,31 @@ public class ProfileFragment extends Fragment {
             {
                 Uri selectedImage = data.getData();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
-                    double width = bitmap.getWidth() * 0.5;
-                    double height = bitmap.getHeight() * 0.5;
-                    Bitmap resize = Bitmap.createScaledBitmap(bitmap,(int)width,(int)height,true);
-                    userIv.setImageBitmap(resize);
-                    StorageManager.uploadImageFromImageview(userIv);
+                    final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
+                    final int width = 256;//bitmap.getWidth() * 0.5;
+                    final int height = 256;//bitmap.getHeight() * 0.5;
+
+                    //loading resized bitmap into image view and uploading it to the server
+                    new AsyncTask<String,Bitmap,Bitmap>(){
+                        @Override
+                        protected void onPostExecute(Bitmap bitmap) {
+                            super.onPostExecute(bitmap);
+                            userIv.setImageBitmap(bitmap);
+                            StorageManager.uploadImageFromImageview(userIv);
+                            Log.d("ProfileFragment","bitmap updated");
+
+                        }
+
+                        @Override
+                        protected Bitmap doInBackground(String... strings) {
+                            Log.d("ProfileFragment","Begin scaling bitmap");
+                            Bitmap resize = resizeBitmap(bitmap,width,height);//Bitmap.createScaledBitmap(bitmap,width,height,true);
+                            Log.d("ProfileFragment","Ending scaling bitmap");
+
+                            return resize;
+                        }
+                    }.execute();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -397,5 +417,26 @@ public class ProfileFragment extends Fragment {
         }
 
 
+    }
+
+    private static Bitmap resizeBitmap(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
     }
 }
