@@ -226,7 +226,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final ImageView imageView, final Context context, final Listener listener){
+    static public void getUserFromDatabase(final String userId, final UserData friend, final TextView friendName, final ImageView imageView, final Context context, final UserDataListener listener){
         Log.d("DatabaseManager","getUserFromDatabase called");
 
         FirebaseFirestore.getInstance().collection("users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -249,7 +249,9 @@ public class DatabaseManager {
                     friendName.setText(user.getName());
 
                     Glide.with(context).load(user.getImageUrl()).into(imageView);
-                    listener.onSuccess();
+
+                    System.out.println("**********************8\naboutme = " + user.getAboutMe() + "\n**************");
+                    listener.onSuccess(user);
 
                 }
 

@@ -14,6 +14,7 @@ public class ProfileFragmentLiveData extends ViewModel {
 
     private String usernameTv;
     private String userIv;
+    private String aboutMeTv;
     private List<GameData> gameDataList;
 
     public ProfileFragmentLiveData() {
@@ -27,6 +28,14 @@ public class ProfileFragmentLiveData extends ViewModel {
 
     public void setUsernameTv(String usernameTv) {
         this.usernameTv = usernameTv;
+    }
+
+    public String getAboutMeTv() {
+        return aboutMeTv;
+    }
+
+    public void setAboutMeTv(String aboutMeTv) {
+        this.aboutMeTv = aboutMeTv;
     }
 
     public String getUserIv() {

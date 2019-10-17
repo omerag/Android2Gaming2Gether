@@ -59,6 +59,7 @@ public class ProfileFragment extends Fragment {
     private FloatingActionButton floatingActionButton;
 
     private TextView usernameTv;
+    private TextView aboutMeTv;
     private ImageView userIv;
     private ImageButton pic_edit_btn;
 
@@ -97,6 +98,7 @@ public class ProfileFragment extends Fragment {
         floatingActionButton = getView().findViewById(R.id.floating_action_btn);
         usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
         userIv = getView().findViewById(R.id.user_profile_img);
+        aboutMeTv = getView().findViewById(R.id.about_me_tv);
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
@@ -138,6 +140,8 @@ public class ProfileFragment extends Fragment {
                // listener.onSuccess(user);
                 usernameTv.setText(user.getName());
                 liveData.setUsernameTv(user.getName());
+                aboutMeTv.setText(user.getAboutMe());
+                liveData.setAboutMeTv(user.getAboutMe());
                 Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                 liveData.setUserIv(user.getImageUrl());
 /*
@@ -231,14 +235,18 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserGames(){
 
-        if(liveData.getUserIv() == null || liveData.getUsernameTv() == null){
+        if(liveData.getUserIv() == null || liveData.getUsernameTv() == null || liveData.getAboutMeTv() == null){
             final UserData user = new UserData();
-            DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.Listener() {
+            DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.UserDataListener(){
                 @Override
-                public void onSuccess() {
+                public void onSuccess(UserData userData) {
 
-                    liveData.setUsernameTv(user.getName());
-                    liveData.setUserIv(user.getImageUrl());
+                    aboutMeTv.setText(userData.getAboutMe());
+
+                    liveData.setAboutMeTv(userData.getAboutMe());
+                    liveData.setUsernameTv(userData.getName());
+                    liveData.setUserIv(userData.getImageUrl());
+
 
                 }
             });
@@ -246,6 +254,7 @@ public class ProfileFragment extends Fragment {
         else {
             usernameTv.setText(liveData.getUsernameTv());
             Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
+            aboutMeTv.setText(liveData.getAboutMeTv());
         }
         if(liveData.getGameDataList() == null ){
             DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
