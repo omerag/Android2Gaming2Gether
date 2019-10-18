@@ -2,7 +2,6 @@ package hit.android2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,9 @@ import java.util.List;
 
 import hit.android2.Adapters.MessagesListAdapter;
 import hit.android2.Adapters.UserAdapter;
-import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
-import hit.android2.Model.Chat;
 import hit.android2.Model.Chatlist;
 
 public class MessagesFragment extends Fragment {

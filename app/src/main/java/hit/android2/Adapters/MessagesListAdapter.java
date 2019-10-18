@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.R;
 

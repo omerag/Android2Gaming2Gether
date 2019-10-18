@@ -10,20 +10,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
+import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.Model.ChildData;
-import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.R;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     private Context context;
-    private List<ChildData> comments;
+    //private List<ChildData> comments;
+    private List<CommentDataHolder> comments;
     private boolean isOpen = false;
 
 
-    public CommentAdapter(Context context, List<ChildData> comments) {
+
+/*    public CommentAdapter(Context context, List<ChildData> comments) {
+        this.context = context;
+        this.comments = comments;
+    }*/
+
+    public CommentAdapter(Context context, List<CommentDataHolder> comments) {
         this.context = context;
         this.comments = comments;
     }
@@ -43,8 +53,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
             System.out.println("holder.massage == null");
         }
 
-        holder.massage.setText(comments.get(position).getMassage());
-        DatabaseManager.getUserFromDatabase(comments.get(position).getUser_key(),null,holder.userName,holder.userImage,context);
+        holder.massage.setText(comments.get(position).getMassege());
+        holder.userName.setText(comments.get(position).getUserName());
+        Glide.with(context).load(comments.get(position).getImageUrl()).into(holder.userImage);
+       // DatabaseManager.getUserFromDatabase(comments.get(position).getUser_key(),null,holder.userName,holder.userImage,context);
 
     }
 

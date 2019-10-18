@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,17 +38,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
-
 import hit.android2.Adapters.CharacterSelectAdapter;
-import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
-import hit.android2.Database.StorageManager;
+import hit.android2.Database.Managers.StorageManager;
 import hit.android2.gaintbomb.api.DataLoader;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Model.GameData;

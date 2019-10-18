@@ -26,18 +26,23 @@ import java.util.List;
 
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.TopicAdapter;
+import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.Model.ChildData;
-import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.ParentData;
+import hit.android2.Database.Model.UserData;
+import hit.android2.Database.TopicDataHolder;
 
 public class HomeFragment extends Fragment {
 
-    List<ParentData> topics;
-    HomeFragmentLiveData liveData;
+    private List<ParentData> topics;
+    private List<TopicDataHolder> topicDataHolderList;
+    private HomeFragmentLiveData liveData;
+    private TopicAdapter topicAdapter;
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private GameData chosenGame = new GameData();
 
 
@@ -64,10 +69,12 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        final TopicAdapter topicAdapter = new TopicAdapter(getActivity(),topics);
+        topicAdapter = new TopicAdapter(getActivity(),topicDataHolderList,topics,liveData);
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
+        recyclerView.setHasFixedSize(true);
+
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +89,9 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         liveData.setTopics(topics);
+                        topicDataHolderList = initTopicDataHolderList(topics);
+                        liveData.setTopicDataHolderList(topicDataHolderList);
+                        topicAdapter.setTopics(topicDataHolderList);
                         topicAdapter.notifyDataSetChanged();
                     }
                 });
@@ -90,11 +100,66 @@ public class HomeFragment extends Fragment {
             }
             else {
                 topics = liveData.getTopics();
-                topicAdapter.setTopics(topics);
+                topicDataHolderList = liveData.getTopicDataHolderList();
+                topicAdapter.setTopics(topicDataHolderList);
                 topicAdapter.notifyDataSetChanged();
             }
         }
 
+    }
+
+    private List<TopicDataHolder> initTopicDataHolderList(List<ParentData> topics){
+
+        List<TopicDataHolder> topicDataHolderList = new ArrayList<>();
+
+
+        for(ParentData topic : topics){
+
+            List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
+
+
+            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(),topic.getTimestamp(),commentDataHolderList,topic.getGame_key(),topic.getGame_key());
+            topicDataHolderList.add(dataHolder);
+
+            DatabaseManager.getGameFromDatabase(topic.getGame_key(), new DatabaseManager.DataListener<GameData>() {
+                @Override
+                public void onSuccess(GameData gameData) {
+
+                    dataHolder.setGameName(gameData.getName());
+                    dataHolder.setImageUrl(gameData.getImageUrl());
+                    topicAdapter.notifyDataSetChanged();
+
+                }
+            });
+
+            DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
+                @Override
+                public void onSuccess(UserData userData) {
+                    dataHolder.setTopicsOwner(userData.getName());
+
+                }
+            });
+
+            for(final ChildData comment : topic.getItems()){
+
+                final CommentDataHolder commentDataHolder = new CommentDataHolder();
+                commentDataHolderList.add(commentDataHolder);
+
+                DatabaseManager.getUserFromDatabase(comment.getUser_key(), new DatabaseManager.DataListener<UserData>() {
+                    @Override
+                    public void onSuccess(UserData userData) {
+                        commentDataHolder.setUserName(userData.getName());
+                        commentDataHolder.setImageUrl(userData.getImageUrl());
+                        commentDataHolder.setMassege(comment.getMassage());
+                    }
+                });
+            }
+
+
+
+
+        }
+        return topicDataHolderList;
     }
 
     private void showCreateTopicDialog() {
@@ -146,10 +211,6 @@ public class HomeFragment extends Fragment {
 
         dialog.show();
     }
-
-
-
-
 
 
 }

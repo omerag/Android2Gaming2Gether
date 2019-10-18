@@ -17,29 +17,37 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
+import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.Model.ChildData;
-import hit.android2.Database.DatabaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Model.ParentData;
+import hit.android2.Database.TopicDataHolder;
+import hit.android2.HomeFragmentLiveData;
 import hit.android2.R;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
     private Context context;
-    private List<ParentData> topics;
+    private List<ParentData> dataBaseTopics;
+    private List<TopicDataHolder> topics;
     private AdapterListener listener;
+    private HomeFragmentLiveData liveData;
 
     private int counter = 0;
 
-    public TopicAdapter(Context context,List<ParentData> topics) {
+    public TopicAdapter(Context context, /*List<ParentData> topics*/ List<TopicDataHolder> topics,List<ParentData> dataBaseTopics, HomeFragmentLiveData liveData) {
         this.context = context;
         this.topics = topics;
+        this.liveData = liveData;
+        this.dataBaseTopics = dataBaseTopics;
     }
 
-    interface AdapterListener{
+    public interface AdapterListener{
         void onClick(View view, int position);
 
     }
@@ -49,12 +57,23 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
     }
 
-    public List<ParentData> getTopics() {
+/*    public List<ParentData> getTopics() {
+        return topics;
+    }*/
+
+    public List<TopicDataHolder> getTopics() {
         return topics;
     }
 
-    public void setTopics(List<ParentData> topics) {
+
+
+/*    public void setTopics(List<ParentData> topics) {
         this.topics = topics;
+    }*/
+
+    public void setTopics(List<TopicDataHolder> topics) {
+        this.topics = topics;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -62,8 +81,6 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_parent,parent,false);
         TopicViewHolder viewHolder = new TopicViewHolder(view);
-
-
 
         return viewHolder;
     }
@@ -73,13 +90,22 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
 
         holder.title.setText(topics.get(position).getTitle());
-        DatabaseManager.loadGameIntoViews(topics.get(position).getGame_key(),holder.gameTextView,holder.gameImage,context);
+        holder.gameTextView.setText(topics.get(position).getGameName());
+        holder.userTextView.setText(topics.get(position).getTopicsOwner());
+        holder.dateTextView.setText(topics.get(position).getDate());
+
+
+        //DatabaseManager.loadGameIntoViews(topics.get(position).getGame_key(),holder.gameTextView,holder.gameImage,context);
+        Glide.with(context).load(topics.get(position).getImageUrl()).into(holder.gameImage);
       //  holder.gameTextView.setText(topics.get(position).);
     }
 
     @Override
     public int getItemCount() {
-        return topics.size();
+        if(topics != null){
+            return topics.size();
+        }
+        return 0;
     }
 
 
@@ -92,11 +118,14 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         LinearLayout commentLayout;
         EditText commentEditText;
         TextView gameTextView;
+        TextView userTextView;
         ImageView gameImage;
+        TextView dateTextView;
 
         RecyclerView recyclerView;
         CommentAdapter commentAdapter;
-        List<ChildData> comments;
+        //List<ChildData> comments;
+        List<CommentDataHolder> comments;
         ImageButton sendBtn;
 
 
@@ -105,17 +134,22 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             title = itemView.findViewById(R.id.tv_parent_item_topic_name);
             commentEditText = itemView.findViewById(R.id.parent_item_comment_edit_text);
             recyclerView = itemView.findViewById(R.id.item_parent_recycler);
+            userTextView = itemView.findViewById(R.id.tv_parent_item_topic_owner);
             gameTextView = itemView.findViewById(R.id.tv_parent_item_game_name);
             gameImage = itemView.findViewById(R.id.tv_parent_item_game_image);
+            dateTextView = itemView.findViewById(R.id.tv_parent_item_time);
 
 
             commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
             sendBtn = itemView.findViewById(R.id.home_fragment_comment_Button);
-            comments = topics.get(pos).getItems();
+            //comments = topics.get(pos).getItems();
+            comments = topics.get(pos).getComments();
             counter++;
             commentAdapter = new CommentAdapter(context,comments);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(commentAdapter);
+
+            //DatabaseManager.loadGameIntoViews(topics.get(getAdapterPosition()).getGame_key(),gameTextView,gameImage,context);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -190,12 +224,15 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 @Override
                 public void onClick(View view) {
 
-                    comments.add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                    DatabaseManager.updateTopic(topics.get(pos).getGame_key(),topics.get(pos).getId(),comments);
+                    dataBaseTopics.get(getAdapterPosition()).getItems().add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
+
+                    DatabaseManager.updateTopic(topics.get(pos).getGameId(),dataBaseTopics.get(getAdapterPosition()).getId(),dataBaseTopics.get(getAdapterPosition()).getItems());
                 }
             });
         }
 
 
     }
+
+
 }

@@ -30,8 +30,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Adapters.GameAdapter;
-import hit.android2.Database.DatabaseManager;
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Adapters.UserAdapter;

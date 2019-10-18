@@ -23,11 +23,9 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 
 public class MainActivity extends AppCompatActivity {
 

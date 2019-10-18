@@ -4,18 +4,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Model.Chat;
 import hit.android2.R;
 

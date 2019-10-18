@@ -1,4 +1,4 @@
-package hit.android2.Database;
+package hit.android2.Database.Managers;
 
 import android.util.Log;
 import android.view.View;

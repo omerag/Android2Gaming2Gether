@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,11 +24,11 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Adapters.MessageAdapter;
-import hit.android2.Database.FirebaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chat;
 
-import static hit.android2.Database.DatabaseManager.getUserFromDatabase;
+import static hit.android2.Database.Managers.DatabaseManager.getUserFromDatabase;
 
 public class MessagingActivity extends AppCompatActivity {
 

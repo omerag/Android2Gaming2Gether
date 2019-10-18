@@ -15,7 +15,7 @@
             <ImageView
                 android:id="@+id/tv_parent_item_game_image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 android:layout_margin="5dp"
                 android:src="@mipmap/ic_launcher" />
 
