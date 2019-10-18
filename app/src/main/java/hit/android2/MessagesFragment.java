@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import hit.android2.Adapters.MessagesListAdapter;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
@@ -34,7 +35,7 @@ import hit.android2.Model.Chatlist;
 public class MessagesFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private UserAdapter userAdapter;
+    private MessagesListAdapter messagesListAdapter;
     private List<UserData> mUsers;
     private List<Chatlist> usersList;
 
@@ -57,8 +58,8 @@ public class MessagesFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mUsers = new ArrayList<>();
-        userAdapter = new UserAdapter(getContext(), mUsers);
-        recyclerView.setAdapter(userAdapter);
+        messagesListAdapter = new MessagesListAdapter(getContext(), mUsers);
+        recyclerView.setAdapter(messagesListAdapter);
 
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
@@ -85,7 +86,7 @@ public class MessagesFragment extends Fragment {
             }
         });
 
-        userAdapter.setListener(new UserAdapter.AdapterListener() {
+        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), MessagingActivity.class);
@@ -106,19 +107,19 @@ public class MessagesFragment extends Fragment {
                 @Override
                 public void onSuccess() {
                     liveData.setmUsers(mUsers);
-                    userAdapter.notifyDataSetChanged();
+                    messagesListAdapter.notifyDataSetChanged();
                 }
             });
         }
         else {
             mUsers = liveData.getmUsers();
-            userAdapter.setUserDataList(mUsers);
-            userAdapter.notifyDataSetChanged();
+            messagesListAdapter.setUserDataList(mUsers);
+            messagesListAdapter.notifyDataSetChanged();
         }
 
     }
 
-    private boolean userExist(String id)
+    /*private boolean userExist(String id)
     {
         for (int i = 0; i < usersList.size(); i++)
         {
@@ -129,7 +130,5 @@ public class MessagesFragment extends Fragment {
         }
 
         return false;
-    }
-
-
+    }*/
 }

@@ -24,7 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
-            android:text="game massage"
+            android:text="User name"
+            android:textColor="#000"
             android:layout_toEndOf="@id/user_image"
             android:layout_marginStart="10dp"/>
 
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="game massage"
+            android:text="last message"
             android:layout_toEndOf="@id/user_image"
             android:layout_below="@id/user_name_tv"
             android:layout_marginStart="10dp"

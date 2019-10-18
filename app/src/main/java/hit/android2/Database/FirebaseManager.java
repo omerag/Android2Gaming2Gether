@@ -1,6 +1,7 @@
 package hit.android2.Database;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 
 import hit.android2.Database.Model.UserData;
+import hit.android2.Model.Chat;
 import hit.android2.R;
 
 public class FirebaseManager {
@@ -34,6 +36,7 @@ public class FirebaseManager {
     private String userName;
     private NavigationView navigationView;
     private TextView userTv;
+    private String lastMessage;
 
 
 
@@ -170,8 +173,42 @@ public class FirebaseManager {
 
             }
         });
-
-
     }
+
+    public void GetLastMessage(final String userid, final TextView lastMessageTv)
+    {
+        lastMessage = "default";
+
+        final FirebaseUser firebaseUser = getFireBaseAuth().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
+                            chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid()))
+                    {
+                        lastMessage = chat.getMessage();
+                    }
+                }
+
+                if (lastMessage.equals("default")) lastMessageTv.setVisibility(View.INVISIBLE);
+                else {
+                    lastMessageTv.setText(lastMessage);
+                    lastMessage = "default";
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }
