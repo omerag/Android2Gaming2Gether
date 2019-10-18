@@ -22,4 +22,6 @@
     <string name="popup_menu_figures">דמויות</string>
     <string name="game_dialog_choose">בחר משחק</string>
     <string name="character_choose">בחר דמות</string>
+    <string name="popup_menu_view_profile">פרופיל משתמש</string>
+    <string name="popup_menu_send_message">שלח הודעה</string>
 </resources>
