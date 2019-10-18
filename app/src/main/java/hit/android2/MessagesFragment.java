@@ -119,16 +119,4 @@ public class MessagesFragment extends Fragment {
 
     }
 
-    /*private boolean userExist(String id)
-    {
-        for (int i = 0; i < usersList.size(); i++)
-        {
-            if (usersList.get(i).equals(id))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }*/
 }
