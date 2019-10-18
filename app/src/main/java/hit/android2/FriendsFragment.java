@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,12 +20,14 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.DatabaseManager;
 import hit.android2.Database.FirebaseManager;
@@ -85,6 +88,7 @@ public class FriendsFragment extends Fragment {
                         switch (item.getItemId())
                         {
                             case R.id.menu_item_view_profile:
+                                ShowFriendProfile(friendsList.get(viewPosition).getKey());
                                 break;
 
                             case R.id.menu_item_send_message:
@@ -109,6 +113,48 @@ public class FriendsFragment extends Fragment {
         if(FirebaseManager.isLoged()){
             loadFriends();
         }
+    }
+
+    private void ShowFriendProfile(String friend_id)
+    {
+        final Dialog dialog = new Dialog(getActivity());
+        final List<UserData> userData = new ArrayList<>();
+
+        dialog.setContentView(R.layout.user_profile_dialog);
+
+        dialog.setTitle("Friend Profile");
+
+        final CircleImageView profile_image = dialog.findViewById(R.id.user_profile_img);
+        final TextView user_name = dialog.findViewById(R.id.profile_fragment_user_name);
+        final TextView user_about_me = dialog.findViewById(R.id.about_me_tv);
+        List<GameData> games = new ArrayList<>();
+        final GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
+        final RecyclerView recyclerView = dialog.findViewById(R.id.profile_fragment_recycler_games);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+
+        DatabaseManager.getUserFromDatabase(friend_id, userData, new DatabaseManager.Listener() {
+            @Override
+            public void onSuccess() {
+                user_name.setText(userData.get(0).getName());
+                user_about_me.setText(userData.get(0).getAboutMe());
+                Glide.with(getContext()).load(userData.get(0).getImageUrl()).into(profile_image);
+            }
+        });
+
+        DatabaseManager.getUserGames(friend_id, games, gameAdapter, new DatabaseManager.Listener() {
+            @Override
+            public void onSuccess() {
+                recyclerView.setAdapter(gameAdapter);
+                gameAdapter.notifyDataSetChanged();
+            }
+        });
+
+
+        dialog.show();
+        dialog.getCurrentFocus();
     }
 
     private void loadFriends(){
