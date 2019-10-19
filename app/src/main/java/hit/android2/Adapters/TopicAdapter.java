@@ -3,6 +3,7 @@ package hit.android2.Adapters;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,14 +84,18 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     public TopicViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_parent,parent,false);
         TopicViewHolder viewHolder = new TopicViewHolder(view);
+        counter++;
+
 
         return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
 
 
+        holder.initRecycleview(position);
         holder.title.setText(topics.get(position).getTitle());
         holder.gameTextView.setText(topics.get(position).getGameName());
         holder.userTextView.setText(topics.get(position).getTopicsOwner());
@@ -113,15 +118,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
 
     class TopicViewHolder extends RecyclerView.ViewHolder {
-
-        int pos = counter;
-
         TextView title;
         LinearLayout commentLayout;
         EditText commentEditText;
         TextView gameTextView;
         TextView userTextView;
         ImageView gameImage;
+        ImageView arrowIv;
         TextView dateTextView;
 
         RecyclerView recyclerView;
@@ -133,6 +136,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
+            int pos = counter;
+            Log.d("TopicAdapter","pos = " + pos + ",counter = " + counter);
+
             title = itemView.findViewById(R.id.tv_parent_item_topic_name);
             commentEditText = itemView.findViewById(R.id.parent_item_comment_edit_text);
             recyclerView = itemView.findViewById(R.id.item_parent_recycler);
@@ -140,23 +146,24 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             gameTextView = itemView.findViewById(R.id.tv_parent_item_game_name);
             gameImage = itemView.findViewById(R.id.tv_parent_item_game_image);
             dateTextView = itemView.findViewById(R.id.tv_parent_item_time);
+            arrowIv = itemView.findViewById(R.id.topic_arrow);
 
 
             commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
             sendBtn = itemView.findViewById(R.id.home_fragment_comment_Button);
             //comments = topics.get(pos).getItems();
-            comments = topics.get(pos).getComments();
-            counter++;
+          /*  comments = topics.get(pos).getComments();
             commentAdapter = new CommentAdapter(context,comments);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(commentAdapter);
+            recyclerView.setAdapter(commentAdapter);*/
 
             //DatabaseManager.loadGameIntoViews(topics.get(getAdapterPosition()).getGame_key(),gameTextView,gameImage,context);
+
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, title.getText().toString() + " clicked", Toast.LENGTH_SHORT).show();
 
                     if(commentAdapter.isOpen()){
 
@@ -186,6 +193,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                         // commentLayout.setVisibility(View.GONE);
                        // recyclerView.setVisibility(View.GONE);
                         commentAdapter.setOpen(false);
+                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_down));
                     }
                     else {
                         recyclerView.animate()
@@ -215,6 +223,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                         //recyclerView.setVisibility(View.VISIBLE);
 
                         commentAdapter.setOpen(true);
+                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_up));
+
                     }
                     commentAdapter.notifyDataSetChanged();
 
@@ -236,10 +246,21 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                             commentAdapter.notifyDataSetChanged();
                         }
                     });
-                    DatabaseManager.updateTopic(topics.get(pos).getGameId(), databaseTopics.get(getAdapterPosition()).getId(), databaseTopics.get(getAdapterPosition()).getItems());
+                    DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), databaseTopics.get(getAdapterPosition()).getId(), databaseTopics.get(getAdapterPosition()).getItems());
                 }
             });
         }
+
+        public void initRecycleview(int position){
+            comments = topics.get(position).getComments();
+            commentAdapter = new CommentAdapter(context,comments);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(commentAdapter);
+        }
+
+
+
+
 
 
     }

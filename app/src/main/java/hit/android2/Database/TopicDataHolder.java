@@ -88,4 +88,16 @@ public class TopicDataHolder {
     public String getGameId() {
         return gameId;
     }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
 }

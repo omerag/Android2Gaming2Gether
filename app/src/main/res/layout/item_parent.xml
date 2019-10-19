@@ -2,15 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="1dp">
 
     <TableLayout
         android:id="@+id/parent_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        >
 
-        <TableRow android:gravity="start|center">
+        <TableRow
+            android:layout_width="match_parent"
+            android:gravity="start|center">
 
             <ImageView
                 android:id="@+id/tv_parent_item_game_image"
@@ -23,7 +26,6 @@
                 android:id="@+id/tv_parent_item_topic_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_arrow_down"
                 android:drawablePadding="5dp"
                 android:gravity="start|center"
                 android:padding="10dp"
@@ -31,6 +33,14 @@
                 android:textColor="#0784b1"
                 android:textSize="20sp"
 
+                />
+
+            <ImageView
+                android:id="@+id/topic_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_down"
+                android:layout_gravity="center|end"
                 />
 
         </TableRow>

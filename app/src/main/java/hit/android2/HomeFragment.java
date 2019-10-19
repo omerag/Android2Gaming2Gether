@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
 
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -203,8 +203,33 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 List<ChildData> comments = new ArrayList<>();
                 comments.add(new ChildData(massageEt.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
+                final ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
                 DatabaseManager.addTopicToDatabase(chosenGame.getGuid(),topic);
+                List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
+                final CommentDataHolder commentDataHolder = new CommentDataHolder();
+                commentDataHolder.setMassege(massageEt.getText().toString());
+                final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(),System.currentTimeMillis(),commentDataHolderList,FirebaseManager.getCurrentUserId(),chosenGame.getGuid());
+                DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
+                    @Override
+                    public void onSuccess(UserData userData) {
+
+                        topicDataHolder.setTitle(topic.getTitle());
+                        topicDataHolder.setTopicsOwner(userData.getName());
+                        topicDataHolder.setImageUrl(chosenGame.getImageUrl());
+                        topicDataHolder.setGameName(chosenGame.getName());
+                        topicDataHolder.setUserId(userData.getKey());
+                        topicDataHolder.setGameId(chosenGame.getGuid());
+
+                        commentDataHolder.setUserName(userData.getName());
+                        commentDataHolder.setImageUrl(userData.getImageUrl());
+                        topicAdapter.notifyDataSetChanged();
+
+                    }
+                });
+                commentDataHolderList.add(commentDataHolder);
+                topicDataHolderList.add(topicDataHolder);
+                topicAdapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         });
 
