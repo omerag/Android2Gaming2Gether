@@ -38,7 +38,11 @@ public class FirebaseManager {
     private TextView userTv;
     private String lastMessage;
 
+    private UserData currentUserData;
 
+    public FirebaseManager() {
+        loadCurrentUserData();
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -210,5 +214,23 @@ public class FirebaseManager {
         });
     }
 
+    private void loadCurrentUserData(){
 
+        if(isLoged()){
+            DatabaseManager.getUserFromDatabase(getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                @Override
+                public void onSuccess(UserData userData) {
+                    currentUserData = userData;
+                }
+            });
+        }
+    }
+
+    public UserData getCurrentUserData() {
+        return currentUserData;
+    }
+
+    static public String getCurrentUserId(){
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
 }

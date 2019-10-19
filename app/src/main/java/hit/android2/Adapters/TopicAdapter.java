@@ -23,9 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
 import hit.android2.Database.CommentDataHolder;
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Model.ParentData;
+import hit.android2.Database.Model.UserData;
 import hit.android2.Database.TopicDataHolder;
 import hit.android2.HomeFragmentLiveData;
 import hit.android2.R;
@@ -33,18 +35,18 @@ import hit.android2.R;
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHolder> {
 
     private Context context;
-    private List<ParentData> dataBaseTopics;
+    private List<ParentData> databaseTopics;
     private List<TopicDataHolder> topics;
     private AdapterListener listener;
     private HomeFragmentLiveData liveData;
 
     private int counter = 0;
 
-    public TopicAdapter(Context context, /*List<ParentData> topics*/ List<TopicDataHolder> topics,List<ParentData> dataBaseTopics, HomeFragmentLiveData liveData) {
+    public TopicAdapter(Context context, /*List<ParentData> topics*/ List<TopicDataHolder> topics, List<ParentData> databaseTopics, HomeFragmentLiveData liveData) {
         this.context = context;
         this.topics = topics;
         this.liveData = liveData;
-        this.dataBaseTopics = dataBaseTopics;
+        this.databaseTopics = databaseTopics;
     }
 
     public interface AdapterListener{
@@ -224,9 +226,17 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 @Override
                 public void onClick(View view) {
 
-                    dataBaseTopics.get(getAdapterPosition()).getItems().add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    databaseTopics.get(getAdapterPosition()).getItems().add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
 
-                    DatabaseManager.updateTopic(topics.get(pos).getGameId(),dataBaseTopics.get(getAdapterPosition()).getId(),dataBaseTopics.get(getAdapterPosition()).getItems());
+                    DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                        @Override
+                        public void onSuccess(UserData userData) {
+                            comments.add(new CommentDataHolder(userData.getName(),commentEditText.getText().toString(),userData.getImageUrl()));
+                            //notifyDataSetChanged();
+                            commentAdapter.notifyDataSetChanged();
+                        }
+                    });
+                    DatabaseManager.updateTopic(topics.get(pos).getGameId(), databaseTopics.get(getAdapterPosition()).getId(), databaseTopics.get(getAdapterPosition()).getItems());
                 }
             });
         }
