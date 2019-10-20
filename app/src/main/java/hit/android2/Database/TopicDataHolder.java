@@ -20,16 +20,17 @@ public class TopicDataHolder implements Comparable<TopicDataHolder>{
 
     private String userId;
     private String gameId;
-
+    private String topicId;
 
     public TopicDataHolder() {
     }
 
-    public TopicDataHolder(String title, long timestemp,List<CommentDataHolder> comments, String userId, String gameId) {
+    public TopicDataHolder(String title, long timestemp,List<CommentDataHolder> comments, String userId, String gameId, String topicId) {
         this.title = title;
         this.comments = comments;
         this.userId = userId;
         this.gameId = gameId;
+        this.topicId = topicId;
 
         date = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(timestemp));
 
@@ -106,6 +107,14 @@ public class TopicDataHolder implements Comparable<TopicDataHolder>{
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
+    }
+
+    public String getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     @Override

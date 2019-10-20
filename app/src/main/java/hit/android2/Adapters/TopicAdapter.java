@@ -25,6 +25,7 @@ import java.util.List;
 
 import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Model.ParentData;
@@ -241,12 +242,18 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                     DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
                         @Override
                         public void onSuccess(UserData userData) {
-                            comments.add(new CommentDataHolder(userData.getName(),commentEditText.getText().toString(),userData.getImageUrl()));
+                            CommentDataHolder comment = new CommentDataHolder(userData.getName(),commentEditText.getText().toString(),userData.getImageUrl());
+                            comments.add(comment);
                             //notifyDataSetChanged();
                             commentAdapter.notifyDataSetChanged();
+
+                            MessegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
+                            MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
+
                         }
                     });
                     DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), databaseTopics.get(getAdapterPosition()).getId(), databaseTopics.get(getAdapterPosition()).getItems());
+
                 }
             });
         }

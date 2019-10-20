@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
             List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
 
 
-            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(),topic.getTimestamp(),commentDataHolderList,topic.getGame_key(),topic.getGame_key());
+            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(),topic.getTimestamp(),commentDataHolderList,topic.getGame_key(),topic.getGame_key(),topic.getId());
             topicDataHolderList.add(dataHolder);
 
             DatabaseManager.getGameFromDatabase(topic.getGame_key(), new DatabaseManager.DataListener<GameData>() {
@@ -212,7 +212,7 @@ public class HomeFragment extends Fragment {
                 List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
                 final CommentDataHolder commentDataHolder = new CommentDataHolder();
                 commentDataHolder.setMassege(massageEt.getText().toString());
-                final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(),System.currentTimeMillis(),commentDataHolderList,FirebaseManager.getCurrentUserId(),chosenGame.getGuid());
+                final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(),System.currentTimeMillis(),commentDataHolderList,FirebaseManager.getCurrentUserId(),chosenGame.getGuid(),topic.getId());
                 DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
                     @Override
                     public void onSuccess(UserData userData) {

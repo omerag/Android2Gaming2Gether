@@ -579,7 +579,22 @@ public class DatabaseManager {
         Log.d("DatabaseManager", "addTopicToDatabase called");
 
         FirebaseFirestore.getInstance().collection("games")
-                .document(guid).collection("topics").add(topic);
+                .document(guid).collection("topics").add(topic)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+
+                        documentReference.update("id",documentReference.getId());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
 
     }
 

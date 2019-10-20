@@ -13,12 +13,16 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -26,6 +30,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Locale;
 
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager pager;
     String userName;
     FirebaseManager fireBaseManager = new FirebaseManager();
+
+    BroadcastReceiver receiver;
 
     private MenuItem prevMenuItem;
 
@@ -194,6 +201,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fireBaseManager.registerAuthListener();
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                System.out.println("messege receive");
+
+            }
+        };
+        MessegingManager.registerReceiver(this,receiver);
         // fireBaseManager.getFireBaseAuth().addAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 
@@ -201,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         fireBaseManager.unRegisterAuthListener();
+        MessegingManager.unRegisterReciver(this,receiver);
         // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 
