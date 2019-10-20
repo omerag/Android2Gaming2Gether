@@ -1,10 +1,15 @@
 package hit.android2.Database;
 
+import android.util.Log;
+
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class TopicDataHolder {
+public class TopicDataHolder implements Comparable<TopicDataHolder>{
 
     private String title;
     private String gameName;
@@ -22,10 +27,12 @@ public class TopicDataHolder {
 
     public TopicDataHolder(String title, long timestemp,List<CommentDataHolder> comments, String userId, String gameId) {
         this.title = title;
-        date = new Date(timestemp).toString();
         this.comments = comments;
         this.userId = userId;
         this.gameId = gameId;
+
+        date = new SimpleDateFormat("dd/MM/yy HH:mm").format(new Date(timestemp));
+
     }
 
     public TopicDataHolder(String title, String gameName, String topicsOwner, String date, String imageUrl) {
@@ -99,5 +106,17 @@ public class TopicDataHolder {
 
     public void setGameId(String gameId) {
         this.gameId = gameId;
+    }
+
+    @Override
+    public int compareTo(TopicDataHolder topicDataHolder) {
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yy HH:mm");
+        Date date1 = format.parse(topicDataHolder.getDate(), new ParsePosition(0));
+        Date date2 = format.parse(getDate(), new ParsePosition(0));
+
+        if(date1.getTime() - date2.getTime() >= 0){
+            return 1;
+        }
+        return -1;
     }
 }

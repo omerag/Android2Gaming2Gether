@@ -519,7 +519,7 @@ public class DatabaseManager {
 
         CollectionReference topicsReff = FirebaseFirestore.getInstance().collection("games").document(guid).collection("topics");
 
-        topicsReff.orderBy("timestamp").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        topicsReff.orderBy("timestamp", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d("DatabaseManager", "getTopicsByGame onSuccess called");
@@ -608,58 +608,58 @@ public class DatabaseManager {
         });
     }
 
-        static public void updateTopic (String guid, String topicID ,final List<ChildData> comments, final Listener listener){
-            Log.d("DatabaseManager", "UpdateTopic called");
+    static public void updateTopic(String guid, String topicID, final List<ChildData> comments, final Listener listener) {
+        Log.d("DatabaseManager", "UpdateTopic called");
 
-            final DocumentReference topicReff = FirebaseFirestore.getInstance().collection("games")
-                    .document(guid).collection("topics").document(topicID);
+        final DocumentReference topicReff = FirebaseFirestore.getInstance().collection("games")
+                .document(guid).collection("topics").document(topicID);
 
-            topicReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    Log.d("DatabaseManager", "UpdateTopic onSuccess called");
+        topicReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager", "UpdateTopic onSuccess called");
 
-                    if (documentSnapshot.exists()) {
-                        topicReff.update("items", comments).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                listener.onSuccess();
-                            }
-                        });
-                    }
-
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("DatabaseManager", e.getMessage());
-
-                }
-            });
-
-
-        }
-
-        static public void updateProfileImage(String userId,final String imageUrl){
-
-            final DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
-            userReff.get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                if (documentSnapshot.exists()) {
+                    topicReff.update("items", comments).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            if (documentSnapshot.exists()) {
-                                userReff.update("imageUrl", imageUrl);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-
+                        public void onSuccess(Void aVoid) {
+                            listener.onSuccess();
                         }
                     });
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+
+            }
+        });
 
 
-        }
+    }
+
+    static public void updateProfileImage(String userId, final String imageUrl) {
+
+        final DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            userReff.update("imageUrl", imageUrl);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
+    }
 
 }

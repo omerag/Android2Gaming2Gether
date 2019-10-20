@@ -22,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import hit.android2.Adapters.GameAdapter;
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment {
                         liveData.setTopics(topics);
                         topicDataHolderList = initTopicDataHolderList(topics);
                         liveData.setTopicDataHolderList(topicDataHolderList);
+                        Collections.sort(topicDataHolderList);
                         topicAdapter.setTopics(topicDataHolderList);
                         topicAdapter.notifyDataSetChanged();
                     }
@@ -101,6 +104,7 @@ public class HomeFragment extends Fragment {
             else {
                 topics = liveData.getTopics();
                 topicDataHolderList = liveData.getTopicDataHolderList();
+                Collections.sort(topicDataHolderList);
                 topicAdapter.setTopics(topicDataHolderList);
                 topicAdapter.notifyDataSetChanged();
             }
