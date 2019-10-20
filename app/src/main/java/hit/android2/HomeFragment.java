@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
                 commentDataHolderList.add(commentDataHolder);
-                topicDataHolderList.add(topicDataHolder);
+                topicDataHolderList.add(0,topicDataHolder);
                 topicAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
