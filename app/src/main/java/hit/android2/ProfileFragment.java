@@ -60,7 +60,6 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMeTv;
     private ImageView userIv;
     private ImageButton pic_edit_btn;
-    private ExpandableTextView aboutMeExpandableTv;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -108,7 +107,7 @@ public class ProfileFragment extends Fragment {
 
 
         RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         gameAdapter = new GameAdapter(getActivity(),gameDataList); //gameDataList is empty, needs to be loaded from server
@@ -118,7 +117,6 @@ public class ProfileFragment extends Fragment {
         if(FirebaseManager.isLoged()){
             loadUserGames();
         }
-
 
     }
 
