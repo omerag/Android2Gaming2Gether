@@ -106,7 +106,7 @@ public class MessagingActivity extends AppCompatActivity {
     private void readMessages(final String myId, final String friendId){
 
         mChat = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference = FirebaseDatabase.getInstance().getReference("Chats").child(myId).child(friendId);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -117,11 +117,12 @@ public class MessagingActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(myId) && chat.getSender().equals(friendId) ||
+                   /* if (chat.getReceiver().equals(myId) && chat.getSender().equals(friendId) ||
                         chat.getReceiver().equals(friendId) && chat.getSender().equals(myId))
                     {
                         mChat.add(chat);
-                    }
+                    }*/
+                    mChat.add(chat);
 
                     messageAdapter = new MessageAdapter(MessagingActivity.this, mChat);
                     recyclerView.setAdapter(messageAdapter);

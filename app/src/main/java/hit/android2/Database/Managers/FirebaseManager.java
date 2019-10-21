@@ -147,7 +147,7 @@ public class FirebaseManager {
         return false;
     }
 
-    public void sendMessage(String sender, final String receiver, String message){
+    public void sendMessage(final String sender, final String receiver, String message){
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -157,11 +157,13 @@ public class FirebaseManager {
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
 
-        databaseReference.child("Chats").push().setValue(hashMap);
+        databaseReference.child("Chats").child(sender).child(receiver).push().setValue(hashMap);
+        databaseReference.child("Chats").child(receiver).child(sender).push().setValue(hashMap);
 
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child(sender)
                 .child(receiver);
+
 
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -177,6 +179,26 @@ public class FirebaseManager {
 
             }
         });
+
+        final DatabaseReference chatRefFriend = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child(receiver)
+                .child(sender);
+
+
+        chatRefFriend.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists())
+                {
+                    chatRefFriend.child("id").setValue(sender);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void GetLastMessage(final String userid, final TextView lastMessageTv)
@@ -184,7 +206,7 @@ public class FirebaseManager {
         lastMessage = "default";
 
         final FirebaseUser firebaseUser = getFireBaseAuth().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats").child(firebaseUser.getUid()).child(userid);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -193,11 +215,12 @@ public class FirebaseManager {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
+                    /*if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
                             chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid()))
                     {
                         lastMessage = chat.getMessage();
-                    }
+                    }*/
+                    lastMessage = chat.getMessage();
                 }
 
                 if (lastMessage.equals("default")) lastMessageTv.setVisibility(View.INVISIBLE);
