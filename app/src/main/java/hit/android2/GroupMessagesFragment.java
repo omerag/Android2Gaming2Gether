@@ -2,12 +2,14 @@ package hit.android2;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +59,7 @@ public class GroupMessagesFragment extends Fragment {
 
             List<UserData> friends = new ArrayList<>();
 
-            final EditText groupName = dialog.findViewById(R.id.group_name_ET);
+            final EditText groupNameET = dialog.findViewById(R.id.group_name_ET);
             final RecyclerView friendsRecycler = dialog.findViewById(R.id.friends_recycler_view);
             friendsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
             final UserAdapter userAdapter = new UserAdapter(getContext(),friends);
@@ -68,9 +75,46 @@ public class GroupMessagesFragment extends Fragment {
                 }
             });
 
+            createGroupBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String group_name = groupNameET.getText().toString();
+
+                    if (TextUtils.isEmpty(group_name))
+                    {
+                        Toast.makeText(getContext(), "Enter group name...", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        createNewGroup(group_name);
+                        dialog.dismiss();
+                    }
+                }
+            });
+
             dialog.setCanceledOnTouchOutside(false);
 
             dialog.show();
         }
+    }
+
+    private void createNewGroup(String group_name) {
+
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups").child(group_name);
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists())
+                {
+                    reference.setValue("");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }
