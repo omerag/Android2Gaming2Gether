@@ -2,10 +2,10 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,21 +15,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@color/colorAccent">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_gravity="start"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
+
 
                 <ImageButton
                     android:id="@+id/image_edit_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginStart="-15dp"
                     android:src="@drawable/ic_add_a_photo_black_24dp"
                     android:background="@android:color/transparent"/>
 
@@ -38,40 +39,22 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="5dp"
                     android:src="@drawable/blank_profile_img"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#FF000000"/>
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:orientation="vertical"
-                android:layout_gravity="end"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hello_str"
-                    android:textSize="25sp" />
+            </RelativeLayout>
 
                 <TextView
                     android:id="@+id/profile_fragment_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/user_name_tv"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    android:layout_marginBottom="5dp"/>
 
             </LinearLayout>
-
-
-        </LinearLayout>
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -86,7 +69,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:orientation="vertical"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
@@ -102,7 +85,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:layout_marginStart="5dp"/>
+                    android:layout_marginStart="5dp"
+                    android:textAlignment="center"/>
+
             </ScrollView>
 
         </LinearLayout>
@@ -121,9 +106,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/profile_fragment_recycler_games"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-
-            />
+            android:layout_height="250dp"/>
 
     </LinearLayout>
 

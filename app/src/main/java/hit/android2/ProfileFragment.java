@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMeTv;
     private ImageView userIv;
     private ImageButton pic_edit_btn;
+    private ExpandableTextView aboutMeExpandableTv;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
