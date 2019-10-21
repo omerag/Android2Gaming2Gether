@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -132,7 +133,8 @@ public class FriendsFragment extends Fragment {
         final GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
         final RecyclerView recyclerView = dialog.findViewById(R.id.profile_fragment_recycler_games);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
 
 
