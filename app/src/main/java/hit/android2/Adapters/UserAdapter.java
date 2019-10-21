@@ -52,7 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
     @NonNull
     @Override
     public UserDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.game_card_layout,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.messages_card_layout,parent,false);
         UserDataViewHolder viewHolder = new UserDataViewHolder(view);
         return viewHolder;
     }
@@ -82,12 +82,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserDataViewHo
     public class UserDataViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewName;
+        TextView last_message_tv;
         ImageView imageViewGame;
 
         public UserDataViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = itemView.findViewById(R.id.game_name);
-            imageViewGame = itemView.findViewById(R.id.game_image);
+            textViewName = itemView.findViewById(R.id.user_name_tv);
+            imageViewGame = itemView.findViewById(R.id.user_image);
+            last_message_tv = itemView.findViewById(R.id.last_message_tv);
+            last_message_tv.setVisibility(View.INVISIBLE);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
