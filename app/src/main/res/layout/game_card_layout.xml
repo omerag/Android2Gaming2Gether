@@ -18,14 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"
+            android:padding="15dp"/>
 
         <TextView
             android:id="@+id/game_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:textStyle="bold"
             android:text="game massage"
             android:gravity="center"
