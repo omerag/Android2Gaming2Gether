@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -55,6 +56,7 @@ public class GroupMessagesFragment extends Fragment {
             final RecyclerView friendsRecycler = dialog.findViewById(R.id.friends_recycler_view);
             friendsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
             final UserAdapter userAdapter = new UserAdapter(getContext(),friends);
+            final Button createGroupBtn = dialog.findViewById(R.id.create_group_btn);
 
             DatabaseManager.getUserFriends(manager.getFireBaseAuth().getCurrentUser().getUid(), friends, new DatabaseManager.Listener() {
                 @Override
@@ -65,6 +67,8 @@ public class GroupMessagesFragment extends Fragment {
                     userAdapter.notifyDataSetChanged();
                 }
             });
+
+            dialog.setCanceledOnTouchOutside(false);
 
             dialog.show();
         }
