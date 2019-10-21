@@ -94,6 +94,7 @@ public class HomeFragment extends Fragment {
                         topicDataHolderList = initTopicDataHolderList(topics);
                         liveData.setTopicDataHolderList(topicDataHolderList);
                         Collections.sort(topicDataHolderList);
+                        Collections.sort(topics);
                         topicAdapter.setTopics(topicDataHolderList);
                         topicAdapter.notifyDataSetChanged();
                     }
@@ -105,6 +106,7 @@ public class HomeFragment extends Fragment {
                 topics = liveData.getTopics();
                 topicDataHolderList = liveData.getTopicDataHolderList();
                 Collections.sort(topicDataHolderList);
+                Collections.sort(topics);
                 topicAdapter.setTopics(topicDataHolderList);
                 topicAdapter.notifyDataSetChanged();
             }
@@ -232,6 +234,7 @@ public class HomeFragment extends Fragment {
                 });
                 commentDataHolderList.add(commentDataHolder);
                 topicDataHolderList.add(0,topicDataHolder);
+                topics.add(0,new ParentData(topicDataHolder.getTitle(),topicDataHolder.getUserId(),topicDataHolder.getGameId(),comments));
                 topicAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }

@@ -578,9 +578,13 @@ public class DatabaseManager {
     static public void addTopicToDatabase(String guid, ParentData topic) {
         Log.d("DatabaseManager", "addTopicToDatabase called");
 
-        FirebaseFirestore.getInstance().collection("games")
-                .document(guid).collection("topics").add(topic)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        CollectionReference colReff = FirebaseFirestore.getInstance().collection("games")
+                .document(guid).collection("topics");
+
+        String topicId = colReff.document().getId();
+        topic.setId(topicId);
+        colReff.document(topicId).set(topic);
+   /*             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
 
@@ -593,7 +597,7 @@ public class DatabaseManager {
             public void onFailure(@NonNull Exception e) {
 
             }
-        });
+        });*/
 
 
     }
@@ -610,7 +614,23 @@ public class DatabaseManager {
                 Log.d("DatabaseManager", "UpdateTopic onSuccess called");
 
                 if (documentSnapshot.exists()) {
-                    topicReff.update("items", comments);
+                    topicReff.update("items", comments).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("DatabaseManager","updateTopic - onSuccess - onSuccess");
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("DatabaseManager",e.getMessage());
+
+                        }
+                    });
+                }
+                else {
+                    Log.d("DatabaseManager",documentSnapshot.getId() + " not exists!");
                 }
 
             }

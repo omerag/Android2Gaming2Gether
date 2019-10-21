@@ -249,10 +249,10 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
                             MessegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
                             MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
+                            DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), topics.get(getAdapterPosition()).getTopicId(), databaseTopics.get(getAdapterPosition()).getItems());
 
                         }
                     });
-                    DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), databaseTopics.get(getAdapterPosition()).getId(), databaseTopics.get(getAdapterPosition()).getItems());
 
                 }
             });

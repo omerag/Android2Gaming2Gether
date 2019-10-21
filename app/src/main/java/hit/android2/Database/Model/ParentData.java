@@ -3,7 +3,7 @@ package hit.android2.Database.Model;
 
 import java.util.List;
 
-public class ParentData  {
+public class ParentData implements Comparable<ParentData> {
 
     private String title;
     private long timestamp;
@@ -77,5 +77,13 @@ public class ParentData  {
 
     public void setGame_key(String game_key) {
         this.game_key = game_key;
+    }
+
+    @Override
+    public int compareTo(ParentData parentData) {
+        if(timestamp - parentData.timestamp >= 0){
+            return 1;
+        }
+        return  -1;
     }
 }
