@@ -246,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
         public static Fragment getFragment(int index){
 
             switch (index){
-                case 0: return new MessagesFragment();
+                //case 0: return new MessagesFragment();
+                case 0: return new MessagesRootFragment();
                 case 1: return new FriendsFragment();
                 case 2: return new HomeFragment();
                 case 3: return new ProfileFragment();
