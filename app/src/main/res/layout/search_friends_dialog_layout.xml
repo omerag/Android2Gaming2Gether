@@ -1,40 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="5dp">
-
-    <TextView
-        android:id="@+id/search_friends_dialog_textview"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Choose a game to find friend who also play it"
-        android:gravity="center"/>
-
-        <ImageButton
-            android:id="@+id/search_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_search_black_24dp" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_friends_dialog_recycler_view"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"/>
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/search_friends_dialog_textview"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="Choose a game to find friend who also play it" />
+
+            <ImageButton
+                android:id="@+id/search_button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_search_black_24dp" />
+
+        </TableRow>
+
+        //gender select
+        <TableRow
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/search_friends_dialog_gender_male"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_male"
+                android:scaleType="fitXY"
+                />
+            <ImageButton
+                android:id="@+id/search_friends_dialog_gender_female"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_female"
+                android:scaleType="fitXY"
+
+                />
+            <ImageButton
+                android:id="@+id/search_friends_dialog_gender_all"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_both_genders"
+                android:scaleType="fitXY"
+
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="Age: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+
+                />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/search_friends_seekbar_age"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                />
+
+        </TableRow>
+
+        //player level
+        <TableRow
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <ImageButton
+                android:id="@+id/search_friends_dialog_overall_level"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_end_master"
+                android:scaleType="fitXY"
+                />
+
+            <ImageButton
+                android:id="@+id/search_friends_dialog_teammate_level"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_end_good_teammate"
+                android:scaleType="fitXY"
+                />
+            <ImageButton
+                android:id="@+id/search_friends_dialog_sportsmanship_level"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_end_sportsmanship"
+                android:scaleType="fitXY"
+
+                />
+            <ImageButton
+                android:id="@+id/search_friends_dialog_leader_level"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_end_leader"
+                android:scaleType="fitXY"
+
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:text="Distance: "
+                android:textSize="18sp"
+                android:textStyle="bold"
+
+                />
+            <androidx.appcompat.widget.AppCompatSeekBar
+                android:id="@+id/search_friends_seekbar_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                />
+
+        </TableRow>
+
+        //language select
+        <TableRow
+            android:gravity="center">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_friends_dialog_flags_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp" />
+
+
+        </TableRow>
+
+        //game select
+        <TableRow
+            android:gravity="center">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_friends_dialog_games_recycler_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="5dp" />
+        </TableRow>
+
+
+    </TableLayout>
+
+
 
 </LinearLayout>

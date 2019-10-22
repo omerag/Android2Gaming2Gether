@@ -3,19 +3,16 @@ package hit.android2;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -30,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hit.android2.Adapters.FlagAdapter;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
@@ -188,21 +186,35 @@ public class FriendsFragment extends Fragment {
         dialog.setTitle("Search Friends Dialog");
 
         ImageButton searchBtn = dialog.findViewById(R.id.search_button);
-        final RecyclerView recycler = dialog.findViewById(R.id.search_friends_dialog_recycler_view);
+        final RecyclerView gamesRecycler = dialog.findViewById(R.id.search_friends_dialog_games_recycler_view);
+        final RecyclerView flagsRecycler = dialog.findViewById(R.id.search_friends_dialog_flags_recycler_view);
+        flagsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        FlagAdapter flagAdapter = new FlagAdapter();
+        flagsRecycler.setAdapter(flagAdapter);
+        flagsRecycler.setHasFixedSize(true);
 
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        flagAdapter.setListener(new FlagAdapter.Listener() {
+            @Override
+            public void onClick(String language) {
+                Toast.makeText(getActivity(), language + " clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        flagAdapter.notifyDataSetChanged();
+
+
+        gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
         GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
         final UserAdapter userSearchAdapter = new UserAdapter(getActivity(),users);
-        recycler.setAdapter(gameAdapter);
+        gamesRecycler.setAdapter(gameAdapter);
 
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
                 gameGUID[0] = games.get(position).getGuid();
-                recycler.setAdapter(userSearchAdapter);
+                gamesRecycler.setAdapter(userSearchAdapter);
                 userSearchAdapter.notifyDataSetChanged();
                 DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
 
@@ -238,7 +250,6 @@ public class FriendsFragment extends Fragment {
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),games,gameAdapter);
         dialog.show();
         dialog.getCurrentFocus();
+
     }
-
-
 }

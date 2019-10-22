@@ -47,4 +47,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
     implementation 'com.ms-square:expandableTextView:0.1.4'
+
 }

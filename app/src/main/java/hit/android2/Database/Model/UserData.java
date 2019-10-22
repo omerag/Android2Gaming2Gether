@@ -6,10 +6,15 @@ import java.util.List;
 public class UserData {
 
     private String key;
+
     private String name;
     private String aboutMe;
-
+    private String gender;
+    private String language;
+    private String country;
     private String imageUrl;
+
+    private List<String> consoles;
 
     private List<String> games = new ArrayList<>(); //gameId list
     private List<String> friends = new ArrayList<>();   //userId list
