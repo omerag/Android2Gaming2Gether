@@ -24,8 +24,13 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
 
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import hit.android2.Database.Model.ChildData;
@@ -346,6 +351,64 @@ public class DatabaseManager {
                     players.add(player);
                 }
                 adapter.notifyDataSetChanged();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+            }
+        });
+    }
+
+    static public void searchPlayers(final String gameGuid,String language ,String gender,String rankType,int maxAge, final DataListener<List<UserData>> listener) {
+        Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
+
+        //////////
+        Calendar calendar = Calendar.getInstance();
+        Date now = new Date(); //init to current date
+        calendar.setTime(now);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        calendar.set(year - maxAge,month,day);
+        long birthdayTimestamp = calendar.getTimeInMillis();
+        ///////////
+
+
+        CollectionReference usersReff = FirebaseFirestore.getInstance().collection("users");
+        Query query;
+
+        if(gender.equals("all")){
+            query = usersReff.whereArrayContains("games", gameGuid)
+                    .whereEqualTo(language,true)
+                   // .whereGreaterThanOrEqualTo(rankType,0)
+                    .whereGreaterThan("birthday_timestamp",birthdayTimestamp)
+                   // .orderBy(rankType, Query.Direction.DESCENDING)
+                  //  .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
+                    ;
+        }
+        else{
+            query = usersReff.whereArrayContains("games", gameGuid)
+                    .whereEqualTo(language,true)
+                    .whereEqualTo("gender",gender)
+                    //.whereGreaterThanOrEqualTo(rankType,0)
+                    .whereGreaterThan("birthday_timestamp",birthdayTimestamp)
+                   // .orderBy(rankType, Query.Direction.DESCENDING)
+                   // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
+            ;
+        }
+
+
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                List<UserData> players = new ArrayList<>();
+                for (QueryDocumentSnapshot playerDocument : queryDocumentSnapshots) {
+                    UserData player = playerDocument.toObject(UserData.class);
+                    players.add(player);
+                }
+                listener.onSuccess(players);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

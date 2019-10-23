@@ -3,7 +3,7 @@ package hit.android2.Database.Model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserData {
+public class UserData implements Comparable<UserData>{
 
     private String key;
 
@@ -13,8 +13,6 @@ public class UserData {
     private String language;
     private String country;
     private String imageUrl;
-
-    private List<String> consoles;
 
     private List<String> games = new ArrayList<>(); //gameId list
     private List<String> friends = new ArrayList<>();   //userId list
@@ -122,4 +120,15 @@ public class UserData {
     public void setKey(String key) {
         this.key = key;
     }
+
+    @Override
+    public int compareTo(UserData userData) {
+        if(totalRank >= userData.totalRank){
+            return 1;
+        }
+        return  -1;
+
+    }
+
+
 }

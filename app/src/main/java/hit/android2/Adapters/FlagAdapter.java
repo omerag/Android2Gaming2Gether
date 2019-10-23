@@ -76,25 +76,25 @@ public class FlagAdapter extends RecyclerView.Adapter<FlagAdapter.FlagViewHolder
         flagsDrawable = new ArrayList<>();
         languages = new ArrayList<>();
         flagsDrawable.add(R.drawable.ic_flag_israel);
-        languages.add("hebrew");
+        languages.add("language.hebrew");
         flagsDrawable.add(R.drawable.ic_flag_usa);
-        languages.add("english");
+        languages.add("language.english");
         flagsDrawable.add(R.drawable.ic_flag_france);
-        languages.add("french");
+        languages.add("language.french");
         flagsDrawable.add(R.drawable.ic_flag_china);
-        languages.add("chinese");
+        languages.add("language.chinese");
         flagsDrawable.add(R.drawable.ic_flag_germany);
-        languages.add("german");
+        languages.add("language.german");
         flagsDrawable.add(R.drawable.ic_flag_italy);
-        languages.add("italian");
+        languages.add("language.italian");
         flagsDrawable.add(R.drawable.ic_flag_japan);
-        languages.add("japanese");
+        languages.add("language.japanese");
         flagsDrawable.add(R.drawable.ic_flag_russia);
-        languages.add("russian");
+        languages.add("language.russian");
         flagsDrawable.add(R.drawable.ic_flag_south_korea);
-        languages.add("korean");
+        languages.add("language.korean");
         flagsDrawable.add(R.drawable.ic_flag_turkey);
-        languages.add("arabic");
+        languages.add("language.arabic");
 
     }
 

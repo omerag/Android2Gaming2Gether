@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -180,13 +181,67 @@ public class FriendsFragment extends Fragment {
     private void showSearchFriendDialog(){
 
         final Dialog dialog = new Dialog(getActivity());
-
         dialog.setContentView(R.layout.search_friends_dialog_layout);
-
         dialog.setTitle("Search Friends Dialog");
 
+        String generResult = "all";
+        final String[] languegeResult = {"english"};
+        String rankTypeResult = "totalRank";
+        final int[] age = {0};
+
         ImageButton searchBtn = dialog.findViewById(R.id.search_button);
-        final RecyclerView gamesRecycler = dialog.findViewById(R.id.search_friends_dialog_games_recycler_view);
+        searchBtn.setTag(R.id.search_button);
+
+
+        final GetStringFromImageBtn stringFromImageBtn =  new GetStringFromImageBtn();
+        ImageButton maleGenderIbtn = dialog.findViewById(R.id.search_friends_dialog_gender_male);
+        maleGenderIbtn.setTag(R.id.search_friends_dialog_gender_male);
+        maleGenderIbtn.setOnClickListener(stringFromImageBtn);
+        ImageButton femaleGenderIbtn = dialog.findViewById(R.id.search_friends_dialog_gender_female);
+        femaleGenderIbtn.setTag(R.id.search_friends_dialog_gender_female);
+        femaleGenderIbtn.setOnClickListener(stringFromImageBtn);
+        ImageButton allGenderIbtn = dialog.findViewById(R.id.search_friends_dialog_gender_all);
+        allGenderIbtn.setTag(R.id.search_friends_dialog_gender_all);
+        allGenderIbtn.setOnClickListener(stringFromImageBtn);
+
+        ImageButton totalRankIbtn = dialog.findViewById(R.id.search_friends_dialog_overall_level);
+        totalRankIbtn.setTag(R.id.search_friends_dialog_overall_level);
+        totalRankIbtn.setOnClickListener(stringFromImageBtn);
+        ImageButton teammateRankIbtn = dialog.findViewById(R.id.search_friends_dialog_teammate_level);
+        teammateRankIbtn.setTag(R.id.search_friends_dialog_teammate_level);
+        teammateRankIbtn.setOnClickListener(stringFromImageBtn);
+        ImageButton spotmanRankIbtn = dialog.findViewById(R.id.search_friends_dialog_sportsmanship_level);
+        spotmanRankIbtn.setTag(R.id.search_friends_dialog_sportsmanship_level);
+        spotmanRankIbtn.setOnClickListener(stringFromImageBtn);
+        ImageButton leaderRankIbtn = dialog.findViewById(R.id.search_friends_dialog_leader_level);
+        leaderRankIbtn.setTag(R.id.search_friends_dialog_leader_level);
+        leaderRankIbtn.setOnClickListener(stringFromImageBtn);
+
+        SeekBar ageSeekBat = dialog.findViewById(R.id.search_friends_seekbar_age);
+        ageSeekBat.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                age[0] = i;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+
+
+
+
+
+        ///flags recycler
         final RecyclerView flagsRecycler = dialog.findViewById(R.id.search_friends_dialog_flags_recycler_view);
         flagsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         FlagAdapter flagAdapter = new FlagAdapter();
@@ -197,11 +252,14 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(String language) {
                 Toast.makeText(getActivity(), language + " clicked", Toast.LENGTH_SHORT).show();
+                languegeResult[0] = language;
             }
         });
         flagAdapter.notifyDataSetChanged();
+        ///
 
-
+        ///games recycler
+        final RecyclerView gamesRecycler = dialog.findViewById(R.id.search_friends_dialog_games_recycler_view);
         gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
@@ -216,10 +274,18 @@ public class FriendsFragment extends Fragment {
                 gameGUID[0] = games.get(position).getGuid();
                 gamesRecycler.setAdapter(userSearchAdapter);
                 userSearchAdapter.notifyDataSetChanged();
-                DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
-
+                //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
+                DatabaseManager.searchPlayers(gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0], new DatabaseManager.DataListener<List<UserData>>() {
+                    @Override
+                    public void onSuccess(List<UserData> userData) {
+                        users.addAll(userData);
+                        userSearchAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
+        gameAdapter.notifyDataSetChanged();
+        /////////////
 
         userSearchAdapter.setListener(new UserAdapter.AdapterListener() {
             @Override
@@ -245,11 +311,62 @@ public class FriendsFragment extends Fragment {
         });
 
 
-        gameAdapter.notifyDataSetChanged();
 
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),games,gameAdapter);
         dialog.show();
         dialog.getCurrentFocus();
 
+    }
+
+    class GetStringFromImageBtn implements View.OnClickListener{
+
+
+        String resultGener;
+        String resultRank;
+
+        public String getResultGener() {
+            return resultGener;
+        }
+
+        public String getResultRank() {
+            return resultRank;
+        }
+
+        @Override
+        public void onClick(View view) {
+            int tag = (int)view.getTag();
+
+            switch (tag){
+                case R.id.search_friends_dialog_gender_male:
+                    resultGener = "male";
+                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.search_friends_dialog_gender_female:
+                    resultGener = "female";
+                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.search_friends_dialog_gender_all:
+                    resultGener = "all";
+                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.search_friends_dialog_overall_level:
+                    resultRank = "totalRank";
+                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.search_friends_dialog_teammate_level:
+                    resultRank = "teammate";
+                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.search_friends_dialog_sportsmanship_level:
+                    resultRank = "sportmanship";
+                    break;
+                case R.id.search_friends_dialog_leader_level:
+                    resultRank = "leader";
+                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+
+        }
     }
 }
