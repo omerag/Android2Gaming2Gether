@@ -217,11 +217,13 @@ public class FriendsFragment extends Fragment {
         leaderRankIbtn.setTag(R.id.search_friends_dialog_leader_level);
         leaderRankIbtn.setOnClickListener(stringFromImageBtn);
 
+        final TextView ageTv = dialog.findViewById(R.id.search_friends_dialog_age_tv);
         SeekBar ageSeekBat = dialog.findViewById(R.id.search_friends_seekbar_age);
         ageSeekBat.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 age[0] = i;
+                ageTv.setText( "Age: " + i);
             }
 
             @Override

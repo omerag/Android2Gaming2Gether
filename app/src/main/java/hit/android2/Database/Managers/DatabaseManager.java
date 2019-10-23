@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.auth.User;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -367,11 +368,14 @@ public class DatabaseManager {
         Calendar calendar = Calendar.getInstance();
         Date now = new Date(); //init to current date
         calendar.setTime(now);
+        Log.d("searchPlayers","" + calendar.getTimeInMillis());
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         calendar.set(year - maxAge,month,day);
-        long birthdayTimestamp = calendar.getTimeInMillis();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        String birthdayTimestamp = format.format(calendar.getTime());
+        Log.d("searchPlayers","" + birthdayTimestamp);
         ///////////
 
 
@@ -402,11 +406,16 @@ public class DatabaseManager {
         query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d("DatabaseManager", "searchPlayers called - onSuccess");
 
                 List<UserData> players = new ArrayList<>();
                 for (QueryDocumentSnapshot playerDocument : queryDocumentSnapshots) {
                     UserData player = playerDocument.toObject(UserData.class);
                     players.add(player);
+                    Log.d("DatabaseManager", "searchPlayers called - onSuccess inside For loop\n" +
+                            "player = " + player.getName());
+
+
                 }
                 listener.onSuccess(players);
             }
