@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Model.GameData;
@@ -361,44 +362,42 @@ public class DatabaseManager {
         });
     }
 
-    static public void searchPlayers(final String gameGuid,String language ,String gender,String rankType,int maxAge, final DataListener<List<UserData>> listener) {
+    static public void searchPlayers(final String gameGuid, String language, String gender, String rankType, int maxAge, final DataListener<List<UserData>> listener) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
         //////////
         Calendar calendar = Calendar.getInstance();
         Date now = new Date(); //init to current date
         calendar.setTime(now);
-        Log.d("searchPlayers","" + calendar.getTimeInMillis());
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        calendar.set(year - maxAge,month,day);
+        calendar.set(year - maxAge + 1, month, day);
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         String birthdayTimestamp = format.format(calendar.getTime());
-        Log.d("searchPlayers","" + birthdayTimestamp);
+        Log.d("searchPlayers", "MaxAge = " + birthdayTimestamp);
         ///////////
 
 
         CollectionReference usersReff = FirebaseFirestore.getInstance().collection("users");
         Query query;
 
-        if(gender.equals("all")){
+        if (gender.equals("all")) {
             query = usersReff.whereArrayContains("games", gameGuid)
-                    .whereEqualTo(language,true)
-                   // .whereGreaterThanOrEqualTo(rankType,0)
-                    .whereGreaterThan("birthday_timestamp",birthdayTimestamp)
-                   // .orderBy(rankType, Query.Direction.DESCENDING)
-                  //  .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
-                    ;
-        }
-        else{
+                    .whereEqualTo(language, true)
+                    // .whereGreaterThanOrEqualTo(rankType,0)
+                    .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
+            // .orderBy(rankType, Query.Direction.DESCENDING)
+            //  .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
+            ;
+        } else {
             query = usersReff.whereArrayContains("games", gameGuid)
-                    .whereEqualTo(language,true)
-                    .whereEqualTo("gender",gender)
+                    .whereEqualTo(language, true)
+                    .whereEqualTo("gender", gender)
                     //.whereGreaterThanOrEqualTo(rankType,0)
-                    .whereGreaterThan("birthday_timestamp",birthdayTimestamp)
-                   // .orderBy(rankType, Query.Direction.DESCENDING)
-                   // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
+                    .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
+            // .orderBy(rankType, Query.Direction.DESCENDING)
+            // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
             ;
         }
 
@@ -689,20 +688,19 @@ public class DatabaseManager {
                     topicReff.update("items", comments).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Log.d("DatabaseManager","updateTopic - onSuccess - onSuccess");
+                            Log.d("DatabaseManager", "updateTopic - onSuccess - onSuccess");
 
                         }
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("DatabaseManager",e.getMessage());
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d("DatabaseManager", e.getMessage());
 
-                        }
-                    });
-                }
-                else {
-                    Log.d("DatabaseManager",documentSnapshot.getId() + " not exists!");
+                                }
+                            });
+                } else {
+                    Log.d("DatabaseManager", documentSnapshot.getId() + " not exists!");
                 }
 
             }
@@ -765,8 +763,29 @@ public class DatabaseManager {
 
                     }
                 });
+    }
 
+    static public void updateUserData(String userId, String aboutMe, Map<String,Boolean> language,String birthday, String gender){
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+
+        if(aboutMe != null){
+            userReff.update("aboutMe",aboutMe);
+        }
+
+        if(language != null){
+            userReff.update("language",language);
+        }
+
+        if(birthday != null){
+            userReff.update("birthday_timestamp",birthday);
+        }
+
+        if(gender != null){
+            userReff.update("gender",gender);
+        }
 
     }
+
 
 }
