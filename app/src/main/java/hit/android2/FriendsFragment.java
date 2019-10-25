@@ -277,13 +277,21 @@ public class FriendsFragment extends Fragment {
                 gamesRecycler.setAdapter(userSearchAdapter);
                 userSearchAdapter.notifyDataSetChanged();
                 //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
-                DatabaseManager.searchPlayers(gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0], new DatabaseManager.DataListener<List<UserData>>() {
+
+                DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
                     @Override
-                    public void onSuccess(List<UserData> userData) {
-                        users.addAll(userData);
-                        userSearchAdapter.notifyDataSetChanged();
+                    public void onSuccess(UserData userData) {
+                        float distance = 0;
+                        DatabaseManager.searchPlayers(userData,gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0],distance,new DatabaseManager.DataListener<List<UserData>>() {
+                            @Override
+                            public void onSuccess(List<UserData> userData) {
+                                users.addAll(userData);
+                                userSearchAdapter.notifyDataSetChanged();
+                            }
+                        });
                     }
                 });
+
             }
         });
         gameAdapter.notifyDataSetChanged();

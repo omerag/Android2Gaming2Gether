@@ -2,6 +2,7 @@ package hit.android2.Database.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class UserData implements Comparable<UserData>{
 
@@ -10,7 +11,7 @@ public class UserData implements Comparable<UserData>{
     private String name;
     private String aboutMe;
     private String gender;
-    private String language;
+    private Map<String,Boolean> language;
     private String country;
     private String imageUrl;
 
@@ -21,6 +22,10 @@ public class UserData implements Comparable<UserData>{
     private int teammate;
     private int sportsmanship;
     private int totalRank;
+
+    String birthday;
+    double myLatitude;
+    double myLongitude;
 
     public UserData() {
     }
@@ -119,6 +124,48 @@ public class UserData implements Comparable<UserData>{
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public double getMyLatitude() {
+        return myLatitude;
+    }
+
+    public void setMyLatitude(double myLatitude) {
+        this.myLatitude = myLatitude;
+    }
+
+    public double getMyLongitude() {
+        return myLongitude;
+    }
+
+    public void setMyLongitude(double myLongitude) {
+        this.myLongitude = myLongitude;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     @Override

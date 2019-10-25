@@ -1,6 +1,7 @@
 package hit.android2.Database.Managers;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -362,7 +363,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void searchPlayers(final String gameGuid, String language, String gender, String rankType, int maxAge, final DataListener<List<UserData>> listener) {
+    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance , final DataListener<List<UserData>> listener) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
         //////////
@@ -374,8 +375,8 @@ public class DatabaseManager {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         calendar.set(year - maxAge + 1, month, day);
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        String birthdayTimestamp = format.format(calendar.getTime());
-        Log.d("searchPlayers", "MaxAge = " + birthdayTimestamp);
+        final String maxBirthday = format.format(calendar.getTime());
+        Log.d("searchPlayers", "MaxAge = " + maxBirthday);
         ///////////
 
 
@@ -385,19 +386,19 @@ public class DatabaseManager {
         if (gender.equals("all")) {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
-                    // .whereGreaterThanOrEqualTo(rankType,0)
-                    .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
-            // .orderBy(rankType, Query.Direction.DESCENDING)
-            //  .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
+                    .whereGreaterThanOrEqualTo(rankType,0)
+                 // .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
+                    .orderBy(rankType, Query.Direction.DESCENDING)
+                 // .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
             ;
         } else {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
                     .whereEqualTo("gender", gender)
-                    //.whereGreaterThanOrEqualTo(rankType,0)
-                    .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
-            // .orderBy(rankType, Query.Direction.DESCENDING)
-            // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
+                    .whereGreaterThanOrEqualTo(rankType,0)
+                    //.whereGreaterThan("birthday_timestamp", birthdayTimestamp)
+                    .orderBy(rankType, Query.Direction.DESCENDING)
+                 // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
             ;
         }
 
@@ -416,6 +417,8 @@ public class DatabaseManager {
 
 
                 }
+
+                players = filerPlayerList(mUser, players,maxBirthday,maxDistance);
                 listener.onSuccess(players);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -785,6 +788,28 @@ public class DatabaseManager {
             userReff.update("gender",gender);
         }
 
+    }
+
+    private static List<UserData> filerPlayerList(UserData mUser, List<UserData> players,String maxBirthday,float maxDistance){
+
+        List<UserData> tempPlayers = new ArrayList<>();
+
+        Location mLocation = new Location("");
+        mLocation.setLatitude(mUser.getMyLatitude());
+        mLocation.setLongitude(mUser.getMyLongitude());
+
+        for (UserData player : players){
+
+            Location pLocation = new Location("");
+            pLocation.setLatitude(player.getMyLatitude());
+            pLocation.setLongitude(player.getMyLongitude());
+
+            if(player.getBirthday().compareTo(maxBirthday) > 0 && maxDistance < mLocation.distanceTo(pLocation)){
+                tempPlayers.add(player);
+            }
+        }
+
+        return tempPlayers;
     }
 
 

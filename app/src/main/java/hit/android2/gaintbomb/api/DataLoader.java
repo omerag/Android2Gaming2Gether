@@ -144,7 +144,8 @@ public class DataLoader {
                     JSONObject rootObject = new JSONObject(response);
                     JSONObject resultsObject = rootObject.getJSONObject("results");
                     JSONObject imageObject = resultsObject.getJSONObject("image");
-                    String thumb_url = imageObject.getString("thumb_url");
+                  //  String thumb_url = imageObject.getString("thumb_url");
+                    String thumb_url = imageObject.getString("screen_url");
 
                     listener.onSuccess(thumb_url);
                 } catch (JSONException e) {
