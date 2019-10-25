@@ -123,6 +123,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
         userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -141,7 +142,7 @@ public class ProfileFragment extends Fragment {
                 liveData.setAboutMeTv(user.getAboutMe());
                // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                 liveData.setUserIv(user.getImageUrl());
-/*
+
                 DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
                     @Override
                     public void onSuccess() {
@@ -149,14 +150,13 @@ public class ProfileFragment extends Fragment {
 
                         liveData.setGameDataList(gameDataList);
                     }
-                });*/
+                });
 
             }//
         });
-
     }
 
-    @Override
+   @Override
     public void onStop() {
         super.onStop();
 

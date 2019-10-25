@@ -36,6 +36,7 @@ public class GroupMessagesFragment extends Fragment {
 
     FloatingActionButton addNewGroupBtn;
     FirebaseManager manager = new FirebaseManager();
+    private List<String> group_users_id;
 
     @Nullable
     @Override
@@ -57,13 +58,14 @@ public class GroupMessagesFragment extends Fragment {
             dialog.setContentView(R.layout.new_group_dialog);
             dialog.setTitle("Create Group");
 
-            List<UserData> friends = new ArrayList<>();
+            final List<UserData> friends = new ArrayList<>();
 
             final EditText groupNameET = dialog.findViewById(R.id.group_name_ET);
             final RecyclerView friendsRecycler = dialog.findViewById(R.id.friends_recycler_view);
             friendsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
             final UserAdapter userAdapter = new UserAdapter(getContext(),friends);
             final Button createGroupBtn = dialog.findViewById(R.id.create_group_btn);
+            group_users_id = new ArrayList<>();
 
             DatabaseManager.getUserFriends(manager.getFireBaseAuth().getCurrentUser().getUid(), friends, new DatabaseManager.Listener() {
                 @Override
@@ -72,6 +74,14 @@ public class GroupMessagesFragment extends Fragment {
                     friendsRecycler.setAdapter(userAdapter);
                     friendsRecycler.setHasFixedSize(true);
                     userAdapter.notifyDataSetChanged();
+                }
+            });
+
+            userAdapter.setListener(new UserAdapter.AdapterListener() {
+                @Override
+                public void onClick(View view, int position) {
+
+                    group_users_id.add(friends.get(position).getKey());
                 }
             });
 
@@ -85,6 +95,7 @@ public class GroupMessagesFragment extends Fragment {
                         Toast.makeText(getContext(), "Enter group name...", Toast.LENGTH_SHORT).show();
                     }
                     else {
+                        group_users_id.add(manager.getFireBaseAuth().getCurrentUser().getUid());
                         createNewGroup(group_name);
                         dialog.dismiss();
                     }
@@ -97,7 +108,7 @@ public class GroupMessagesFragment extends Fragment {
         }
     }
 
-    private void createNewGroup(String group_name) {
+    private void createNewGroup(final String group_name) {
 
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups").child(group_name);
 
@@ -107,6 +118,7 @@ public class GroupMessagesFragment extends Fragment {
                 if (!dataSnapshot.exists())
                 {
                     reference.setValue("");
+                    addGroupToUsersChatList(group_name);
                 }
             }
 
@@ -115,6 +127,18 @@ public class GroupMessagesFragment extends Fragment {
 
             }
         });
+
+    }
+
+    private void addGroupToUsersChatList(final String group_name) {
+
+        DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child("GroupChatList");
+
+        for (int i = 0; i < group_users_id.size(); i++){
+
+            groupRef.child(group_users_id.get(i)).push().setValue(group_name);
+        }
 
     }
 }

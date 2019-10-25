@@ -14,6 +14,12 @@
         tools:context=".MainActivity"
         android:background="#FFFFFF">
 
+        <RelativeLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -21,15 +27,23 @@
             android:background="?attr/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/dialog_fragments_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar_layout">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_below="@id/toolbar"
             android:layout_above="@id/bottom_navigation_bar">
 
         </androidx.viewpager.widget.ViewPager>
+
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_bar"
@@ -40,6 +54,8 @@
             android:background="?android:attr/windowBackground"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/navigation_bar_menu" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

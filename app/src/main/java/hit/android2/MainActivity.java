@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -131,7 +132,13 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId())
             {
                 case R.id.sign_up:
-                    showSignUpDialog();
+                    //showSignUpDialog();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.dialog_fragments_container,new SignUpFragment1(bottomNavigationView, pager))
+                            .addToBackStack("signUpFragment").commit();
+
+                    bottomNavigationView.setVisibility(View.GONE);
+                    pager.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.log_in:
                     showLogInDialog();
@@ -140,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     fireBaseManager.logOutUser();
                     break;
             }
+
             return true;
         }
     }

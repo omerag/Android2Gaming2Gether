@@ -161,6 +161,7 @@ public class FirebaseManager {
         databaseReference.child("Chats").child(receiver).child(sender).push().setValue(hashMap);
 
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child("userChatList")
                 .child(sender)
                 .child(receiver);
 
@@ -181,6 +182,7 @@ public class FirebaseManager {
         });
 
         final DatabaseReference chatRefFriend = FirebaseDatabase.getInstance().getReference("Chatlist")
+                .child("userChatList")
                 .child(receiver)
                 .child(sender);
 
