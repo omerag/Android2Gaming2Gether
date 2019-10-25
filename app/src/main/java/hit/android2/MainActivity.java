@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Locale;
 
@@ -209,14 +210,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         fireBaseManager.registerAuthListener();
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                System.out.println("messege receive");
 
-            }
-        };
-        MessegingManager.registerReceiver(this,receiver);
+        if(FirebaseManager.isLoged()){
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    System.out.println("messege receive");
+
+                }
+            };
+            MessegingManager.registerReceiver(this,receiver);
+        }
+
         // fireBaseManager.getFireBaseAuth().addAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 
@@ -224,7 +229,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         fireBaseManager.unRegisterAuthListener();
-        MessegingManager.unRegisterReciver(this,receiver);
+        if(FirebaseManager.isLoged()){
+            MessegingManager.unRegisterReciver(this,receiver);
+        }
         // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 

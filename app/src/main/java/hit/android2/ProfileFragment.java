@@ -124,43 +124,47 @@ public class ProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if( e != null){
+        if(FirebaseManager.isLoged()) {
+            userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                    if (e != null) {
 
-                    Log.d("DatabaseManager",e.getMessage());
-                    return;
-                }
-                UserData user = documentSnapshot.toObject(UserData.class);
-
-               // listener.onSuccess(user);
-                usernameTv.setText(user.getName());
-                liveData.setUsernameTv(user.getName());
-                aboutMeTv.setText(user.getAboutMe());
-                liveData.setAboutMeTv(user.getAboutMe());
-               // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
-                liveData.setUserIv(user.getImageUrl());
-
-                DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                    @Override
-                    public void onSuccess() {
-                        Log.d("ProfilFragment","userReff EventListener on Success 2");
-
-                        liveData.setGameDataList(gameDataList);
+                        Log.d("DatabaseManager", e.getMessage());
+                        return;
                     }
-                });
+                    UserData user = documentSnapshot.toObject(UserData.class);
 
-            }//
-        });
+                    // listener.onSuccess(user);
+                    usernameTv.setText(user.getName());
+                    liveData.setUsernameTv(user.getName());
+                    aboutMeTv.setText(user.getAboutMe());
+                    liveData.setAboutMeTv(user.getAboutMe());
+                    // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
+                    liveData.setUserIv(user.getImageUrl());
+
+                    DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("ProfilFragment", "userReff EventListener on Success 2");
+
+                            liveData.setGameDataList(gameDataList);
+                        }
+                    });
+
+                }//
+            });
+        }
     }
 
    @Override
     public void onStop() {
         super.onStop();
 
-        listenerRegistration.remove();
+        if(FirebaseManager.isLoged()){
+            listenerRegistration.remove();
+        }
 
     }
 
