@@ -34,4 +34,6 @@
     <string name="japanese">יפנית</string>
     <string name="korean">קוריאנית</string>
     <string name="russian">רוסית</string>
+    <string name="age">"גיל : "</string>
+    <string name="gender">"מין : "</string>
 </resources>

@@ -19,6 +19,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar =getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
@@ -153,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void showSignUpDialog()
+    /*private void showSignUpDialog()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         View dialogView = getLayoutInflater().inflate(R.layout.sign_up_dialog,null);
@@ -183,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 fireBaseManager.signUpUser(userName, email, password);
             }
         }).show();
-    }
+    }*/
 
     private void showLogInDialog()
     {
@@ -261,7 +264,6 @@ public class MainActivity extends AppCompatActivity {
         public static Fragment getFragment(int index){
 
             switch (index){
-                //case 0: return new MessagesFragment();
                 case 0: return new MessagesRootFragment();
                 case 1: return new FriendsFragment();
                 case 2: return new HomeFragment();
@@ -297,4 +299,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        pager.setVisibility(View.VISIBLE);
+    }
 }

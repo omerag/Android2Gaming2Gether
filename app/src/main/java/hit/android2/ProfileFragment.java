@@ -1,5 +1,6 @@
 package hit.android2;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMeTv;
     private ImageView userIv;
     private ImageButton pic_edit_btn;
+    private ImageButton add_new_game_to_list;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -70,7 +74,11 @@ public class ProfileFragment extends Fragment {
     private ProfileFragmentLiveData liveData;
     private DocumentReference userReff;
 
+    private MenuItem editBtn;
+    private MenuItem saveEditBtn;
+
     private boolean isLogIn = false;
+    private boolean isEdit = false;
 
     private boolean isGameRecycleOnScreen = true;
 
@@ -83,7 +91,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.profile_fragment, container, false);
-
+        setHasOptionsMenu(true);
         return rootView;
     }
 
@@ -98,6 +106,7 @@ public class ProfileFragment extends Fragment {
         userIv = getView().findViewById(R.id.user_profile_img);
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
+        add_new_game_to_list = getView().findViewById(R.id.add_new_game_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
@@ -438,5 +447,32 @@ public class ProfileFragment extends Fragment {
         } else {
             return image;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.edit_profile_menu,menu);
+        editBtn = menu.findItem(R.id.menu_item_edit_profile);
+        saveEditBtn = menu.findItem(R.id.menu_item_save_edit);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_edit_profile)
+        {
+                pic_edit_btn.setVisibility(View.VISIBLE);
+                add_new_game_to_list.setVisibility(View.VISIBLE);
+                editBtn.setVisible(false);
+                saveEditBtn.setVisible(true);
+        }
+        if (item.getItemId() == R.id.menu_item_save_edit)
+        {
+            pic_edit_btn.setVisibility(View.GONE);
+            add_new_game_to_list.setVisibility(View.GONE);
+            editBtn.setVisible(true);
+            saveEditBtn.setVisible(false);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

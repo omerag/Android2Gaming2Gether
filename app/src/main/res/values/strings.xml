@@ -48,4 +48,6 @@
     <string name="japanese">Japanese</string>
     <string name="korean">Korean</string>
     <string name="russian">Russian</string>
+    <string name="age">Age :</string>
+    <string name="gender">Gender :</string>
 </resources>
