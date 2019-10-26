@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -69,7 +70,7 @@ public class SearchGameFragment extends Fragment {
         @Override
         public void onClick(View v) {
 
-            gameListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            gameListRecyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
 
             final List<GameData> gameSearchList = new ArrayList<>();
             final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
