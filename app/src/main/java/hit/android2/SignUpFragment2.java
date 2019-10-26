@@ -17,6 +17,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
+
 public class SignUpFragment2 extends Fragment {
 
     private BottomNavigationView navigationView;
@@ -85,6 +88,8 @@ public class SignUpFragment2 extends Fragment {
             Log.d("myBirthday", birthday);
 
             String about_me = about_me_et.getText().toString();
+
+            DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),about_me,null,birthday,null);
         }
     }
 

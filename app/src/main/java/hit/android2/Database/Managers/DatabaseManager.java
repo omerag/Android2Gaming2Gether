@@ -340,6 +340,17 @@ public class DatabaseManager {
         FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user);
     }
 
+    static public void addUserToDatabase(final UserData user, final Listener listener) {
+        System.out.println("user id = " + user.getKey());
+        FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                listener.onSuccess();
+            }
+        });
+    }
+
     static public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
@@ -811,6 +822,4 @@ public class DatabaseManager {
 
         return tempPlayers;
     }
-
-
 }

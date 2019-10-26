@@ -28,6 +28,13 @@ import hit.android2.R;
 
 public class FirebaseManager {
 
+    private Listener listener;
+
+    public interface Listener{
+
+        void onSuccess();
+    }
+
 
     private FirebaseAuth fireBaseAuth = FirebaseAuth.getInstance();
 
@@ -54,7 +61,7 @@ public class FirebaseManager {
         return fireBaseAuth;
     }
 
-    public void signUpUser(final String username, final String email, final String password){
+    public void signUpUser(final String username, final String email, final String password, final DatabaseManager.Listener listener){
 
         userName = username;
         fireBaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -66,12 +73,13 @@ public class FirebaseManager {
                 FirebaseUser firebaseUser = fireBaseAuth.getCurrentUser();
                 if(firebaseUser != null){
                     UserData user = new UserData(username,fireBaseAuth.getCurrentUser().getUid());
-                    DatabaseManager.addUserToDatabase(user);
+                    DatabaseManager.addUserToDatabase(user, listener);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                
                 Log.d("FirebaseManager",e.getMessage());
             }
         });
