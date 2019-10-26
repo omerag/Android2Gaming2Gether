@@ -50,4 +50,5 @@
     <string name="russian">Russian</string>
     <string name="age">Age :</string>
     <string name="gender">Gender :</string>
+    <string name="level">Level :</string>
 </resources>
