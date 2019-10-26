@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -88,9 +89,11 @@ public class SearchGameFragment extends Fragment {
                                             Log.d("ProfileFragment","Loading List from server");
                                         }
                                     });
+                                    Snackbar.make(getView(),"The game has been added to your game list",Snackbar.LENGTH_LONG).setDuration(3000).show();
                                 }
                             });
                     DatabaseManager.addGameToDatabase(gameSearchList.get(position));
+
                 }
             });
 
