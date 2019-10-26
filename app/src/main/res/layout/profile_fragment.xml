@@ -60,6 +60,17 @@
                     android:text="@string/user_name_tv"
                     android:textSize="25sp" />
 
+                <ImageButton
+                    android:id="@+id/profile_edit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_edit"
+                    android:layout_toEndOf="@id/profile_fragment_user_name"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="7dp"
+                    android:visibility="gone"/>
+
 
             </RelativeLayout>
 

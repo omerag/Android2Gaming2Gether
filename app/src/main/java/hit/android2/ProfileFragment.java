@@ -30,8 +30,10 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -64,6 +66,7 @@ public class ProfileFragment extends Fragment {
     private ImageView userIv;
     private ImageButton pic_edit_btn;
     private ImageButton add_new_game_to_list;
+    private ImageButton profile_edit_btn;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -78,7 +81,6 @@ public class ProfileFragment extends Fragment {
     private MenuItem saveEditBtn;
 
     private boolean isLogIn = false;
-    private boolean isEdit = false;
 
     private boolean isGameRecycleOnScreen = true;
 
@@ -107,12 +109,16 @@ public class ProfileFragment extends Fragment {
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
         add_new_game_to_list = getView().findViewById(R.id.add_new_game_btn);
+        profile_edit_btn = getView().findViewById(R.id.profile_edit_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
 
         ProfileImageEditListener profileImageEditListener = new ProfileImageEditListener();
         pic_edit_btn.setOnClickListener(profileImageEditListener);
+
+        ProfileEditBtnListener profileEditBtnListener = new ProfileEditBtnListener();
+        profile_edit_btn.setOnClickListener(profileEditBtnListener);
 
 
         RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
@@ -183,6 +189,26 @@ public class ProfileFragment extends Fragment {
             showSearchDialog();
 
            // Toast.makeText(getContext(), "Action Clicked", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class ProfileEditBtnListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+
+            View view = getActivity().findViewById(R.id.bottom_navigation_bar);
+            BottomNavigationView bottomNavigationView = (BottomNavigationView) view;
+
+            View view1 = getActivity().findViewById(R.id.fragment_container);
+            ViewPager pager = (ViewPager) view1;
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager))
+                    .addToBackStack("profileEditFragment").commit();
+
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+            pager.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -463,6 +489,7 @@ public class ProfileFragment extends Fragment {
         {
                 pic_edit_btn.setVisibility(View.VISIBLE);
                 add_new_game_to_list.setVisibility(View.VISIBLE);
+                profile_edit_btn.setVisibility(View.VISIBLE);
                 editBtn.setVisible(false);
                 saveEditBtn.setVisible(true);
         }
@@ -470,6 +497,7 @@ public class ProfileFragment extends Fragment {
         {
             pic_edit_btn.setVisibility(View.GONE);
             add_new_game_to_list.setVisibility(View.GONE);
+            profile_edit_btn.setVisibility(View.GONE);
             editBtn.setVisible(true);
             saveEditBtn.setVisible(false);
         }
