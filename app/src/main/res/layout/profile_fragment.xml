@@ -155,12 +155,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textSize="15sp"
-                    android:text="@string/age"
+                    android:text="@string/level"
                     android:textStyle="bold"
                     android:textColor="#000"
                     android:gravity="center_horizontal"/>
 
                 <TextView
+                    android:id="@+id/level_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="5dp"
