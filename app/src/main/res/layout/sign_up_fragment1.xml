@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_marginEnd="15dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_up_username_et"
@@ -45,7 +46,8 @@
         android:hint="@string/email_hint"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_marginEnd="15dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_up_email_et"
@@ -62,7 +64,8 @@
         app:endIconMode="password_toggle"
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp">
+        android:layout_marginEnd="15dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/sign_up_password_et"
