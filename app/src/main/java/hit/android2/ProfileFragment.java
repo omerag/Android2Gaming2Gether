@@ -62,8 +62,8 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMeTv;
     private ImageView userIv;
     private ImageButton pic_edit_btn;
-    private ImageButton add_new_game_to_list;
     private ImageButton profile_edit_btn;
+    private ImageButton editBtn;
 
     private List<GameData> gameDataList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -74,13 +74,11 @@ public class ProfileFragment extends Fragment {
     private ProfileFragmentLiveData liveData;
     private DocumentReference userReff;
 
-    private MenuItem editBtn;
-    private MenuItem saveEditBtn;
-
     private BottomNavigationView bottomNavigationView;
     private ViewPager pager;
 
     private boolean isLogIn = false;
+    private boolean isEdit = false;
 
     private boolean isGameRecycleOnScreen = true;
 
@@ -114,8 +112,8 @@ public class ProfileFragment extends Fragment {
         userIv = getView().findViewById(R.id.user_profile_img);
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
-        add_new_game_to_list = getView().findViewById(R.id.add_new_game_btn);
         profile_edit_btn = getView().findViewById(R.id.profile_edit_btn);
+        editBtn = getView().findViewById(R.id.root_profile_edit_btn);
 
         FloatingBtnListener floatingBtnListener = new FloatingBtnListener();
         floatingActionButton.setOnClickListener(floatingBtnListener);
@@ -125,6 +123,9 @@ public class ProfileFragment extends Fragment {
 
         ProfileEditBtnListener profileEditBtnListener = new ProfileEditBtnListener();
         profile_edit_btn.setOnClickListener(profileEditBtnListener);
+
+        EditBtnListener editBtnListener = new EditBtnListener();
+        editBtn.setOnClickListener(editBtnListener);
 
 
         RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
@@ -200,8 +201,6 @@ public class ProfileFragment extends Fragment {
 
             bottomNavigationView.setVisibility(View.INVISIBLE);
             pager.setVisibility(View.INVISIBLE);
-            editBtn.setVisible(false);
-            saveEditBtn.setVisible(false);
         }
     }
 
@@ -211,13 +210,11 @@ public class ProfileFragment extends Fragment {
         public void onClick(View v) {
 
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager,saveEditBtn))
+                    .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager))
                     .addToBackStack("profileEditFragment").commit();
 
             bottomNavigationView.setVisibility(View.INVISIBLE);
             pager.setVisibility(View.INVISIBLE);
-            editBtn.setVisible(false);
-            saveEditBtn.setVisible(false);
         }
     }
 
@@ -428,33 +425,23 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.edit_profile_menu,menu);
-        editBtn = menu.findItem(R.id.menu_item_edit_profile);
-        saveEditBtn = menu.findItem(R.id.menu_item_save_edit);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+    class EditBtnListener implements View.OnClickListener{
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_edit_profile)
-        {
+        @Override
+        public void onClick(View v) {
+
+            if (!isEdit)
+            {
                 pic_edit_btn.setVisibility(View.VISIBLE);
-                add_new_game_to_list.setVisibility(View.VISIBLE);
                 profile_edit_btn.setVisibility(View.VISIBLE);
-                editBtn.setVisible(false);
-                saveEditBtn.setVisible(true);
+                isEdit = true;
+            }
+            else {
+                pic_edit_btn.setVisibility(View.GONE);
+                profile_edit_btn.setVisibility(View.GONE);
+                isEdit = false;
+            }
         }
-        if (item.getItemId() == R.id.menu_item_save_edit)
-        {
-            pic_edit_btn.setVisibility(View.GONE);
-            add_new_game_to_list.setVisibility(View.GONE);
-            profile_edit_btn.setVisibility(View.GONE);
-            editBtn.setVisible(true);
-            saveEditBtn.setVisible(false);
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
 

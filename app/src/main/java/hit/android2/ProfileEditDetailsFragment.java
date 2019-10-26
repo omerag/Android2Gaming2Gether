@@ -35,11 +35,10 @@ public class ProfileEditDetailsFragment extends Fragment {
         return rootView;
     }
 
-    public ProfileEditDetailsFragment(BottomNavigationView bottomNavigationView, ViewPager pager, MenuItem saveEditBtn) {
+    public ProfileEditDetailsFragment(BottomNavigationView bottomNavigationView, ViewPager pager) {
 
         this.bottomNavigationView = bottomNavigationView;
         this.pager = pager;
-        this.saveEditBtn = saveEditBtn;
     }
 
     class BackBtnListener implements View.OnClickListener
@@ -50,7 +49,6 @@ public class ProfileEditDetailsFragment extends Fragment {
 
             bottomNavigationView.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
-            saveEditBtn.setVisible(true);
         }
     }
 }

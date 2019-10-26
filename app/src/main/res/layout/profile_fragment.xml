@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -18,11 +19,20 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
+            <ImageButton
+                android:id="@+id/root_profile_edit_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_mode_edit"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal">
-
 
                 <ImageButton
                     android:id="@+id/image_edit_btn"
@@ -156,17 +166,6 @@
             android:text="@string/my_games"
             android:textSize="20sp"
             android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/add_new_game_btn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:layout_toEndOf="@id/game_text"
-                android:layout_marginStart="3dp"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:background="@android:color/transparent"/>
 
         </RelativeLayout>
 
