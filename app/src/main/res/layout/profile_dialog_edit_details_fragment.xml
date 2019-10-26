@@ -74,18 +74,23 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/profile_fragment_edit_details_radio_about_me_et"
+        android:id="@+id/profile_fragment_edit_details_about_me_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/about_me"
         />
+
+    <EditText
+        android:id="@+id/profile_fragment_edit_details_address_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="enter new address" />
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         >
-
 
         <TableRow
             android:gravity="center">
@@ -176,7 +181,14 @@
 
     </TableLayout>
 
-
+    <Button
+        android:id="@+id/profile_fragment_edit_details_save_changes_btn"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="save"
+        android:layout_marginTop="30dp"
+        />
 
 
 

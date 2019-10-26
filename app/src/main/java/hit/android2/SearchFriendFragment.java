@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,6 +154,7 @@ public class SearchFriendFragment extends Fragment {
                         DatabaseManager.searchPlayers(userData,gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0],distance,new DatabaseManager.DataListener<List<UserData>>() {
                             @Override
                             public void onSuccess(List<UserData> userData) {
+                                Log.d("SearchFriendsFragment","onSuccess - userDataList =" + userData.toString() );
                                 users.addAll(userData);
                                 userSearchAdapter.notifyDataSetChanged();
                             }

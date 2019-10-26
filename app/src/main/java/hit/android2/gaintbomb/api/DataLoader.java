@@ -1,6 +1,7 @@
 package hit.android2.gaintbomb.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -241,7 +242,9 @@ public class DataLoader {
 
                 String gameId = jsonObject.getString("guid");
                 String gameName = jsonObject.getString("name");
-                String gameImageUrl = imageObject.getString("thumb_url");
+               // String gameImageUrl = imageObject.getString("thumb_url");
+                String gameImageUrl = imageObject.getString("small_url");
+                Log.d("DataLoader","gameImageUrl = " + gameImageUrl);
 
                 GameData gameData = new GameData(gameId,gameName,gameImageUrl);
                 gameDataList.add(gameData);

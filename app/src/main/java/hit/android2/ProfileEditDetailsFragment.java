@@ -5,7 +5,12 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +19,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProfileEditDetailsFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
@@ -21,6 +29,27 @@ public class ProfileEditDetailsFragment extends Fragment {
     private MenuItem saveEditBtn;
 
     private ImageButton back_btn;
+
+    private RadioGroup genderSelectGroup;
+    private RadioButton genderSelectBtn;
+
+    private LinearLayout calendarBtn;
+
+    private EditText aboutMeEt;
+    private EditText addressEt;
+
+    private CheckBox arabic;
+    private CheckBox chiness;
+    private CheckBox english;
+    private CheckBox french;
+    private CheckBox german;
+    private CheckBox hebrew;
+    private CheckBox italian;
+    private CheckBox japanese;
+    private CheckBox korean;
+    private CheckBox russian;
+
+
 
     @Nullable
     @Override
@@ -31,6 +60,25 @@ public class ProfileEditDetailsFragment extends Fragment {
 
         BackBtnListener backBtnListener = new BackBtnListener();
         back_btn.setOnClickListener(backBtnListener);
+
+        genderSelectGroup = rootView.findViewById(R.id.profile_fragment_edit_details_radio_group);
+        //genderSelectBtn = rootView.findViewById();
+
+        calendarBtn = rootView.findViewById(R.id.profile_fragment_edit_details_calendar_layout);
+
+        aboutMeEt = rootView.findViewById(R.id.profile_fragment_edit_details_about_me_et);
+        addressEt = rootView.findViewById(R.id.profile_fragment_edit_details_address_et);
+
+        arabic = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_arabic);
+        chiness = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_chinese);
+        english = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_english);
+        french = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_french);
+        german = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_german);
+        hebrew = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_hebrew);
+        italian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_italian);
+        japanese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_japanese);
+        korean = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_korean);
+        russian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_russian);
 
         return rootView;
     }
@@ -50,5 +98,14 @@ public class ProfileEditDetailsFragment extends Fragment {
             bottomNavigationView.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
         }
+    }
+
+    private Map<String,Boolean> setLangueges(){
+
+        Map<String,Boolean> langeuges = new HashMap<>();
+        langeuges.put(arabic.getText().toString(),arabic.isChecked());
+
+
+        return null;
     }
 }

@@ -151,6 +151,8 @@ public class ProfileFragment extends Fragment {
             listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                    Log.d("ProfileFragment","onStart -listenerRegistration.onEvent - ");
+                    Log.d("ProfileFragment","userId =  " + documentSnapshot.getId());
                     if (e != null) {
 
                         Log.d("DatabaseManager", e.getMessage());

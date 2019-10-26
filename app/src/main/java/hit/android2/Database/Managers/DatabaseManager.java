@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,19 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.auth.User;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -389,6 +382,14 @@ public class DatabaseManager {
         final String maxBirthday = format.format(calendar.getTime());
         Log.d("searchPlayers", "MaxAge = " + maxBirthday);
         ///////////
+        Log.d("searchPlayers", "rankType = " + rankType);
+        Log.d("searchPlayers", "language = " + language);
+        Log.d("searchPlayers", "gender = " + gender);
+        Log.d("searchPlayers", "maxDistance = " + maxDistance);
+        Log.d("searchPlayers", "mUser.getName() = " + mUser.getName());
+
+
+
 
 
         CollectionReference usersReff = FirebaseFirestore.getInstance().collection("users");
@@ -402,7 +403,8 @@ public class DatabaseManager {
                     .orderBy(rankType, Query.Direction.DESCENDING)
                  // .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
             ;
-        } else {
+        }
+        else {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
                     .whereEqualTo("gender", gender)
@@ -418,6 +420,7 @@ public class DatabaseManager {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d("DatabaseManager", "searchPlayers called - onSuccess");
+                Log.d("DatabaseManager", "queryDocumentSnapshots.size() = " + queryDocumentSnapshots.size());
 
                 List<UserData> players = new ArrayList<>();
                 for (QueryDocumentSnapshot playerDocument : queryDocumentSnapshots) {
@@ -815,7 +818,17 @@ public class DatabaseManager {
             pLocation.setLatitude(player.getMyLatitude());
             pLocation.setLongitude(player.getMyLongitude());
 
-            if(player.getBirthday().compareTo(maxBirthday) > 0 && maxDistance < mLocation.distanceTo(pLocation)){
+            Log.d("DatabaseManager","filerPlayerList");
+            Log.d("DatabaseManager","player.getBirthday_timestamp() = " + player.getBirthday_timestamp());
+            Log.d("DatabaseManager","maxBirthday = " + maxBirthday);
+            Log.d("DatabaseManager","player.getBirthday_timestamp().compareTo(maxBirthday) = " + player.getBirthday_timestamp().compareTo(maxBirthday));
+
+            Log.d("DatabaseManager","maxDistance = " + maxDistance);
+            Log.d("DatabaseManager","mLocation.distanceTo(pLocation) = " + mLocation.distanceTo(pLocation));
+
+
+
+            if(player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance <= mLocation.distanceTo(pLocation)){
                 tempPlayers.add(player);
             }
         }

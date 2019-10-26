@@ -1,6 +1,7 @@
 package hit.android2.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,8 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
         Glide.with(context).load(gameDataList.get(position).getImageUrl()).into(holder.imageViewGame);
         holder.positionTextView.setText(String.valueOf(position));
         holder.textViewName.setText(gameDataList.get(position).getName());
+
+        Log.d("GameAdapter","onBindViewHolder - gameDataList.get(position).getImageUrl() = " + gameDataList.get(position).getImageUrl());
 
     }
 

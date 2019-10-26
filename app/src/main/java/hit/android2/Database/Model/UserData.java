@@ -23,9 +23,9 @@ public class UserData implements Comparable<UserData>{
     private int sportsmanship;
     private int totalRank;
 
-    String birthday;
-    double myLatitude;
-    double myLongitude;
+    private String birthday_timestamp;
+    private double myLatitude;
+    private     double myLongitude;
 
     public UserData() {
     }
@@ -160,14 +160,22 @@ public class UserData implements Comparable<UserData>{
         this.myLongitude = myLongitude;
     }
 
-    public String getBirthday() {
-        return birthday;
+    public String getBirthday_timestamp() {
+        return birthday_timestamp;
     }
 
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
+    public void setBirthday_timestamp(String birthday_timestamp) {
+        this.birthday_timestamp = birthday_timestamp;
     }
 
+  /*  public Map<String, Boolean> getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Map<String, Boolean> language) {
+        this.language = language;
+    }
+*/
     @Override
     public int compareTo(UserData userData) {
         if(totalRank >= userData.totalRank){
