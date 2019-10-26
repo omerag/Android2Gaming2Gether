@@ -1,6 +1,5 @@
 package hit.android2;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,7 +40,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.ms.square.android.expandabletextview.ExpandableTextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -105,6 +102,12 @@ public class ProfileFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         liveData = ViewModelProviders.of(this).get(ProfileFragmentLiveData.class);
+
+        View view = getActivity().findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationView = (BottomNavigationView) view;
+
+        View view1 = getActivity().findViewById(R.id.fragment_container);
+        pager = (ViewPager) view1;
 
         floatingActionButton = getView().findViewById(R.id.floating_action_btn);
         usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
@@ -189,9 +192,14 @@ public class ProfileFragment extends Fragment {
     class FloatingBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            showSearchDialog();
+            //showSearchDialog();
 
-           // Toast.makeText(getContext(), "Action Clicked", Toast.LENGTH_LONG).show();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.dialog_fragments_container, new SearchGameFragment(bottomNavigationView, pager, gameDataList, gameAdapter,liveData))
+                    .addToBackStack("searchGame").commit();
+
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+            pager.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -199,12 +207,6 @@ public class ProfileFragment extends Fragment {
     {
         @Override
         public void onClick(View v) {
-
-            View view = getActivity().findViewById(R.id.bottom_navigation_bar);
-            bottomNavigationView = (BottomNavigationView) view;
-
-            View view1 = getActivity().findViewById(R.id.fragment_container);
-            pager = (ViewPager) view1;
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager))
@@ -219,17 +221,17 @@ public class ProfileFragment extends Fragment {
 
         final Dialog dialog = new Dialog(getActivity());
 
-        dialog.setContentView(R.layout.search_game_dialog_layout);
+        dialog.setContentView(R.layout.search_game_fragment);
 
         dialog.setTitle("Search Dialog");
 
-        final EditText searchText = dialog.findViewById(R.id.search_game_dialog_edit_text);
+        final EditText searchText = dialog.findViewById(R.id.search_game_edit_text);
         final ImageButton searchBtn = dialog.findViewById(R.id.search_button);
 
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerView = dialog.findViewById(R.id.search_dialog_recycler_view);
+                recyclerView = dialog.findViewById(R.id.search_game_recycler_view);
 
                 recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

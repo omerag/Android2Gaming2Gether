@@ -12,7 +12,7 @@
         android:gravity="center">
 
     <EditText
-        android:id="@+id/search_game_dialog_edit_text"
+        android:id="@+id/search_game_edit_text"
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_dialog_recycler_view"
+        android:id="@+id/search_game_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
