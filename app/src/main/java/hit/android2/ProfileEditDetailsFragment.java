@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Model.UserData;
 
 public class ProfileEditDetailsFragment extends Fragment {
 
@@ -45,7 +47,7 @@ public class ProfileEditDetailsFragment extends Fragment {
     private EditText addressEt;
 
     private CheckBox arabic;
-    private CheckBox chiness;
+    private CheckBox chinese;
     private CheckBox english;
     private CheckBox french;
     private CheckBox german;
@@ -87,7 +89,7 @@ public class ProfileEditDetailsFragment extends Fragment {
         addressEt = rootView.findViewById(R.id.profile_fragment_edit_details_address_et);
 
         arabic = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_arabic);
-        chiness = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_chinese);
+        chinese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_chinese);
         english = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_english);
         french = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_french);
         german = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_german);
@@ -97,6 +99,8 @@ public class ProfileEditDetailsFragment extends Fragment {
         korean = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_korean);
         russian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_russian);
 
+
+        initDetails();
         return rootView;
     }
 
@@ -121,7 +125,7 @@ public class ProfileEditDetailsFragment extends Fragment {
 
         Map<String,Boolean> langeuges = new HashMap<>();
         langeuges.put(arabic.getText().toString(),arabic.isChecked());
-        langeuges.put(chiness.getText().toString(),chiness.isChecked());
+        langeuges.put(chinese.getText().toString(), chinese.isChecked());
         langeuges.put(english.getText().toString(),english.isChecked());
         langeuges.put(french.getText().toString(),french.isChecked());
         langeuges.put(german.getText().toString(),german.isChecked());
@@ -133,5 +137,33 @@ public class ProfileEditDetailsFragment extends Fragment {
 
 
         return langeuges;
+    }
+
+    private void initDetails(){
+
+        DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+            @Override
+            public void onSuccess(UserData userData) {
+
+                Map<String,Boolean> langMap = userData.getLanguage();
+
+                arabic.setChecked(langMap.get("Arabic"));
+                chinese.setChecked(langMap.get("Chinese"));
+                english.setChecked(langMap.get("English"));
+                french.setChecked(langMap.get("French"));
+                german.setChecked(langMap.get("German"));
+                hebrew.setChecked(langMap.get("Hebrew"));
+                italian.setChecked(langMap.get("Italian"));
+                japanese.setChecked(langMap.get("Japanese"));
+                korean.setChecked(langMap.get("Korean"));
+                russian.setChecked(langMap.get("Russian"));
+
+                aboutMeEt.setText(userData.getAboutMe(), EditText.BufferType.EDITABLE);
+
+
+
+            }
+        });
+
     }
 }
