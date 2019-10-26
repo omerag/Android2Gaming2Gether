@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ public class SignUpFragment2 extends Fragment {
     private DatePicker birth_day_picker;
     private Button skip_update_btn;
     private Button update_profile_btn;
+    private ImageButton back_btn;
     private EditText about_me_et;
 
     private String birthday;
@@ -36,6 +38,7 @@ public class SignUpFragment2 extends Fragment {
         birth_day_picker = rootView.findViewById(R.id.birth_day_picker);
         skip_update_btn = rootView.findViewById(R.id.skip_profile_update_btn);
         update_profile_btn = rootView.findViewById(R.id.update_profile_btn);
+        back_btn = rootView.findViewById(R.id.back_btn);
         about_me_et = rootView.findViewById(R.id.about_me_et);
 
 
@@ -44,6 +47,9 @@ public class SignUpFragment2 extends Fragment {
 
         UpdateProfileBtnListener updateProfileBtnListener = new UpdateProfileBtnListener();
         update_profile_btn.setOnClickListener(updateProfileBtnListener);
+
+        BackBtnListener backBtnListener = new BackBtnListener();
+        back_btn.setOnClickListener(backBtnListener);
 
         return rootView;
     }
@@ -82,4 +88,13 @@ public class SignUpFragment2 extends Fragment {
         }
     }
 
+    public class BackBtnListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+            getActivity().getSupportFragmentManager().popBackStack();
+            navigationView.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+        }
+    }
 }

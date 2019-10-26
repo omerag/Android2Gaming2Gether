@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class LoginFragment extends Fragment {
     private BottomNavigationView navigationView;
     private ViewPager pager;
     private Button login_btn;
+    private ImageButton back_btn;
 
 
     private EditText emailInput;
@@ -39,10 +41,14 @@ public class LoginFragment extends Fragment {
         emailInput = rootView.findViewById(R.id.sign_up_email_et);
         passwordInput = rootView.findViewById(R.id.sign_up_password_et);
         login_btn = rootView.findViewById(R.id.login_btn);
+        back_btn = rootView.findViewById(R.id.back_btn);
 
 
         LoginBtnListener loginBtnListener = new LoginBtnListener();
         login_btn.setOnClickListener(loginBtnListener);
+
+        BackBtnListener backBtnListener = new BackBtnListener();
+        back_btn.setOnClickListener(backBtnListener);
 
 
         return rootView;
@@ -64,6 +70,16 @@ public class LoginFragment extends Fragment {
             String password = passwordInput.getText().toString();
 
             firebaseManager.logInUser(email, password);
+            getActivity().getSupportFragmentManager().popBackStack();
+            navigationView.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public class BackBtnListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
             getActivity().getSupportFragmentManager().popBackStack();
             navigationView.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);

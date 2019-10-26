@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ import hit.android2.Database.Managers.FirebaseManager;
 public class SignUpFragment1 extends Fragment {
 
     private Button sign_up_btn;
+    private ImageButton back_btn;
     private EditText userNameInput;
     private EditText emailInput;
     private EditText passwordInput;
@@ -37,6 +39,7 @@ public class SignUpFragment1 extends Fragment {
         firebaseManager = new FirebaseManager();
 
         sign_up_btn = rootView.findViewById(R.id.sign_up_btn);
+        back_btn = rootView.findViewById(R.id.back_btn);
 
         userNameInput = rootView.findViewById(R.id.sign_up_username_et);
         emailInput = rootView.findViewById(R.id.sign_up_email_et);
@@ -44,6 +47,9 @@ public class SignUpFragment1 extends Fragment {
 
         SignUpBtnListener signUpBtnListener = new SignUpBtnListener();
         sign_up_btn.setOnClickListener(signUpBtnListener);
+
+        BackBtnListener backBtnListener = new BackBtnListener();
+        back_btn.setOnClickListener(backBtnListener);
 
         return rootView;
     }
@@ -69,6 +75,17 @@ public class SignUpFragment1 extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager))
                     .addToBackStack("myFragment").commit();
+        }
+    }
+
+
+    public class BackBtnListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+            getActivity().getSupportFragmentManager().popBackStack();
+            navigationView.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
         }
     }
 }

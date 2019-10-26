@@ -183,48 +183,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*private void showSignUpDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.sign_up_dialog,null);
-
-        final EditText userNameInput = dialogView.findViewById(R.id.sign_up_username_et);
-        final EditText emailInput = dialogView.findViewById(R.id.sign_up_email_et);
-        final EditText passwordInput = dialogView.findViewById(R.id.sign_up_password_et);
-
-        builder.setView(dialogView).setPositiveButton(R.string.drawer_sign_up, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                userName = userNameInput.getText().toString();
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-
-                fireBaseManager.signUpUser(userName, email, password);
-            }
-        }).show();
-    }*/
-
-    private void showLogInDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.log_in_dialog,null);
-
-        final EditText emailInput = dialogView.findViewById(R.id.log_in_email_et);
-        final EditText passwordInput = dialogView.findViewById(R.id.log_in_password_et);
-
-        builder.setView(dialogView).setPositiveButton(R.string.drawer_log_in, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-
-                fireBaseManager.logInUser(email,password);
-            }
-        }).show();
-
-    }
 
     @Override
     protected void onStart() {
@@ -323,3 +281,46 @@ public class MainActivity extends AppCompatActivity {
         pager.setVisibility(View.VISIBLE);
     }
 }
+
+/*private void showSignUpDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.sign_up_dialog,null);
+
+        final EditText userNameInput = dialogView.findViewById(R.id.sign_up_username_et);
+        final EditText emailInput = dialogView.findViewById(R.id.sign_up_email_et);
+        final EditText passwordInput = dialogView.findViewById(R.id.sign_up_password_et);
+
+        builder.setView(dialogView).setPositiveButton(R.string.drawer_sign_up, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                userName = userNameInput.getText().toString();
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+
+                fireBaseManager.signUpUser(userName, email, password);
+            }
+        }).show();
+    }*/
+
+    /*private void showLogInDialog()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.log_in_dialog,null);
+
+        final EditText emailInput = dialogView.findViewById(R.id.log_in_email_et);
+        final EditText passwordInput = dialogView.findViewById(R.id.log_in_password_et);
+
+        builder.setView(dialogView).setPositiveButton(R.string.drawer_log_in, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String email = emailInput.getText().toString();
+                String password = passwordInput.getText().toString();
+
+                fireBaseManager.logInUser(email,password);
+            }
+        }).show();
+
+    }*/
