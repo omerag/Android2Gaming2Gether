@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 
 public class SignUpFragment1 extends Fragment {
@@ -69,12 +70,17 @@ public class SignUpFragment1 extends Fragment {
             String email = emailInput.getText().toString();
             String password = passwordInput.getText().toString();
 
-            firebaseManager.signUpUser(userName, email, password);
-            getActivity().getSupportFragmentManager().popBackStack();
+            firebaseManager.signUpUser(userName, email, password, new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess() {
+                    getActivity().getSupportFragmentManager().popBackStack();
 
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager))
-                    .addToBackStack("myFragment").commit();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager))
+                            .addToBackStack("myFragment").commit();
+                }
+            });
+
         }
     }
 
