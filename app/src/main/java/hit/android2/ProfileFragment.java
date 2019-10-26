@@ -200,6 +200,8 @@ public class ProfileFragment extends Fragment {
 
             bottomNavigationView.setVisibility(View.INVISIBLE);
             pager.setVisibility(View.INVISIBLE);
+            editBtn.setVisible(false);
+            saveEditBtn.setVisible(false);
         }
     }
 
@@ -209,70 +211,16 @@ public class ProfileFragment extends Fragment {
         public void onClick(View v) {
 
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager))
+                    .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager,saveEditBtn))
                     .addToBackStack("profileEditFragment").commit();
 
             bottomNavigationView.setVisibility(View.INVISIBLE);
             pager.setVisibility(View.INVISIBLE);
+            editBtn.setVisible(false);
+            saveEditBtn.setVisible(false);
         }
     }
 
-    private void showSearchDialog() {
-
-        final Dialog dialog = new Dialog(getActivity());
-
-        dialog.setContentView(R.layout.search_game_fragment);
-
-        dialog.setTitle("Search Dialog");
-
-        final EditText searchText = dialog.findViewById(R.id.search_game_edit_text);
-        final ImageButton searchBtn = dialog.findViewById(R.id.search_button);
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView = dialog.findViewById(R.id.search_game_recycler_view);
-
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                final List<GameData> gameSearchList = new ArrayList<>();
-                final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
-                gameSearchAdapter.setListener(new GameAdapter.AdapterListener() {
-                    @Override
-                    public void onClick(View view, int position) {
-                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
-                                new DatabaseManager.Listener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                liveData.setGameDataList(gameDataList);
-
-                                                Log.d("ProfileFragment","Loading List from server");
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                        DatabaseManager.addGameToDatabase(gameSearchList.get(position));
-                    }
-                });
-
-                recyclerView.setAdapter(gameSearchAdapter);
-                recyclerView.setHasFixedSize(true);
-                gameSearchAdapter.notifyDataSetChanged();
-
-                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
-
-                loader.searchGameRequest(searchText.getText().toString(),gameSearchList,gameSearchAdapter);
-
-                //searchBtn.setVisibility(View.GONE);
-            }
-        });
-
-        dialog.show();
-    }
 
     private void loadUserGames(){
 
@@ -509,3 +457,61 @@ public class ProfileFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 }
+
+
+/*private void showSearchDialog() {
+
+        final Dialog dialog = new Dialog(getActivity());
+
+        dialog.setContentView(R.layout.search_game_fragment);
+
+        dialog.setTitle("Search Dialog");
+
+        final EditText searchText = dialog.findViewById(R.id.search_game_edit_text);
+        final ImageButton searchBtn = dialog.findViewById(R.id.search_button);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerView = dialog.findViewById(R.id.search_game_recycler_view);
+
+                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                final List<GameData> gameSearchList = new ArrayList<>();
+                final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
+                gameSearchAdapter.setListener(new GameAdapter.AdapterListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
+                                new DatabaseManager.Listener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                liveData.setGameDataList(gameDataList);
+
+                                                Log.d("ProfileFragment","Loading List from server");
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                    }
+                                });
+                        DatabaseManager.addGameToDatabase(gameSearchList.get(position));
+                    }
+                });
+
+                recyclerView.setAdapter(gameSearchAdapter);
+                recyclerView.setHasFixedSize(true);
+                gameSearchAdapter.notifyDataSetChanged();
+
+                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
+
+                loader.searchGameRequest(searchText.getText().toString(),gameSearchList,gameSearchAdapter);
+
+                //searchBtn.setVisibility(View.GONE);
+            }
+        });
+
+        dialog.show();
+    }*/

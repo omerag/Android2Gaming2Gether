@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver receiver;
 
     private MenuItem prevMenuItem;
+    private MenuItem editBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,8 +268,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     public void onBackPressed() {
+
+        boolean backFromFragment = false;
         super.onBackPressed();
         bottomNavigationView.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
