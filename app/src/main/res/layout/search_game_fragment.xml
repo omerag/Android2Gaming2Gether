@@ -11,27 +11,35 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-    <EditText
-        android:id="@+id/search_game_edit_text"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:hint="@string/search_game_dialog_hint"
-        android:gravity="center"/>
+        <EditText
+            android:id="@+id/search_game_edit_text"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/search_game_dialog_hint"
+            android:gravity="center"/>
 
-    <ImageButton
-        android:id="@+id/search_button"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/searchbtnicon"/>
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/searchbtnicon"/>
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_game_recycler_view"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_game_recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
 
 </LinearLayout>
