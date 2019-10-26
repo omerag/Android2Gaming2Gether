@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver receiver;
 
     private MenuItem prevMenuItem;
-    private MenuItem editBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
