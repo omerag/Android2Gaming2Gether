@@ -86,7 +86,6 @@ public class ProfileFragment extends Fragment {
     private int GALLERY_CODE = 1;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,6 +97,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Log.d("ProfileFragment", "onActivityCreated");
 
         liveData = ViewModelProviders.of(this).get(ProfileFragmentLiveData.class);
 
@@ -132,13 +133,46 @@ public class ProfileFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        gameAdapter = new GameAdapter(getActivity(),gameDataList); //gameDataList is empty, needs to be loaded from server
+        if(liveData.getGameDataList() == null){
+            Log.d("live data", liveData.toString());
+
+            DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<List<GameData>>() {
+                @Override
+                public void onSuccess(List<GameData> gameData) {
+                    gameDataList = gameData;
+                    if(gameAdapter == null) {
+                        gameAdapter = new GameAdapter(getActivity(),gameDataList);
+                        liveData.setGameDataList(gameDataList);
+                        liveData.setGameAdapter(gameAdapter);
+                    }
+
+                    gameAdapter.notifyDataSetChanged();
+                    Log.d("live data", "gameData.size() = " + gameData.size());
+
+                }
+            });
+        }
+        else {
+            gameDataList = liveData.getGameDataList();
+            Log.d("live data 2", gameDataList.toString());
+
+
+        }
+
+        if(gameAdapter == null){
+            gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
+            liveData.setGameAdapter(gameAdapter);
+            gameAdapter.notifyDataSetChanged();
+
+        }
+
+        loadUserGames();
 
         recyclerView.setAdapter(gameAdapter);
         gameAdapter.notifyDataSetChanged();
-        if(FirebaseManager.isLoged()){
+       /* if(FirebaseManager.isLoged()){
             loadUserGames();
-        }
+        }*/
 
     }
 
@@ -146,13 +180,13 @@ public class ProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        if(FirebaseManager.isLoged()) {
+        if (FirebaseManager.isLoged()) {
             userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
             listenerRegistration = userReff.addSnapshotListener(new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                    Log.d("ProfileFragment","onStart -listenerRegistration.onEvent - ");
-                    Log.d("ProfileFragment","userId =  " + documentSnapshot.getId());
+                    Log.d("ProfileFragment", "onStart -listenerRegistration.onEvent - ");
+                    Log.d("ProfileFragment", "userId =  " + documentSnapshot.getId());
                     if (e != null) {
 
                         Log.d("DatabaseManager", e.getMessage());
@@ -173,6 +207,7 @@ public class ProfileFragment extends Fragment {
                         public void onSuccess(List<GameData> gameData) {
                             gameDataList = gameData;
                             liveData.setGameDataList(gameDataList);
+                            liveData.setGameAdapter(gameAdapter);
                             gameAdapter.setGameDataList(gameDataList);
                             gameAdapter.notifyDataSetChanged();
                         }
@@ -192,11 +227,11 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-   @Override
+    @Override
     public void onStop() {
         super.onStop();
 
-        if(FirebaseManager.isLoged()){
+        if (FirebaseManager.isLoged()) {
             listenerRegistration.remove();
         }
 
@@ -208,7 +243,7 @@ public class ProfileFragment extends Fragment {
             //showSearchDialog();
 
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.dialog_fragments_container, new SearchGameFragment(bottomNavigationView, pager, gameDataList, gameAdapter,liveData))
+                    .replace(R.id.dialog_fragments_container, new SearchGameFragment(bottomNavigationView, pager, gameDataList, gameAdapter, liveData))
                     .addToBackStack("searchGame").commit();
 
             bottomNavigationView.setVisibility(View.INVISIBLE);
@@ -216,8 +251,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    public class ProfileEditBtnListener implements View.OnClickListener
-    {
+    public class ProfileEditBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
@@ -231,11 +265,11 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    private void loadUserGames(){
+    private void loadUserGames() {
 
-        if(liveData.getUserIv() == null || liveData.getUsernameTv() == null || liveData.getAboutMeTv() == null){
+        if (liveData.getUserIv() == null || liveData.getUsernameTv() == null || liveData.getAboutMeTv() == null) {
             final UserData user = new UserData();
-            DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.UserDataListener(){
+            DatabaseManager.getUserFromDatabase(FirebaseAuth.getInstance().getCurrentUser().getUid(), user, usernameTv, userIv, getActivity(), new DatabaseManager.UserDataListener() {
                 @Override
                 public void onSuccess(UserData userData) {
 
@@ -248,43 +282,26 @@ public class ProfileFragment extends Fragment {
 
                 }
             });
-        }
-        else {
+        } else {
             usernameTv.setText(liveData.getUsernameTv());
             Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
             aboutMeTv.setText(liveData.getAboutMeTv());
         }
-        if(liveData.getGameDataList() == null ){
-            DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                @Override
-                public void onSuccess() {
-                    liveData.setGameDataList(gameDataList);
 
-                    Log.d("ProfileFragment","Loading List from server");
-                }
-            });
-        }
-        else {
-            gameDataList = liveData.getGameDataList();
-            gameAdapter.setGameDataList(gameDataList);
-            gameAdapter.notifyDataSetChanged();
-        }
     }
 
-    class ProfileImageEditListener implements View.OnClickListener
-    {
+    class ProfileImageEditListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
 
-            PopupMenu popupMenu = new PopupMenu(getContext(),pic_edit_btn);
-            popupMenu.getMenuInflater().inflate(R.menu.poupup_menu,popupMenu.getMenu());
+            PopupMenu popupMenu = new PopupMenu(getContext(), pic_edit_btn);
+            popupMenu.getMenuInflater().inflate(R.menu.poupup_menu, popupMenu.getMenu());
 
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem) {
 
-                    switch (menuItem.getItemId())
-                    {
+                    switch (menuItem.getItemId()) {
                         case R.id.menu_item_camera:
                             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                             startActivityForResult(intent, CAMERA_CODE);
@@ -305,7 +322,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    void createCharacterImageSelectDialog(){
+    void createCharacterImageSelectDialog() {
 
 
         final Dialog dialog = new Dialog(getActivity());
@@ -321,11 +338,11 @@ public class ProfileFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext()));
 
         final List<String> characterUrlList = new ArrayList<>();
-        final CharacterSelectAdapter characterSelectAdapter = new CharacterSelectAdapter(dialog.getContext(),characterUrlList);
+        final CharacterSelectAdapter characterSelectAdapter = new CharacterSelectAdapter(dialog.getContext(), characterUrlList);
         characterSelectAdapter.setListener(new CharacterSelectAdapter.Listener() {
             @Override
             public void onClick(String s) {
-                DatabaseManager.updateProfileImage(FirebaseAuth.getInstance().getCurrentUser().getUid(),s);
+                DatabaseManager.updateProfileImage(FirebaseAuth.getInstance().getCurrentUser().getUid(), s);
                 dialog.dismiss();
             }
         });
@@ -335,15 +352,15 @@ public class ProfileFragment extends Fragment {
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
-                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,dialog.getContext());
+                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi, dialog.getContext());
                 loader.getCharactersByGameRequest(gameDataList.get(position).getGuid(), new DataLoader.Listener() {
                     @Override
                     public void onSuccess(String string) {
 
-                        if(isGameRecycleOnScreen){
+                        if (isGameRecycleOnScreen) {
                             dialog_title_tv.setText(R.string.character_choose);
                             recyclerView.setAdapter(characterSelectAdapter);
-                            recyclerView.setLayoutManager(new GridLayoutManager(dialog.getContext(),4));
+                            recyclerView.setLayoutManager(new GridLayoutManager(dialog.getContext(), 4));
                             isGameRecycleOnScreen = false;
                         }
 
@@ -365,10 +382,8 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CAMERA_CODE)
-        {
-            if (resultCode == Activity.RESULT_OK)
-            {
+        if (requestCode == CAMERA_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 Bundle extras = data.getExtras();
                 Bitmap image_bitmap = (Bitmap) extras.get("data");
                 userIv.setImageBitmap(image_bitmap);
@@ -376,10 +391,8 @@ public class ProfileFragment extends Fragment {
             }
         }
 
-        if (requestCode == GALLERY_CODE)
-        {
-            if (resultCode == Activity.RESULT_OK)
-            {
+        if (requestCode == GALLERY_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 Uri selectedImage = data.getData();
                 try {
                     final Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage);
@@ -387,21 +400,21 @@ public class ProfileFragment extends Fragment {
                     final int height = 256;//bitmap.getHeight() * 0.5;
 
                     //loading resized bitmap into image view and uploading it to the server
-                    new AsyncTask<String,Bitmap,Bitmap>(){
+                    new AsyncTask<String, Bitmap, Bitmap>() {
                         @Override
                         protected void onPostExecute(Bitmap bitmap) {
                             super.onPostExecute(bitmap);
                             userIv.setImageBitmap(bitmap);
                             StorageManager.uploadImageFromImageview(userIv);
-                            Log.d("ProfileFragment","bitmap updated");
+                            Log.d("ProfileFragment", "bitmap updated");
 
                         }
 
                         @Override
                         protected Bitmap doInBackground(String... strings) {
-                            Log.d("ProfileFragment","Begin scaling bitmap");
-                            Bitmap resize = resizeBitmap(bitmap,width,height);//Bitmap.createScaledBitmap(bitmap,width,height,true);
-                            Log.d("ProfileFragment","Ending scaling bitmap");
+                            Log.d("ProfileFragment", "Begin scaling bitmap");
+                            Bitmap resize = resizeBitmap(bitmap, width, height);//Bitmap.createScaledBitmap(bitmap,width,height,true);
+                            Log.d("ProfileFragment", "Ending scaling bitmap");
 
                             return resize;
                         }
@@ -426,9 +439,9 @@ public class ProfileFragment extends Fragment {
             int finalWidth = maxWidth;
             int finalHeight = maxHeight;
             if (ratioMax > ratioBitmap) {
-                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+                finalWidth = (int) ((float) maxHeight * ratioBitmap);
             } else {
-                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+                finalHeight = (int) ((float) maxWidth / ratioBitmap);
             }
             image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
             return image;
@@ -437,18 +450,16 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    class EditBtnListener implements View.OnClickListener{
+    class EditBtnListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
 
-            if (!isEdit)
-            {
+            if (!isEdit) {
                 pic_edit_btn.setVisibility(View.VISIBLE);
                 profile_edit_btn.setVisibility(View.VISIBLE);
                 isEdit = true;
-            }
-            else {
+            } else {
                 pic_edit_btn.setVisibility(View.GONE);
                 profile_edit_btn.setVisibility(View.GONE);
                 isEdit = false;

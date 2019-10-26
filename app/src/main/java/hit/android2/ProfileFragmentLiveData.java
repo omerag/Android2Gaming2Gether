@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Model.GameData;
 
 public class ProfileFragmentLiveData extends ViewModel {
@@ -16,6 +17,7 @@ public class ProfileFragmentLiveData extends ViewModel {
     private String userIv;
     private String aboutMeTv;
     private List<GameData> gameDataList;
+    private GameAdapter gameAdapter;
 
     public ProfileFragmentLiveData() {
         Log.d("LiveData","ProfileFragmentLiveData constructor called");
@@ -52,5 +54,13 @@ public class ProfileFragmentLiveData extends ViewModel {
 
     public void setGameDataList(List<GameData> gameDataList) {
         this.gameDataList = gameDataList;
+    }
+
+    public GameAdapter getGameAdapter() {
+        return gameAdapter;
+    }
+
+    public void setGameAdapter(GameAdapter gameAdapter) {
+        this.gameAdapter = gameAdapter;
     }
 }

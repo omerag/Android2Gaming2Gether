@@ -563,9 +563,9 @@ public class DatabaseManager {
                         @Override
                         public void onSuccess(GameData gameData) {
                             games.add(gameData);
+                            listener.onSuccess(games);
                         }
                     });
-                    listener.onSuccess(games);
 
                     // adapter.notifyDataSetChanged();
                 }
