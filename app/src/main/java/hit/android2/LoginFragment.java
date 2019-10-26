@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import hit.android2.Database.Managers.FirebaseManager;
 
@@ -25,8 +26,8 @@ public class LoginFragment extends Fragment {
     private ImageButton back_btn;
 
 
-    private EditText emailInput;
-    private EditText passwordInput;
+    private TextInputEditText emailInput;
+    private TextInputEditText passwordInput;
 
     private FirebaseManager firebaseManager;
 
