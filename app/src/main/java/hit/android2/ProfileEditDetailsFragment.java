@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +24,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
+import hit.android2.Database.Managers.DatabaseManager;
+import hit.android2.Database.Managers.FirebaseManager;
+
 public class ProfileEditDetailsFragment extends Fragment {
 
     private BottomNavigationView bottomNavigationView;
@@ -29,6 +34,7 @@ public class ProfileEditDetailsFragment extends Fragment {
     private MenuItem saveEditBtn;
 
     private ImageButton back_btn;
+    private Button saveBtn;
 
     private RadioGroup genderSelectGroup;
     private RadioButton genderSelectBtn;
@@ -60,6 +66,17 @@ public class ProfileEditDetailsFragment extends Fragment {
 
         BackBtnListener backBtnListener = new BackBtnListener();
         back_btn.setOnClickListener(backBtnListener);
+
+        saveBtn = rootView.findViewById(R.id.profile_fragment_edit_details_save_changes_btn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),aboutMeEt.getText().toString(),setLangueges(),null,null);
+                Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         genderSelectGroup = rootView.findViewById(R.id.profile_fragment_edit_details_radio_group);
         //genderSelectBtn = rootView.findViewById();
@@ -104,8 +121,17 @@ public class ProfileEditDetailsFragment extends Fragment {
 
         Map<String,Boolean> langeuges = new HashMap<>();
         langeuges.put(arabic.getText().toString(),arabic.isChecked());
+        langeuges.put(chiness.getText().toString(),chiness.isChecked());
+        langeuges.put(english.getText().toString(),english.isChecked());
+        langeuges.put(french.getText().toString(),french.isChecked());
+        langeuges.put(german.getText().toString(),german.isChecked());
+        langeuges.put(hebrew.getText().toString(),hebrew.isChecked());
+        langeuges.put(italian.getText().toString(),italian.isChecked());
+        langeuges.put(japanese.getText().toString(),japanese.isChecked());
+        langeuges.put(korean.getText().toString(),korean.isChecked());
+        langeuges.put(russian.getText().toString(),russian.isChecked());
 
 
-        return null;
+        return langeuges;
     }
 }
