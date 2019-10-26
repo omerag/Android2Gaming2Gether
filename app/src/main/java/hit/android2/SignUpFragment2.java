@@ -80,11 +80,22 @@ public class SignUpFragment2 extends Fragment {
         public void onClick(View v) {
 
 
+            String monthStr = "";
+            String dayStr = "";
+
             int year = birth_day_picker.getYear();
-            int month = birth_day_picker.getMonth();
+            int month = birth_day_picker.getMonth() + 1;
             int day = birth_day_picker.getDayOfMonth();
 
-            birthday = year + "/" + month + "/" + day;
+            if (month < 10)
+            {
+                monthStr = "0" + month;
+            }
+            if (day < 10)
+            {
+                dayStr = "0" + day;
+            }
+            birthday = year + "/" + monthStr + "/" + dayStr;
             Log.d("myBirthday", birthday);
 
             String about_me = about_me_et.getText().toString();

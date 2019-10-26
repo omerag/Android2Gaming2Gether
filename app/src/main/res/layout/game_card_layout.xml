@@ -27,7 +27,7 @@
             android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
-            android:background="#80000000">
+            android:background="@drawable/text_view_background">
 
         <TextView
             android:id="@+id/game_name"
