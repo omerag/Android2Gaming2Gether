@@ -1,0 +1,72 @@
+package hit.android2;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import hit.android2.Database.Managers.FirebaseManager;
+
+public class LoginFragment extends Fragment {
+
+    private BottomNavigationView navigationView;
+    private ViewPager pager;
+    private Button login_btn;
+
+
+    private EditText emailInput;
+    private EditText passwordInput;
+
+    private FirebaseManager firebaseManager;
+
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.login_fragment, container, false);
+
+        firebaseManager = new FirebaseManager();
+
+        emailInput = rootView.findViewById(R.id.sign_up_email_et);
+        passwordInput = rootView.findViewById(R.id.sign_up_password_et);
+        login_btn = rootView.findViewById(R.id.login_btn);
+
+
+        LoginBtnListener loginBtnListener = new LoginBtnListener();
+        login_btn.setOnClickListener(loginBtnListener);
+
+
+        return rootView;
+    }
+
+    public LoginFragment(BottomNavigationView bottomNavigationView, ViewPager pager) {
+
+        this.navigationView = bottomNavigationView;
+        this.pager = pager;
+    }
+
+
+    public class LoginBtnListener implements View.OnClickListener
+    {
+        @Override
+        public void onClick(View v) {
+
+            String email = emailInput.getText().toString();
+            String password = passwordInput.getText().toString();
+
+            firebaseManager.logInUser(email, password);
+            getActivity().getSupportFragmentManager().popBackStack();
+            navigationView.setVisibility(View.VISIBLE);
+            pager.setVisibility(View.VISIBLE);
+        }
+    }
+}

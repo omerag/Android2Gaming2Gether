@@ -136,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
             {
                 case R.id.sign_up:
                     //showSignUpDialog();
+                    if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                    {
+                        getSupportFragmentManager().popBackStack();
+                    }
+
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.dialog_fragments_container,new SignUpFragment1(bottomNavigationView, pager))
                             .addToBackStack("signUpFragment").commit();
@@ -144,7 +149,19 @@ public class MainActivity extends AppCompatActivity {
                     pager.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.log_in:
-                    showLogInDialog();
+                    //showLogInDialog();
+
+                    if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                    {
+                        getSupportFragmentManager().popBackStack();
+                    }
+
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.dialog_fragments_container, new LoginFragment(bottomNavigationView, pager))
+                            .addToBackStack("loginFragment").commit();
+
+                    bottomNavigationView.setVisibility(View.GONE);
+                    pager.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.log_out:
                     fireBaseManager.logOutUser();
