@@ -88,6 +88,45 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/age_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:text="@string/age"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/gender_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:text="@string/gender"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:text="@string/age"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -95,44 +134,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp">
 
-                <TextView
-                    android:id="@+id/age_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:text="@string/age"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:gravity="center_horizontal"/>
-
-                <TextView
-                    android:id="@+id/gender_tv"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:text="@string/gender"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:gravity="center_horizontal"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="15sp"
-                    android:text="@string/age"
-                    android:textStyle="bold"
-                    android:textColor="#000"
-                    android:gravity="center_horizontal"/>
-
-            </LinearLayout>
 
             <ScrollView
                 android:layout_width="match_parent"

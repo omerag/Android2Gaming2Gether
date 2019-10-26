@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment {
         editBtn.setOnClickListener(editBtnListener);
 
 
-        RecyclerView recyclerView =getView().findViewById(R.id.profile_fragment_recycler_games);
+        RecyclerView recyclerView = getView().findViewById(R.id.profile_fragment_recycler_games);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
