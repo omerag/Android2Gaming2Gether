@@ -80,6 +80,9 @@ public class ProfileFragment extends Fragment {
     private MenuItem editBtn;
     private MenuItem saveEditBtn;
 
+    private BottomNavigationView bottomNavigationView;
+    private ViewPager pager;
+
     private boolean isLogIn = false;
 
     private boolean isGameRecycleOnScreen = true;
@@ -198,10 +201,10 @@ public class ProfileFragment extends Fragment {
         public void onClick(View v) {
 
             View view = getActivity().findViewById(R.id.bottom_navigation_bar);
-            BottomNavigationView bottomNavigationView = (BottomNavigationView) view;
+            bottomNavigationView = (BottomNavigationView) view;
 
             View view1 = getActivity().findViewById(R.id.fragment_container);
-            ViewPager pager = (ViewPager) view1;
+            pager = (ViewPager) view1;
 
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.dialog_fragments_container, new ProfileEditDetailsFragment(bottomNavigationView, pager))
