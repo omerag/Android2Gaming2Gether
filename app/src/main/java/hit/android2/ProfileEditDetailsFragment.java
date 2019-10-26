@@ -1,5 +1,6 @@
 package hit.android2;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,6 +24,8 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.time.Month;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,8 +45,11 @@ public class ProfileEditDetailsFragment extends Fragment {
 
     private RadioGroup genderSelectGroup;
     private RadioButton genderSelectBtn;
+    private String gender;
 
     private LinearLayout calendarBtn;
+    private TextView calendarTv;
+    private String birthday;
 
     private EditText aboutMeEt;
     private EditText addressEt;
@@ -59,11 +66,10 @@ public class ProfileEditDetailsFragment extends Fragment {
     private CheckBox russian;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.profile_dialog_edit_details_fragment, container, false);
+        final View rootView = inflater.inflate(R.layout.profile_dialog_edit_details_fragment, container, false);
 
         back_btn = rootView.findViewById(R.id.back_btn);
 
@@ -75,24 +81,77 @@ public class ProfileEditDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                genderSelectBtn = rootView.findViewById(genderSelectGroup.getCheckedRadioButtonId());
+                if (genderSelectBtn.getId() == R.id.profile_fragment_edit_details_radio_male) {
+                    gender = "male";
+                } else if (genderSelectBtn.getId() == R.id.profile_fragment_edit_details_radio_female) {
+                    gender = "female";
+                } else {
+                    gender = "all";
+                }
 
 
+                if(addressEt.getText().toString().equals("")){
+                    DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, 0, 0);
+                    Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
+                        @Override
+                        public void onSuccess(double latitude, double longitude) {
+                            DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, latitude, longitude);
+                            Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
-
-                new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
-                    @Override
-                    public void onSuccess(double latitude, double longitude) {
-                        DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),aboutMeEt.getText().toString(),setLangueges(),null,null,latitude,longitude);
-                        Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
         genderSelectGroup = rootView.findViewById(R.id.profile_fragment_edit_details_radio_group);
         //genderSelectBtn = rootView.findViewById();
 
+        calendarTv = rootView.findViewById(R.id.profile_fragment_edit_details_calendar_text_view);
         calendarBtn = rootView.findViewById(R.id.profile_fragment_edit_details_calendar_layout);
+        calendarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                Calendar calendar = Calendar.getInstance();
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                DatePickerDialog dialog;
+
+                dialog = new DatePickerDialog(getActivity(),R.style.MySpinnerDatePickerStyle ,new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDay) {
+
+                        String sMonth = "" + mMonth;
+                        if(mMonth < 10){
+                            sMonth = "0" + mMonth;
+                        }
+
+                        String sDay = "" + mDay;
+                        if(mDay < 10){
+                            sDay = "0" + sDay;
+                        }
+                        birthday = "" + mYear +"/" + sMonth + "/" + sDay;
+                        calendarTv.setText(birthday);
+
+                    }
+                }, year, month, day);
+               // dialog.updateDate(year,month,day);
+
+
+                dialog.show();
+            }
+
+        });
+
+
 
         aboutMeEt = rootView.findViewById(R.id.profile_fragment_edit_details_about_me_et);
         addressEt = rootView.findViewById(R.id.profile_fragment_edit_details_address_et);
@@ -119,8 +178,7 @@ public class ProfileEditDetailsFragment extends Fragment {
         this.pager = pager;
     }
 
-    class BackBtnListener implements View.OnClickListener
-    {
+    class BackBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             getActivity().getSupportFragmentManager().popBackStack();
@@ -130,31 +188,31 @@ public class ProfileEditDetailsFragment extends Fragment {
         }
     }
 
-    private Map<String,Boolean> setLangueges(){
+    private Map<String, Boolean> setLangueges() {
 
-        Map<String,Boolean> langeuges = new HashMap<>();
-        langeuges.put(arabic.getText().toString(),arabic.isChecked());
+        Map<String, Boolean> langeuges = new HashMap<>();
+        langeuges.put(arabic.getText().toString(), arabic.isChecked());
         langeuges.put(chinese.getText().toString(), chinese.isChecked());
-        langeuges.put(english.getText().toString(),english.isChecked());
-        langeuges.put(french.getText().toString(),french.isChecked());
-        langeuges.put(german.getText().toString(),german.isChecked());
-        langeuges.put(hebrew.getText().toString(),hebrew.isChecked());
-        langeuges.put(italian.getText().toString(),italian.isChecked());
-        langeuges.put(japanese.getText().toString(),japanese.isChecked());
-        langeuges.put(korean.getText().toString(),korean.isChecked());
-        langeuges.put(russian.getText().toString(),russian.isChecked());
+        langeuges.put(english.getText().toString(), english.isChecked());
+        langeuges.put(french.getText().toString(), french.isChecked());
+        langeuges.put(german.getText().toString(), german.isChecked());
+        langeuges.put(hebrew.getText().toString(), hebrew.isChecked());
+        langeuges.put(italian.getText().toString(), italian.isChecked());
+        langeuges.put(japanese.getText().toString(), japanese.isChecked());
+        langeuges.put(korean.getText().toString(), korean.isChecked());
+        langeuges.put(russian.getText().toString(), russian.isChecked());
 
 
         return langeuges;
     }
 
-    private void initDetails(){
+    private void initDetails() {
 
         DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
             @Override
             public void onSuccess(UserData userData) {
 
-                Map<String,Boolean> langMap = userData.getLanguage();
+                Map<String, Boolean> langMap = userData.getLanguage();
 
                 arabic.setChecked(langMap.get("Arabic"));
                 chinese.setChecked(langMap.get("Chinese"));
@@ -168,6 +226,20 @@ public class ProfileEditDetailsFragment extends Fragment {
                 russian.setChecked(langMap.get("Russian"));
 
                 aboutMeEt.setText(userData.getAboutMe(), EditText.BufferType.EDITABLE);
+
+                calendarTv.setText(userData.getBirthday_timestamp());
+
+                gender = userData.getGender();
+
+                if(gender.equals("male")){
+                    genderSelectBtn = getView().findViewById(R.id.profile_fragment_edit_details_radio_male);
+                    genderSelectBtn.setChecked(true);
+                }
+                else if(gender.equals("female")){
+                    genderSelectBtn = getView().findViewById(R.id.profile_fragment_edit_details_radio_female);
+                    genderSelectBtn.setChecked(true);
+                }
+
 
 
 

@@ -43,6 +43,7 @@
 
             />
 
+
     </RadioGroup>
 
     <LinearLayout
@@ -63,6 +64,7 @@
             />
 
         <TextView
+            android:id="@+id/profile_fragment_edit_details_calendar_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="1970/01/01"
