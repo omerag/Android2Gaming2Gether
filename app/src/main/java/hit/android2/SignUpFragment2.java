@@ -100,7 +100,7 @@ public class SignUpFragment2 extends Fragment {
 
             String about_me = about_me_et.getText().toString();
 
-            DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),about_me,null,birthday,null);
+            DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),about_me,null,birthday,null,0,0);
         }
     }
 

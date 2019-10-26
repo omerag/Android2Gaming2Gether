@@ -808,7 +808,7 @@ public class DatabaseManager {
                 });
     }
 
-    static public void updateUserData(String userId, String aboutMe, Map<String, Boolean> language, String birthday, String gender) {
+    static public void updateUserData(String userId, String aboutMe, Map<String, Boolean> language, String birthday, String gender,double mLatitude, double mLongitude) {
 
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
 
@@ -826,6 +826,14 @@ public class DatabaseManager {
 
         if (gender != null) {
             userReff.update("gender", gender);
+        }
+
+        if(mLatitude != 0){
+            userReff.update("mLatitude",mLatitude);
+        }
+
+        if(mLongitude != 0){
+            userReff.update("mLatitude",mLongitude);
         }
 
     }

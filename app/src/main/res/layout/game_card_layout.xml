@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="260dp"
+    android:layout_width="200dp"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
     app:cardElevation="3dp"
     app:contentPadding="1dp"
-    app:cardCornerRadius="3dp">
+    app:cardCornerRadius="18dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp">
 
-        <ImageView
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
             android:id="@+id/game_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="fitXY"
+            app:siShape="@drawable/shape_rounded_rectangle"
             android:src="@mipmap/ic_launcher"
+            app:siSquare="false"
             />
 
         <LinearLayout
@@ -27,7 +29,8 @@
             android:orientation="vertical"
             android:layout_alignParentBottom="true"
             android:gravity="center_horizontal"
-            android:background="@drawable/text_view_background">
+            android:background="@drawable/text_view_background"
+            >
 
         <TextView
             android:id="@+id/game_name"

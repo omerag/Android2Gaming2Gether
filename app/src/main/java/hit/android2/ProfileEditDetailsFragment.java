@@ -28,6 +28,7 @@ import java.util.Map;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Helpers.GeoHelper;
 
 public class ProfileEditDetailsFragment extends Fragment {
 
@@ -75,8 +76,16 @@ public class ProfileEditDetailsFragment extends Fragment {
             public void onClick(View view) {
 
 
-                DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),aboutMeEt.getText().toString(),setLangueges(),null,null);
-                Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+
+
+
+                new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
+                    @Override
+                    public void onSuccess(double latitude, double longitude) {
+                        DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),aboutMeEt.getText().toString(),setLangueges(),null,null,latitude,longitude);
+                        Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

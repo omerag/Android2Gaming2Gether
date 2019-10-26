@@ -132,47 +132,47 @@ public class ProfileFragment extends Fragment {
         RecyclerView recyclerView = getView().findViewById(R.id.profile_fragment_recycler_games);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        if(FirebaseManager.isLoged()){
+            if(liveData.getGameDataList() == null){
+                Log.d("live data", liveData.toString());
 
-        if(liveData.getGameDataList() == null){
-            Log.d("live data", liveData.toString());
+                DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<List<GameData>>() {
+                    @Override
+                    public void onSuccess(List<GameData> gameData) {
+                        gameDataList = gameData;
+                        if(gameAdapter == null) {
+                            gameAdapter = new GameAdapter(getActivity(),gameDataList);
+                            liveData.setGameDataList(gameDataList);
+                            liveData.setGameAdapter(gameAdapter);
+                        }
 
-            DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<List<GameData>>() {
-                @Override
-                public void onSuccess(List<GameData> gameData) {
-                    gameDataList = gameData;
-                    if(gameAdapter == null) {
-                        gameAdapter = new GameAdapter(getActivity(),gameDataList);
-                        liveData.setGameDataList(gameDataList);
-                        liveData.setGameAdapter(gameAdapter);
+                        gameAdapter.notifyDataSetChanged();
+                        Log.d("live data", "gameData.size() = " + gameData.size());
+
                     }
-
-                    gameAdapter.notifyDataSetChanged();
-                    Log.d("live data", "gameData.size() = " + gameData.size());
-
-                }
-            });
-        }
-        else {
-            gameDataList = liveData.getGameDataList();
-            Log.d("live data 2", gameDataList.toString());
+                });
+            }
+            else {
+                gameDataList = liveData.getGameDataList();
+                Log.d("live data 2", gameDataList.toString());
 
 
-        }
+            }
 
-        if(gameAdapter == null){
-            gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
-            liveData.setGameAdapter(gameAdapter);
-            gameAdapter.notifyDataSetChanged();
+            if(gameAdapter == null){
+                gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
+                liveData.setGameAdapter(gameAdapter);
+                gameAdapter.notifyDataSetChanged();
 
-        }
+            }
 
-        loadUserGames();
-
-        recyclerView.setAdapter(gameAdapter);
-        gameAdapter.notifyDataSetChanged();
-       /* if(FirebaseManager.isLoged()){
             loadUserGames();
-        }*/
+
+            recyclerView.setAdapter(gameAdapter);
+            gameAdapter.notifyDataSetChanged();
+        }
+
+
 
     }
 
