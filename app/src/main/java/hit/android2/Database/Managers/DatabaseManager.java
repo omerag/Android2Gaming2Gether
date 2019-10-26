@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -809,31 +811,42 @@ public class DatabaseManager {
     }
 
     static public void updateUserData(String userId, String aboutMe, Map<String, Boolean> language, String birthday, String gender,double mLatitude, double mLongitude) {
-
+        final String TAG = "updateUserData";
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
 
         if (aboutMe != null) {
             userReff.update("aboutMe", aboutMe);
+            Log.d(TAG,"aboutMe = " + aboutMe);
         }
 
         if (language != null) {
             userReff.update("language", language);
+            Log.d(TAG,"language = " + language);
+
         }
 
         if (birthday != null) {
             userReff.update("birthday_timestamp", birthday);
+            Log.d(TAG,"birthday_timestamp = " + birthday);
+
         }
 
         if (gender != null) {
             userReff.update("gender", gender);
+            Log.d(TAG,"gender = " + gender);
+
         }
 
         if(mLatitude != 0){
             userReff.update("mLatitude",mLatitude);
+            Log.d(TAG,"mLatitude = " + mLatitude);
+
         }
 
         if(mLongitude != 0){
-            userReff.update("mLatitude",mLongitude);
+            userReff.update("mLongitude",mLongitude);
+            Log.d(TAG,"mLongitude = " + mLongitude);
+
         }
 
     }

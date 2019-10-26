@@ -98,7 +98,7 @@ public class ProfileEditDetailsFragment extends Fragment {
                 else {
                     new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
                         @Override
-                        public void onSuccess(double latitude, double longitude) {
+                        public void onSuccess(Double latitude, Double longitude) {
                             DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, latitude, longitude);
                             Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
                         }

@@ -24,12 +24,12 @@ public class GeoHelper {
 
     private Activity activity;
 
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     public Listener listener;
 
     public interface Listener<Double>{
-        void onSuccess(double latitude,double longitude);
+        void onSuccess(Double latitude,Double longitude);
     }
 
 
@@ -71,7 +71,7 @@ public class GeoHelper {
                     @Override
                     public void run() {
 
-                        listener.onSuccess(latitude,longitude);
+                        listener.onSuccess(address.getLatitude(),address.getLongitude());
                         Log.d("GeoHelper","onReciveResult\nLatitude = " + address.getLatitude()
                         + "\nLongitude = " + address.getLongitude());
                         //progressBar.setVisibility(View.GONE);
