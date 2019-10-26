@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
@@ -23,9 +24,9 @@ public class SignUpFragment1 extends Fragment {
 
     private Button sign_up_btn;
     private ImageButton back_btn;
-    private EditText userNameInput;
-    private EditText emailInput;
-    private EditText passwordInput;
+    private TextInputEditText userNameInput;
+    private TextInputEditText emailInput;
+    private TextInputEditText passwordInput;
     private BottomNavigationView navigationView;
     private ViewPager pager;
 
