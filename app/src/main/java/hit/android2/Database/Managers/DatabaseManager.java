@@ -336,12 +336,12 @@ public class DatabaseManager {
     static public void addUserToDatabase(final UserData user, final Listener listener) {
         System.out.println("user id = " + user.getKey());
         FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user)
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                listener.onSuccess();
-            }
-        });
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        listener.onSuccess();
+                    }
+                });
     }
 
     static public void searchPlayers(final String gameGuid, final List<UserData> players, final RecyclerView.Adapter adapter) {
@@ -367,7 +367,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance , final DataListener<List<UserData>> listener) {
+    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance, final DataListener<List<UserData>> listener) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
         //////////
@@ -389,29 +389,25 @@ public class DatabaseManager {
         Log.d("searchPlayers", "mUser.getName() = " + mUser.getName());
 
 
-
-
-
         CollectionReference usersReff = FirebaseFirestore.getInstance().collection("users");
         Query query;
 
         if (gender.equals("all")) {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
-                    .whereGreaterThanOrEqualTo(rankType,0)
-                 // .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
+                    .whereGreaterThanOrEqualTo(rankType, 0)
+                    // .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
                     .orderBy(rankType, Query.Direction.DESCENDING)
-                 // .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
+            // .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
             ;
-        }
-        else {
+        } else {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
                     .whereEqualTo("gender", gender)
-                    .whereGreaterThanOrEqualTo(rankType,0)
+                    .whereGreaterThanOrEqualTo(rankType, 0)
                     //.whereGreaterThan("birthday_timestamp", birthdayTimestamp)
                     .orderBy(rankType, Query.Direction.DESCENDING)
-                 // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
+            // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
             ;
         }
 
@@ -432,7 +428,7 @@ public class DatabaseManager {
 
                 }
 
-                players = filerPlayerList(mUser, players,maxBirthday,maxDistance);
+                players = filerPlayerList(mUser, players, maxBirthday, maxDistance);
                 listener.onSuccess(players);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -546,6 +542,36 @@ public class DatabaseManager {
                 // adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    static public void getUserGames(String userId, final DataListener<List<GameData>> listener) {
+
+        Log.d("DatabaseManager", "getUserGames called");
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Log.d("DatabaseManager", "getUserGames OnSuccess called");
+
+                UserData user = documentSnapshot.toObject(UserData.class);
+                List<String> gameKeys = user.getGames();
+
+                final List<GameData> games = new ArrayList<>();
+                for (String gameKey : gameKeys) {
+                    getGameFromDatabase(gameKey, new DataListener<GameData>() {
+                        @Override
+                        public void onSuccess(GameData gameData) {
+                            games.add(gameData);
+                        }
+                    });
+                    listener.onSuccess(games);
+
+                    // adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
     }
 
     static public void getUserFriends(final String userId, final List<UserData> users, final Listener listener) {
@@ -782,29 +808,29 @@ public class DatabaseManager {
                 });
     }
 
-    static public void updateUserData(String userId, String aboutMe, Map<String,Boolean> language,String birthday, String gender){
+    static public void updateUserData(String userId, String aboutMe, Map<String, Boolean> language, String birthday, String gender) {
 
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
 
-        if(aboutMe != null){
-            userReff.update("aboutMe",aboutMe);
+        if (aboutMe != null) {
+            userReff.update("aboutMe", aboutMe);
         }
 
-        if(language != null){
-            userReff.update("language",language);
+        if (language != null) {
+            userReff.update("language", language);
         }
 
-        if(birthday != null){
-            userReff.update("birthday_timestamp",birthday);
+        if (birthday != null) {
+            userReff.update("birthday_timestamp", birthday);
         }
 
-        if(gender != null){
-            userReff.update("gender",gender);
+        if (gender != null) {
+            userReff.update("gender", gender);
         }
 
     }
 
-    private static List<UserData> filerPlayerList(UserData mUser, List<UserData> players,String maxBirthday,float maxDistance){
+    private static List<UserData> filerPlayerList(UserData mUser, List<UserData> players, String maxBirthday, float maxDistance) {
 
         List<UserData> tempPlayers = new ArrayList<>();
 
@@ -812,23 +838,22 @@ public class DatabaseManager {
         mLocation.setLatitude(mUser.getMyLatitude());
         mLocation.setLongitude(mUser.getMyLongitude());
 
-        for (UserData player : players){
+        for (UserData player : players) {
 
             Location pLocation = new Location("");
             pLocation.setLatitude(player.getMyLatitude());
             pLocation.setLongitude(player.getMyLongitude());
 
-            Log.d("DatabaseManager","filerPlayerList");
-            Log.d("DatabaseManager","player.getBirthday_timestamp() = " + player.getBirthday_timestamp());
-            Log.d("DatabaseManager","maxBirthday = " + maxBirthday);
-            Log.d("DatabaseManager","player.getBirthday_timestamp().compareTo(maxBirthday) = " + player.getBirthday_timestamp().compareTo(maxBirthday));
+            Log.d("DatabaseManager", "filerPlayerList");
+            Log.d("DatabaseManager", "player.getBirthday_timestamp() = " + player.getBirthday_timestamp());
+            Log.d("DatabaseManager", "maxBirthday = " + maxBirthday);
+            Log.d("DatabaseManager", "player.getBirthday_timestamp().compareTo(maxBirthday) = " + player.getBirthday_timestamp().compareTo(maxBirthday));
 
-            Log.d("DatabaseManager","maxDistance = " + maxDistance);
-            Log.d("DatabaseManager","mLocation.distanceTo(pLocation) = " + mLocation.distanceTo(pLocation));
+            Log.d("DatabaseManager", "maxDistance = " + maxDistance);
+            Log.d("DatabaseManager", "mLocation.distanceTo(pLocation) = " + mLocation.distanceTo(pLocation));
 
 
-
-            if(player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance <= mLocation.distanceTo(pLocation)){
+            if (player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance <= mLocation.distanceTo(pLocation)) {
                 tempPlayers.add(player);
             }
         }

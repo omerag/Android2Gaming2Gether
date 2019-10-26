@@ -168,14 +168,24 @@ public class ProfileFragment extends Fragment {
                     // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                     liveData.setUserIv(user.getImageUrl());
 
-                    DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                    DatabaseManager.getUserGames(user.getKey(), new DatabaseManager.DataListener<List<GameData>>() {
+                        @Override
+                        public void onSuccess(List<GameData> gameData) {
+                            gameDataList = gameData;
+                            liveData.setGameDataList(gameDataList);
+                            gameAdapter.setGameDataList(gameDataList);
+                            gameAdapter.notifyDataSetChanged();
+                        }
+                    });
+
+                 /*   DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
                         @Override
                         public void onSuccess() {
                             Log.d("ProfilFragment", "userReff EventListener on Success 2");
 
                             liveData.setGameDataList(gameDataList);
                         }
-                    });
+                    });*/
 
                 }//
             });

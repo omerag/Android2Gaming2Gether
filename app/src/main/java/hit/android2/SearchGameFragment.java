@@ -39,7 +39,7 @@ public class SearchGameFragment extends Fragment {
     private List<GameData> gameDataList;
     private GameAdapter gameAdapter;
 
-    private ProfileFragmentLiveData liveData;
+    //private ProfileFragmentLiveData liveData;
 
     @Nullable
     @Override
@@ -61,7 +61,7 @@ public class SearchGameFragment extends Fragment {
         this.pager = pager;
         this.gameDataList = gameDataList;
         this.gameAdapter = gameAdapter;
-        this.liveData = liveData;
+       // this.liveData = liveData;
     }
 
     class SearchBtnListener implements View.OnClickListener
@@ -84,7 +84,7 @@ public class SearchGameFragment extends Fragment {
                                     DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
                                         @Override
                                         public void onSuccess() {
-                                            liveData.setGameDataList(gameDataList);
+                                            //liveData.setGameDataList(gameDataList);
 
                                             Log.d("ProfileFragment","Loading List from server");
                                         }
