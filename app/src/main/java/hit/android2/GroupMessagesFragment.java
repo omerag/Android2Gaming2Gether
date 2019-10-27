@@ -302,6 +302,8 @@ public class GroupMessagesFragment extends Fragment {
                 {
                     reference.setValue(group_id);
                 }
+
+                getUserGroups();
             }
 
             @Override
