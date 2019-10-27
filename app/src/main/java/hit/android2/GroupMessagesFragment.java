@@ -2,6 +2,7 @@ package hit.android2;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,6 +49,7 @@ public class GroupMessagesFragment extends Fragment {
     private List<String> group_users_id;
     private List<String> mUserGroups;
     private List<GroupData> mGroups;
+    private List<Boolean> isSelected;
 
     @Nullable
     @Override
@@ -96,6 +98,7 @@ public class GroupMessagesFragment extends Fragment {
 
             final List<UserData> friends = new ArrayList<>();
 
+
             final EditText groupNameET = dialog.findViewById(R.id.group_name_ET);
             final RecyclerView friendsRecycler = dialog.findViewById(R.id.friends_recycler_view);
             friendsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -113,11 +116,27 @@ public class GroupMessagesFragment extends Fragment {
                 }
             });
 
+            isSelected = new ArrayList<>();
+            for (int i = 0; i < 50; i++)
+            {
+                isSelected.add(i,false);
+            }
+
             userAdapter.setListener(new UserAdapter.AdapterListener() {
                 @Override
                 public void onClick(View view, int position) {
 
-                    group_users_id.add(friends.get(position).getKey());
+                    if (isSelected.get(position).equals(false))
+                    {
+                        view.setBackgroundColor(Color.rgb(149,149,149));
+                        isSelected.set(position, true);
+                        //group_users_id.add(friends.get(position).getKey());
+                    }
+                    else {
+                        view.setBackgroundColor(Color.rgb(255,255,255));
+                        isSelected.set(position, false);
+
+                    }
                 }
             });
 
@@ -132,6 +151,14 @@ public class GroupMessagesFragment extends Fragment {
                     }
                     else {
                         String image_URL = "https://cdn.images.express.co.uk/img/dynamic/galleries/517x/370884.jpg";
+
+                        for (int i = 0; i < isSelected.size(); i++)
+                        {
+                            if (isSelected.get(i))
+                            {
+                                group_users_id.add(friends.get(i).getKey());
+                            }
+                        }
                         String myId = manager.getFireBaseAuth().getCurrentUser().getUid();
                         group_users_id.add(myId);
                         GroupData groupData = new GroupData(group_name,image_URL,group_users_id);
@@ -215,4 +242,5 @@ public class GroupMessagesFragment extends Fragment {
             }
         });
     }
+
 }
