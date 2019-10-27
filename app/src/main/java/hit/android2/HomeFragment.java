@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -181,7 +182,8 @@ public class HomeFragment extends Fragment {
         ImageButton sendBtn = dialog.findViewById(R.id.create_new_topic_dialog_imageBtn);
         recyclerView = dialog.findViewById(R.id.create_new_topic_dialog_recycler);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+       // recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
 
         final List<GameData> gameDataList = new ArrayList<>();
         GameAdapter gameAdapter = new GameAdapter(getContext(), gameDataList, chosenGame);
