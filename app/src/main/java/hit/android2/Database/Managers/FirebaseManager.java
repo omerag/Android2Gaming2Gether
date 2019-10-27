@@ -158,7 +158,7 @@ public class FirebaseManager {
         return false;
     }
 
-    public void sendMessage(final String sender, final String receiver, final String message, final Context context){
+    public void sendMessage(final String sender, final String receiver, final String message, final Context context, final String userName){
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -174,7 +174,7 @@ public class FirebaseManager {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                MessegingManager.notifyNewMessegInChat(context,getFireBaseAuth().getCurrentUser().getUid(),receiver,message);
+                MessegingManager.notifyNewMessegInChat(context,userName,receiver,message);
             }
         });
 
