@@ -9,6 +9,12 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="bottom">
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/drawer_profile_picture"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/blank_profile_img"/>
+
     <TextView
         android:id="@+id/nav_header_tv"
         android:layout_width="match_parent"

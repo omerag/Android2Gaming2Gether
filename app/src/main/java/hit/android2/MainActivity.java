@@ -16,23 +16,29 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Managers.MessegingManager;
+import hit.android2.Database.Model.UserData;
 
 public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
+    CircleImageView profile_imageView;
     ViewPager pager;
     String userName;
     FirebaseManager fireBaseManager = new FirebaseManager();
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.navigation_view);
         pager = findViewById(R.id.fragment_container);
+
+
         if (Locale.getDefault().toString().equals("iw_IL")) pager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
         pager.setAdapter(pagerAdapter);
@@ -73,11 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
         View headerView = navigationView.getHeaderView(0);
         TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
-        fireBaseManager.setReference(navigationView, userNameTv);
+        profile_imageView = headerView.findViewById(R.id.drawer_profile_picture);
+        fireBaseManager.setReference(navigationView, userNameTv, getApplicationContext());
 
-        //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
         pager.setCurrentItem(2);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
+        loadUserPicture();
 
     }
 
@@ -88,29 +98,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-            Fragment selectedFragment = null;
 
             switch (menuItem.getItemId())
             {
                 case R.id.nav_profile:
-                    //selectedFragment = new ProfileFragment();
                     pager.setCurrentItem(3);
                     break;
                 case R.id.nav_messages:
-                    //selectedFragment = new MessagesFragment();
                     pager.setCurrentItem(0);
                     break;
                 case R.id.nav_friends:
-                   // selectedFragment = new FriendsFragment();
                     pager.setCurrentItem(1);
                     break;
                 case R.id.nav_home:
-                    //selectedFragment = new HomeFragment();
                     pager.setCurrentItem(2);
                     break;
             }
 
-           //     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
             return true;
         }
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             switch (menuItem.getItemId())
             {
                 case R.id.sign_up:
-                    //showSignUpDialog();
+
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                     {
                         getSupportFragmentManager().popBackStack();
@@ -141,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
                     pager.setVisibility(View.INVISIBLE);
                     break;
                 case R.id.log_in:
-                    //showLogInDialog();
 
                     if (getSupportFragmentManager().getBackStackEntryCount() > 0)
                     {
@@ -194,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
             MessegingManager.registerReceiver(this,receiver);
         }
 
-        // fireBaseManager.getFireBaseAuth().addAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 
     @Override
@@ -204,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
         if(FirebaseManager.isLoged()){
             MessegingManager.unRegisterReciver(this,receiver);
         }
-        // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
     }
 
     public static class PageAdapter extends FragmentPagerAdapter{
@@ -272,52 +273,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        boolean backFromFragment = false;
         super.onBackPressed();
         bottomNavigationView.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
     }
+
+    public void loadUserPicture()
+    {
+        if (FirebaseManager.isLoged())
+        {
+            FirebaseManager manager = new FirebaseManager();
+
+            DatabaseManager.getUserFromDatabase(manager.getFireBaseAuth().getCurrentUser().getUid(), new DatabaseManager.DataListener<UserData>() {
+                @Override
+                public void onSuccess(UserData userData) {
+
+                    if (userData.getImageUrl().equals(null))
+                    {
+                        profile_imageView.setImageResource(R.drawable.blank_profile_img);
+                    }
+                    else {
+
+                       Glide.with(getApplicationContext()).load(userData.getImageUrl()).into(profile_imageView);
+                    }
+                }
+            });
+        }
+    }
 }
-
-/*private void showSignUpDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.sign_up_dialog,null);
-
-        final EditText userNameInput = dialogView.findViewById(R.id.sign_up_username_et);
-        final EditText emailInput = dialogView.findViewById(R.id.sign_up_email_et);
-        final EditText passwordInput = dialogView.findViewById(R.id.sign_up_password_et);
-
-        builder.setView(dialogView).setPositiveButton(R.string.drawer_sign_up, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                userName = userNameInput.getText().toString();
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-
-                fireBaseManager.signUpUser(userName, email, password);
-            }
-        }).show();
-    }*/
-
-    /*private void showLogInDialog()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        View dialogView = getLayoutInflater().inflate(R.layout.log_in_dialog,null);
-
-        final EditText emailInput = dialogView.findViewById(R.id.log_in_email_et);
-        final EditText passwordInput = dialogView.findViewById(R.id.log_in_password_et);
-
-        builder.setView(dialogView).setPositiveButton(R.string.drawer_log_in, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                String email = emailInput.getText().toString();
-                String password = passwordInput.getText().toString();
-
-                fireBaseManager.logInUser(email,password);
-            }
-        }).show();
-
-    }*/

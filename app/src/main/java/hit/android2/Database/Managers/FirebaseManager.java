@@ -1,6 +1,5 @@
 package hit.android2.Database.Managers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,8 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Database.Model.UserData;
-import hit.android2.Model.Chat;
+
 import hit.android2.R;
 
 public class FirebaseManager {
@@ -48,6 +49,7 @@ public class FirebaseManager {
     private NavigationView navigationView;
     private TextView userTv;
     private String lastMessage;
+    private Context myContext;
 
     private UserData currentUserData;
 
@@ -72,8 +74,6 @@ public class FirebaseManager {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-     /*           logOutUser();
-                logInUser(email,password);*/
                 FirebaseUser firebaseUser = fireBaseAuth.getCurrentUser();
                 if(firebaseUser != null){
                     UserData user = new UserData(username,fireBaseAuth.getCurrentUser().getUid());
@@ -136,10 +136,12 @@ public class FirebaseManager {
         }
     }
 
-    public void setReference(NavigationView navigation, TextView userName)
+
+    public void setReference(NavigationView navigation, TextView userName,Context context)
     {
         navigationView = navigation;
         userTv = userName;
+        myContext = context;
     }
 
     public void registerAuthListener(){
