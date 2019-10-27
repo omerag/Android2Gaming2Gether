@@ -21,6 +21,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
 
     private Context context;
     private List<GroupData> groupDataList;
+    private GroupAdapterListener listener;
 
     public GroupAdapter(Context context, List<GroupData> groupDataList) {
         this.context = context;
@@ -29,6 +30,15 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
 
     public void setGroupDataList(List<GroupData> groupDataList) {
         this.groupDataList = groupDataList;
+    }
+
+    public interface GroupAdapterListener{
+        void onClick(View view, int position);
+    }
+
+    public void setListener(GroupAdapterListener listener){
+        this.listener = listener;
+
     }
 
     @NonNull
@@ -73,7 +83,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
             groupPicture = itemView.findViewById(R.id.user_image);
 
 
-            /*itemView.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
@@ -81,7 +91,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
                     }
 
                 }
-            });*/
+            });
         }
     }
 }

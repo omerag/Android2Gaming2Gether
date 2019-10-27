@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -62,6 +63,15 @@ public class GroupMessagesFragment extends Fragment {
         addNewGroupBtn.setOnClickListener(newGroupBtnListener);
 
         getUserGroups();
+
+        groupAdapter.setListener(new GroupAdapter.GroupAdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+
+                getActivity().startActivity(intent);
+            }
+        });
 
         return view;
     }
