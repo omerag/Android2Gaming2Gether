@@ -56,10 +56,10 @@ public class StorageManager {
         });
     }
 
-    static public void uploadImageFromImageviewReturnUrl(ImageView imageView, DataListener<String> listener){
+    static public void uploadImageFromImageviewReturnUrl(ImageView imageView,String groupName, DataListener<String> listener){
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        String path = "images/profile/" + FirebaseAuth.getInstance().getCurrentUser().getUid() + ".png";
+        String path = "images/group/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +"/" + groupName + ".png";
 
 
         Bitmap bitmap = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
