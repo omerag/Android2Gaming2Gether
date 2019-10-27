@@ -33,6 +33,7 @@ import java.util.Map;
 
 import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Model.GameData;
+import hit.android2.Database.Model.GroupData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chatlist;
@@ -790,6 +791,39 @@ public class DatabaseManager {
 
     }
 
+    static private void addGroupToDatabase(String userId, GroupData group, final Listener listener){
+
+        CollectionReference groupsReff = FirebaseFirestore.getInstance().collection("groups");
+        String groupdId = groupsReff.document().getId();
+        group.setKey(groupdId);
+        groupsReff.document(groupdId).set(group).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                listener.onSuccess();
+            }
+        });
+    }
+
+    static public void getGroupFromFS(String groupId, final DataListener<GroupData> listener){
+
+        FirebaseFirestore.getInstance().collection("groups").document(groupId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        GroupData group = documentSnapshot.toObject(GroupData.class);
+
+                        listener.onSuccess(group);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
     static public void updateProfileImage(String userId, final String imageUrl) {
 
         final DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
@@ -881,4 +915,6 @@ public class DatabaseManager {
 
         return tempPlayers;
     }
+
+
 }
