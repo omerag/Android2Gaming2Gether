@@ -22,6 +22,10 @@ android {
             buildConfigField 'String', "GiantBombApi", GiantBombApi
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -49,6 +53,7 @@ dependencies {
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'ru.alexbykov:nopermission:1.1.2'
 
 
 }

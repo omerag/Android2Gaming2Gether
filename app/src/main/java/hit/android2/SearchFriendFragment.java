@@ -35,6 +35,7 @@ import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Helpers.LocationHelper;
+import ru.alexbykov.nopermission.PermissionHelper;
 
 public class SearchFriendFragment extends Fragment {
 
@@ -42,12 +43,18 @@ public class SearchFriendFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<UserData> friendsList;
     private FriendsFragmentLiveData liveData;
+    private LocationHelper helper;
+
+    private PermissionHelper permissionHelper;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.search_friends_dialog_layout, container, false);
+
+
+        permissionHelper = new PermissionHelper(this);
 
 
         return rootView;
@@ -70,7 +77,7 @@ public class SearchFriendFragment extends Fragment {
         searchBtn.setTag(R.id.search_button);
 
 
-        final GetStringFromImageBtn stringFromImageBtn =  new GetStringFromImageBtn();
+        final GetStringFromImageBtn stringFromImageBtn = new GetStringFromImageBtn();
         ImageButton maleGenderIbtn = getView().findViewById(R.id.search_friends_dialog_gender_male);
         maleGenderIbtn.setTag(R.id.search_friends_dialog_gender_male);
         maleGenderIbtn.setOnClickListener(stringFromImageBtn);
@@ -100,7 +107,7 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 age[0] = i;
-                ageTv.setText( "Age: " + i);
+                ageTv.setText("Age: " + i);
             }
 
             @Override
@@ -136,16 +143,9 @@ public class SearchFriendFragment extends Fragment {
         });
 
 
-
-
-
-
-
-
-
         ///flags recycler
         final RecyclerView flagsRecycler = getView().findViewById(R.id.search_friends_dialog_flags_recycler_view);
-        flagsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
+        flagsRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         FlagAdapter flagAdapter = new FlagAdapter();
         flagsRecycler.setAdapter(flagAdapter);
         flagsRecycler.setHasFixedSize(true);
@@ -162,12 +162,12 @@ public class SearchFriendFragment extends Fragment {
 
         ///games recycler
         final RecyclerView gamesRecycler = getView().findViewById(R.id.search_friends_dialog_games_recycler_view);
-        gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
+        gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
-        GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
-        final UserAdapter userSearchAdapter = new UserAdapter(getActivity(),users);
+        GameAdapter gameAdapter = new GameAdapter(getActivity(), games);
+        final UserAdapter userSearchAdapter = new UserAdapter(getActivity(), users);
         gamesRecycler.setAdapter(gameAdapter);
 
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
@@ -184,17 +184,17 @@ public class SearchFriendFragment extends Fragment {
                         final double mLongitude = 0;
                         final double mLatitude = 0;
 
-                        LocationHelper helper = new LocationHelper(getActivity(), new LocationHelper.Listener<Double>() {
+                        helper = new LocationHelper(getActivity(), permissionHelper, new LocationHelper.Listener<Double>() {
                             @Override
                             public void onSuccess(double latitude, double longitude) {
-                                DatabaseManager.searchPlayers(userData,gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0], distance[0] * 1000,latitude ,longitude ,new DatabaseManager.DataListener<List<UserData>>() {
+                                DatabaseManager.searchPlayers(userData, gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(), age[0], distance[0] * 1000, latitude, longitude, new DatabaseManager.DataListener<List<UserData>>() {
                                     @Override
                                     public void onSuccess(List<UserData> userData) {
-                                        Log.d("SearchFriendsFragment","onSuccess - userDataList =" + userData.toString() );
+                                        Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
                                         users.addAll(userData);
                                         userSearchAdapter.notifyDataSetChanged();
                                     }
-                            });
+                                });
                             }
                         });
 
@@ -229,13 +229,12 @@ public class SearchFriendFragment extends Fragment {
         });
 
 
-
-        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),games,gameAdapter);
+        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), games, gameAdapter);
 
         super.onViewCreated(view, savedInstanceState);
     }
 
-    class GetStringFromImageBtn implements View.OnClickListener{
+    class GetStringFromImageBtn implements View.OnClickListener {
 
 
         String resultGener;
@@ -251,9 +250,9 @@ public class SearchFriendFragment extends Fragment {
 
         @Override
         public void onClick(View view) {
-            int tag = (int)view.getTag();
+            int tag = (int) view.getTag();
 
-            switch (tag){
+            switch (tag) {
                 case R.id.search_friends_dialog_gender_male:
                     resultGener = "male";
                     Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
@@ -289,23 +288,9 @@ public class SearchFriendFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-       /* if (requestCode == LOCATION_PERMISSION_REQUEST) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("No Permission").setMessage("Without location permission the app cannot show the local weather")
-                        .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                intent.setData(Uri.parse("package:" + getActivity().getBaseContext().getPackageName()));
-                                startActivity(intent);
-                            }
-                        }).show();
-                updateWeatherList(0,0);
-            } else getLocation();*/
-        }
+        Log.d("onRequestPermResult","");
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+
+}

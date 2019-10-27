@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +24,7 @@ import java.util.List;
 
 import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.Managers.FirebaseManager;
-import hit.android2.Database.Managers.MessegingManager;
+import hit.android2.Database.Managers.messegingManager;
 import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Model.ParentData;
@@ -247,8 +246,8 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                             //notifyDataSetChanged();
                             commentAdapter.notifyDataSetChanged();
 
-                            MessegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
-                            MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
+                            messegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
+                            messegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
                             DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), topics.get(getAdapterPosition()).getTopicId(), databaseTopics.get(getAdapterPosition()).getItems());
 
                         }

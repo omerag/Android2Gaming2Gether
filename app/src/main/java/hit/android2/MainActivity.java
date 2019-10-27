@@ -16,7 +16,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -27,7 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Locale;
 
 import hit.android2.Database.Managers.FirebaseManager;
-import hit.android2.Database.Managers.MessegingManager;
+import hit.android2.Database.Managers.messegingManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             };
-            MessegingManager.registerReceiver(this,receiver);
+            messegingManager.registerReceiver(this,receiver);
         }
 
         // fireBaseManager.getFireBaseAuth().addAuthStateListener(fireBaseManager.getAuthStateListener());
@@ -201,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         fireBaseManager.unRegisterAuthListener();
         if(FirebaseManager.isLoged()){
-            MessegingManager.unRegisterReciver(this,receiver);
+            messegingManager.unRegisterReciver(this,receiver);
         }
         // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
     }
