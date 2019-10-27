@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -231,27 +232,24 @@ public class FirebaseManager {
         lastMessage = "default";
 
         final FirebaseUser firebaseUser = getFireBaseAuth().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats").child(firebaseUser.getUid()).child(userid);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        Query lastQuery = reference.child(firebaseUser.getUid()).child(userid).orderByKey().limitToLast(1);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        lastQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 for (DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
-                    Chat chat = snapshot.getValue(Chat.class);
-                    /*if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid()))
-                    {
-                        lastMessage = chat.getMessage();
-                    }*/
-                    lastMessage = chat.getMessage();
-                }
+                    lastMessage = snapshot.child("message").getValue().toString();
 
-                if (lastMessage.equals("default")) lastMessageTv.setVisibility(View.INVISIBLE);
-                else {
-                    lastMessageTv.setText(lastMessage);
-                    lastMessage = "default";
+                    if (lastMessage.equals("default"))
+                    {
+                        lastMessageTv.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        lastMessageTv.setText(lastMessage);
+                        lastMessage = "default";
+                    }
                 }
             }
 
