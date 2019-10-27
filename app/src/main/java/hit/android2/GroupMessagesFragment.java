@@ -3,12 +3,12 @@ package hit.android2;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,15 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import hit.android2.Adapters.GroupAdapter;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
@@ -36,19 +33,39 @@ import hit.android2.Database.Model.UserData;
 
 public class GroupMessagesFragment extends Fragment {
 
-    FloatingActionButton addNewGroupBtn;
+    private FloatingActionButton addNewGroupBtn;
+    private RecyclerView groupsRecyclerview;
+
     FirebaseManager manager = new FirebaseManager();
+    private GroupAdapter groupAdapter;
+
     private List<String> group_users_id;
+    private List<String> mUserGroups;
+    private List<GroupData> mGroups;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.group_chat_fragment, container, false);
+
         addNewGroupBtn = view.findViewById(R.id.floating_action_btn);
+        groupsRecyclerview = view.findViewById(R.id.group_messages_fragment_recycler);
+        groupsRecyclerview.setHasFixedSize(true);
+        groupsRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mUserGroups = new ArrayList<>();
+        mGroups = new ArrayList<>();
+        groupAdapter = new GroupAdapter(getContext(), mGroups);
+        groupsRecyclerview.setAdapter(groupAdapter);
+
         AddNewGroupBtnListener newGroupBtnListener = new AddNewGroupBtnListener();
         addNewGroupBtn.setOnClickListener(newGroupBtnListener);
+
+        getUserGroups();
+
         return view;
     }
+
 
     public class AddNewGroupBtnListener implements View.OnClickListener {
 
@@ -128,6 +145,35 @@ public class GroupMessagesFragment extends Fragment {
             DatabaseManager.addGroupToUser(group_users_id.get(i), group_id);
 
         }
+    }
 
+    private void loadGroups() {
+
+
+       DatabaseManager.getUserGroupsFromFS(mUserGroups, new DatabaseManager.DataListener<List<GroupData>>() {
+           @Override
+           public void onSuccess(List<GroupData> groupData) {
+
+                mGroups = groupData;
+                groupAdapter.setGroupDataList(mGroups);
+                groupAdapter.notifyDataSetChanged();
+
+               Log.d("GroupsSize",groupData.size()+"");
+           }
+       });
+    }
+
+    private void getUserGroups()
+    {
+        String myId = manager.getFireBaseAuth().getCurrentUser().getUid();
+
+        DatabaseManager.getUserFromDatabase(myId, new DatabaseManager.DataListener<UserData>() {
+            @Override
+            public void onSuccess(UserData userData) {
+
+                mUserGroups = userData.getGroups();
+                loadGroups();
+            }
+        });
     }
 }
