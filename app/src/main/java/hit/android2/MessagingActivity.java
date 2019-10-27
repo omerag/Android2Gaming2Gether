@@ -24,6 +24,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Adapters.MessageAdapter;
+import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chat;
@@ -37,6 +38,7 @@ public class MessagingActivity extends AppCompatActivity {
     ImageButton send_btn;
     EditText text_send;
     String userId;
+    String friendName;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -78,6 +80,13 @@ public class MessagingActivity extends AppCompatActivity {
         readMessages(fuser.getUid(), userId);
         getUserFromDatabase(userId, userData, user_name, profile_img,MessagingActivity.this);
 
+        getUserFromDatabase(userId, new DatabaseManager.DataListener<UserData>() {
+            @Override
+            public void onSuccess(UserData userData) {
+                friendName = userData.getName();
+            }
+        });
+
         SendBtnListener sendBtnListener = new SendBtnListener();
         send_btn.setOnClickListener(sendBtnListener);
 
@@ -96,7 +105,7 @@ public class MessagingActivity extends AppCompatActivity {
 
             String msg = text_send.getText().toString();
             if (!msg.equals("")){
-                firebaseManager.sendMessage(fuser.getUid(), userId, msg, getApplicationContext(),user_name.getText().toString());
+                firebaseManager.sendMessage(fuser.getUid(), userId, msg, getApplicationContext(),friendName);
             }
 
             text_send.setText("");
