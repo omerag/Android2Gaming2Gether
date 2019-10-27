@@ -1,18 +1,22 @@
 package hit.android2.Database.Model;
 
+import java.util.List;
+
 public class GroupData {
 
     private String key;
     private String group_name;
     private String image_URL;
+    private List<String> members;
 
     public GroupData() {
     }
 
-    public GroupData(String key, String group_name, String image_URL) {
+    public GroupData(String key, String group_name, String image_URL, List<String> members) {
         this.key = key;
         this.group_name = group_name;
         this.image_URL = image_URL;
+        this.members = members;
     }
 
     public String getKey() {
