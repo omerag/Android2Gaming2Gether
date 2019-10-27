@@ -96,7 +96,7 @@ public class MessagingActivity extends AppCompatActivity {
 
             String msg = text_send.getText().toString();
             if (!msg.equals("")){
-                firebaseManager.sendMessage(fuser.getUid(), userId, msg);
+                firebaseManager.sendMessage(fuser.getUid(), userId, msg, getApplicationContext());
             }
 
             text_send.setText("");

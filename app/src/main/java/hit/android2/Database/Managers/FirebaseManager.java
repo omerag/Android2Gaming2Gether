@@ -1,5 +1,7 @@
 package hit.android2.Database.Managers;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -156,7 +158,7 @@ public class FirebaseManager {
         return false;
     }
 
-    public void sendMessage(final String sender, final String receiver, String message){
+    public void sendMessage(final String sender, final String receiver, final String message, final Context context){
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -167,7 +169,15 @@ public class FirebaseManager {
         hashMap.put("message", message);
 
         databaseReference.child("Chats").child(sender).child(receiver).push().setValue(hashMap);
-        databaseReference.child("Chats").child(receiver).child(sender).push().setValue(hashMap);
+        databaseReference.child("Chats").child(receiver).child(sender).push().setValue(hashMap)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                MessegingManager.notifyNewMessegInChat(context,sender,receiver,message);
+            }
+        });
+
 
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("Chatlist")
                 .child("userChatList")
