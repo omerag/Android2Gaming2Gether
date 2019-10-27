@@ -80,7 +80,7 @@ public class MessagingActivity extends AppCompatActivity {
         readMessages(fuser.getUid(), userId);
         getUserFromDatabase(userId, userData, user_name, profile_img,MessagingActivity.this);
 
-        getUserFromDatabase(userId, new DatabaseManager.DataListener<UserData>() {
+        getUserFromDatabase(fuser.getUid(), new DatabaseManager.DataListener<UserData>() {
             @Override
             public void onSuccess(UserData userData) {
                 friendName = userData.getName();
