@@ -1,6 +1,12 @@
 package hit.android2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +34,11 @@ import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Helpers.LocationHelper;
 
 public class SearchFriendFragment extends Fragment {
 
+    private static final int LOCATION_PERMISSION_REQUEST = 1;
     private UserAdapter userAdapter;
     private List<UserData> friendsList;
     private FriendsFragmentLiveData liveData;
@@ -105,6 +113,29 @@ public class SearchFriendFragment extends Fragment {
 
             }
         });
+        final TextView distanceTv = view.findViewById(R.id.search_friends_text_view_distance);
+        final float[] distance = {0};
+        SeekBar distanceSeekbar = view.findViewById(R.id.search_friends_seekbar_distance);
+        distanceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                distanceTv.setText("Distance(km): " + i);
+                distance[0] = i;
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
 
 
 
@@ -149,16 +180,24 @@ public class SearchFriendFragment extends Fragment {
 
                 DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
                     @Override
-                    public void onSuccess(UserData userData) {
-                        float distance = 0;
-                        DatabaseManager.searchPlayers(userData,gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0],distance,new DatabaseManager.DataListener<List<UserData>>() {
+                    public void onSuccess(final UserData userData) {
+                        final double mLongitude = 0;
+                        final double mLatitude = 0;
+
+                        LocationHelper helper = new LocationHelper(getActivity(), new LocationHelper.Listener<Double>() {
                             @Override
-                            public void onSuccess(List<UserData> userData) {
-                                Log.d("SearchFriendsFragment","onSuccess - userDataList =" + userData.toString() );
-                                users.addAll(userData);
-                                userSearchAdapter.notifyDataSetChanged();
+                            public void onSuccess(double latitude, double longitude) {
+                                DatabaseManager.searchPlayers(userData,gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(),age[0], distance[0] * 1000,latitude ,longitude ,new DatabaseManager.DataListener<List<UserData>>() {
+                                    @Override
+                                    public void onSuccess(List<UserData> userData) {
+                                        Log.d("SearchFriendsFragment","onSuccess - userDataList =" + userData.toString() );
+                                        users.addAll(userData);
+                                        userSearchAdapter.notifyDataSetChanged();
+                                    }
+                            });
                             }
                         });
+
                     }
                 });
 
@@ -247,4 +286,26 @@ public class SearchFriendFragment extends Fragment {
 
         }
     }
-}
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+       /* if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("No Permission").setMessage("Without location permission the app cannot show the local weather")
+                        .setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.setData(Uri.parse("package:" + getActivity().getBaseContext().getPackageName()));
+                                startActivity(intent);
+                            }
+                        }).show();
+                updateWeatherList(0,0);
+            } else getLocation();*/
+        }
+    }
+

@@ -36,6 +36,7 @@ import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.GroupData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Helpers.LocationHelper;
 import hit.android2.Model.Chatlist;
 
 public class DatabaseManager {
@@ -370,7 +371,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance, final DataListener<List<UserData>> listener) {
+    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance, final double mLatitude, final double mLongitude, final DataListener<List<UserData>> listener) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
         //////////
@@ -431,7 +432,7 @@ public class DatabaseManager {
 
                 }
 
-                players = filerPlayerList(mUser, players, maxBirthday, maxDistance);
+                players = filerPlayerList(mUser, players, maxBirthday, maxDistance,mLatitude,mLongitude);
                 listener.onSuccess(players);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -825,22 +826,25 @@ public class DatabaseManager {
     }
 
     static public void getUserGroupsFromFS(List<String> groupIds, final DataListener<List<GroupData>> listener){
-        FirebaseFirestore.getInstance().collection("groups").whereArrayContains("groups", groupIds)
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+        final List<GroupData> groups = new ArrayList<>();
+        for(int i = 0; i < groupIds.size(); i++){
+            FirebaseFirestore.getInstance().collection("groups").whereEqualTo("key", groupIds.get(i))
+                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                @Override
+                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
+                    for(QueryDocumentSnapshot groupDoc : queryDocumentSnapshots){
+                        GroupData group = groupDoc.toObject(GroupData.class);
+                        groups.add(group);
+                    }
 
-                List<GroupData> groups = new ArrayList<>();
-                for(QueryDocumentSnapshot groupDoc : queryDocumentSnapshots){
-                    GroupData group = groupDoc.toObject(GroupData.class);
-                    groups.add(group);
+                    listener.onSuccess(groups);
+
                 }
+            });
+        }
 
-                listener.onSuccess(groups);
 
-            }
-        });
     }
 
     static public void addGroupToUser(String userId,String groupId){
@@ -912,13 +916,13 @@ public class DatabaseManager {
 
     }
 
-    private static List<UserData> filerPlayerList(UserData mUser, List<UserData> players, String maxBirthday, float maxDistance) {
+    private static List<UserData> filerPlayerList(UserData mUser, List<UserData> players, String maxBirthday, float maxDistance,double mLatitude, double mLongitude) {
 
         List<UserData> tempPlayers = new ArrayList<>();
 
         Location mLocation = new Location("");
-        mLocation.setLatitude(mUser.getMyLatitude());
-        mLocation.setLongitude(mUser.getMyLongitude());
+        mLocation.setLatitude(mLatitude);
+        mLocation.setLongitude(mLongitude);
 
         for (UserData player : players) {
 
@@ -934,8 +938,10 @@ public class DatabaseManager {
             Log.d("DatabaseManager", "maxDistance = " + maxDistance);
             Log.d("DatabaseManager", "mLocation.distanceTo(pLocation) = " + mLocation.distanceTo(pLocation));
 
-
-            if (player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance <= mLocation.distanceTo(pLocation)) {
+            if((maxDistance == 400000 || maxDistance == 0) && player.getBirthday_timestamp().compareTo(maxBirthday) >= 0) {
+                tempPlayers.add(player);
+            }
+            else if (player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance >= mLocation.distanceTo(pLocation)) {
                 tempPlayers.add(player);
             }
         }

@@ -48,5 +48,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.1.0"
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
 
 }
