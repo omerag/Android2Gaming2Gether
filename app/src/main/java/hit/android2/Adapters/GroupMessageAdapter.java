@@ -36,10 +36,10 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         if (viewType == MSG_TYPE_RIGHT) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_right, parent, false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.group_chat_item_right, parent, false);
             return new GroupMessageAdapter.ViewHolder(view);
         } else {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.chat_item_left, parent, false);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.group_chat_item_left, parent, false);
             return new GroupMessageAdapter.ViewHolder(view);
         }
     }
@@ -50,6 +50,7 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
         GroupChat chat = mChat.get(position);
 
         holder.show_message.setText(chat.getMessage());
+        holder.show_sender_name.setText(chat.getSenderName());
     }
 
     @Override
@@ -60,10 +61,12 @@ public class GroupMessageAdapter extends RecyclerView.Adapter<GroupMessageAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView show_message;
+        TextView show_sender_name;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            show_sender_name = itemView.findViewById(R.id.show_sender_name);
             show_message = itemView.findViewById(R.id.show_message);
         }
     }
