@@ -42,4 +42,12 @@ public class GroupData {
     public void setImage_URL(String image_URL) {
         this.image_URL = image_URL;
     }
+
+    public List<String> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
 }
