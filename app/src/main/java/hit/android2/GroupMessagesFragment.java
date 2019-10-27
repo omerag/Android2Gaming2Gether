@@ -321,7 +321,7 @@ public class GroupMessagesFragment extends Fragment {
                 Bundle extras = data.getExtras();
                 Bitmap image_bitmap = (Bitmap) extras.get("data");
                 groupPicView.setImageBitmap(image_bitmap);
-                StorageManager.uploadImageFromImageviewReturnUrl(groupPicView, new StorageManager.DataListener<String>() {
+                StorageManager.uploadImageFromImageviewReturnUrl(groupPicView,group_name, new StorageManager.DataListener<String>() {
                     @Override
                     public void onSuccess(String url) {
                         group_image_URL = url;
@@ -344,7 +344,7 @@ public class GroupMessagesFragment extends Fragment {
                         protected void onPostExecute(Bitmap bitmap) {
                             super.onPostExecute(bitmap);
                             groupPicView.setImageBitmap(bitmap);
-                            StorageManager.uploadImageFromImageviewReturnUrl(groupPicView, new StorageManager.DataListener<String>() {
+                            StorageManager.uploadImageFromImageviewReturnUrl(groupPicView,group_name, new StorageManager.DataListener<String>() {
                                 @Override
                                 public void onSuccess(String url) {
                                     group_image_URL = url;
