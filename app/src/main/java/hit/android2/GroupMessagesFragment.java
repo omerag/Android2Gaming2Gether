@@ -20,6 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
@@ -67,8 +72,10 @@ public class GroupMessagesFragment extends Fragment {
         groupAdapter.setListener(new GroupAdapter.GroupAdapterListener() {
             @Override
             public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-
+                Intent intent = new Intent(getActivity(), GroupMessagingActivity.class);
+                intent.putExtra("group_name",mGroups.get(position).getGroup_name());
+                intent.putExtra("group_image",mGroups.get(position).getImage_URL());
+                intent.putExtra("groupId", mGroups.get(position).getKey());
                 getActivity().startActivity(intent);
             }
         });
@@ -134,6 +141,7 @@ public class GroupMessagesFragment extends Fragment {
 
                                 Snackbar.make(getView(),"Group created", 3000).show();
                                 addGroupToUsersChatList(s);
+                                addGroupToGroupChats(s);
                             }
                         });
                         dialog.dismiss();
@@ -183,6 +191,27 @@ public class GroupMessagesFragment extends Fragment {
 
                 mUserGroups = userData.getGroups();
                 loadGroups();
+            }
+        });
+    }
+
+    private void addGroupToGroupChats(final String group_id)
+    {
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("GroupChats").child(group_id);
+
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (!dataSnapshot.exists())
+                {
+                    reference.setValue(group_id);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

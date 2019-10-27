@@ -211,6 +211,21 @@ public class FirebaseManager {
         });
     }
 
+
+    public void sendGroupMessage(String groupId, String senderId, String senderName, String msg)
+    {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+
+        hashMap.put("sender", senderId);
+        hashMap.put("senderName", senderName);
+        hashMap.put("message", msg);
+
+        databaseReference.child("GroupChats").child(groupId).push().setValue(hashMap);
+    }
+
+
     public void GetLastMessage(final String userid, final TextView lastMessageTv)
     {
         lastMessage = "default";

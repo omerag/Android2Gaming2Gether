@@ -1,20 +1,8 @@
 <resources>
 
-    <string-array name="languages">
-        <item>@string/arabic</item>
-        <item>@string/chinese</item>
-        <item>@string/english</item>
-        <item>@string/french</item>
-        <item>@string/german</item>
-        <item>@string/hebrew</item>
-        <item>@string/italian</item>
-        <item>@string/japanese</item>
-        <item>@string/korean</item>
-        <item>@string/russian</item>
-    </string-array>
-
-
     <string name="app_name">Android2Gaming2Gether</string>
+
+
     <string name="navBarMessage">Messages</string>
     <string name="navBarProfile">Profile</string>
     <string name="hello_str">Welcome</string>
@@ -51,4 +39,16 @@
     <string name="age">Age :</string>
     <string name="gender">Gender :</string>
     <string name="level">Level :</string>
+    <string-array name="languages">
+        <item>@string/arabic</item>
+        <item>@string/chinese</item>
+        <item>@string/english</item>
+        <item>@string/french</item>
+        <item>@string/german</item>
+        <item>@string/hebrew</item>
+        <item>@string/italian</item>
+        <item>@string/japanese</item>
+        <item>@string/korean</item>
+        <item>@string/russian</item>
+    </string-array>
 </resources>
