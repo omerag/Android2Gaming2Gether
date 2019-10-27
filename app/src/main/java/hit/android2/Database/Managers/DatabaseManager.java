@@ -791,15 +791,15 @@ public class DatabaseManager {
 
     }
 
-    static private void addGroupToDatabase(String userId, GroupData group, final Listener listener){
+    static private void addGroupToDatabase(String userId, GroupData group, final DataListener<String> listener){
 
         CollectionReference groupsReff = FirebaseFirestore.getInstance().collection("groups");
-        String groupdId = groupsReff.document().getId();
+        final String groupdId = groupsReff.document().getId();
         group.setKey(groupdId);
         groupsReff.document(groupdId).set(group).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                listener.onSuccess();
+                listener.onSuccess(groupdId);
             }
         });
     }
