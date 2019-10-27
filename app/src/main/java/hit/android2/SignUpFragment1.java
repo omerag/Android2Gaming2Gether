@@ -19,6 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 
 public class SignUpFragment1 extends Fragment {
 
@@ -75,6 +76,8 @@ public class SignUpFragment1 extends Fragment {
                 @Override
                 public void onSuccess() {
                     getActivity().getSupportFragmentManager().popBackStack();
+
+                    MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
 
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager))

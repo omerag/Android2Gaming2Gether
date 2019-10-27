@@ -26,7 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Locale;
 
 import hit.android2.Database.Managers.FirebaseManager;
-import hit.android2.Database.Managers.messegingManager;
+import hit.android2.Database.Managers.MessegingManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -181,6 +181,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         fireBaseManager.registerAuthListener();
 
+        MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
+
         if(FirebaseManager.isLoged()){
             receiver = new BroadcastReceiver() {
                 @Override
@@ -189,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             };
-            messegingManager.registerReceiver(this,receiver);
+            MessegingManager.registerReceiver(this,receiver);
         }
 
         // fireBaseManager.getFireBaseAuth().addAuthStateListener(fireBaseManager.getAuthStateListener());
@@ -200,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         fireBaseManager.unRegisterAuthListener();
         if(FirebaseManager.isLoged()){
-            messegingManager.unRegisterReciver(this,receiver);
+            MessegingManager.unRegisterReciver(this,receiver);
         }
         // fireBaseManager.getFireBaseAuth().removeAuthStateListener(fireBaseManager.getAuthStateListener());
     }

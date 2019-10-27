@@ -26,7 +26,7 @@ import java.util.Map;
 import hit.android2.Database.CommentDataHolder;
 import hit.android2.Database.TopicDataHolder;
 
-public class messegingManager {
+public class MessegingManager {
 
 
     public static void notifyNewCommentOnTopic(Context context, TopicDataHolder topic, CommentDataHolder comment){
