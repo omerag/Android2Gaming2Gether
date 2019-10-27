@@ -843,6 +843,14 @@ public class DatabaseManager {
         });
     }
 
+    static public void addGroupToUser(String userId,String groupId){
+
+        DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
+
+        userReff.update("groups",FieldValue.arrayUnion(groupId));
+    }
+
+
     static public void updateProfileImage(String userId, final String imageUrl) {
 
         final DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
