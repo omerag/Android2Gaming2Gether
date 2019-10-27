@@ -106,7 +106,13 @@ public class GroupMessagingActivity extends AppCompatActivity {
 
             String msg = text_send.getText().toString();
             if (!msg.equals("")){
-                firebaseManager.sendGroupMessage(groupId, fuser.getUid(),sender_name, msg);
+                firebaseManager.sendGroupMessage(groupId, fuser.getUid(), sender_name, msg, new FirebaseManager.Listener() {
+                    @Override
+                    public void onSuccess() {
+
+                        MessegingManager.notifyNewMessegInGroup(getApplicationContext(),groupId,group_name.getText().toString(),FirebaseManager.getCurrentUserId(),msg);
+                    }
+                });
             }
 
             text_send.setText("");

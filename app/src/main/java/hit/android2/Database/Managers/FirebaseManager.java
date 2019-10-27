@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
@@ -223,7 +224,7 @@ public class FirebaseManager {
     }
 
 
-    public void sendGroupMessage(String groupId, String senderId, String senderName, String msg)
+    public void sendGroupMessage(String groupId, String senderId, String senderName, String msg, Listener listener)
     {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -233,7 +234,13 @@ public class FirebaseManager {
         hashMap.put("senderName", senderName);
         hashMap.put("message", msg);
 
-        databaseReference.child("GroupChats").child(groupId).push().setValue(hashMap);
+        databaseReference.child("GroupChats").child(groupId).push().setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        listener.onSuccess();
+                    }
+                });
     }
 
 
