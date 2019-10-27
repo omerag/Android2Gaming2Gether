@@ -17,6 +17,7 @@ public class UserData implements Comparable<UserData>{
 
     private List<String> games = new ArrayList<>(); //gameId list
     private List<String> friends = new ArrayList<>();   //userId list
+    private List<String> groups = new ArrayList<>(); //groupId list
 
     private int leader;
     private int teammate;
@@ -174,6 +175,14 @@ public class UserData implements Comparable<UserData>{
 
     public void setLanguage(Map<String, Boolean> language) {
         this.language = language;
+    }
+
+    public List<String> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<String> groups) {
+        this.groups = groups;
     }
 
     @Override
