@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Model.GroupData;
 import hit.android2.R;
 
@@ -22,6 +23,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
     private Context context;
     private List<GroupData> groupDataList;
     private GroupAdapterListener listener;
+    private FirebaseManager manager = new FirebaseManager();
 
     public GroupAdapter(Context context, List<GroupData> groupDataList) {
         this.context = context;
@@ -57,8 +59,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupDataVie
         Glide.with(context).load(groupDataList.get(position).getImage_URL()).into(holder.groupPicture);
 
         holder.groupName.setText(groupDataList.get(position).getGroup_name());
-        //manager.GetLastMessage(userDataList.get(position).getKey(),holder.textViewLastMessage);
-
+        manager.GetLastGroupMessage(groupDataList.get(position).getKey(),holder.lastMessage);
     }
 
     @Override

@@ -260,6 +260,40 @@ public class FirebaseManager {
         });
     }
 
+    public void GetLastGroupMessage(final String groupId, final TextView lastMessageTv)
+    {
+        lastMessage = "default";
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("GroupChats");
+        Query lastQuery = reference.child(groupId).orderByKey().limitToLast(1);
+
+        lastQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    lastMessage = snapshot.child("message").getValue().toString();
+
+                    if (lastMessage.equals("default"))
+                    {
+                        lastMessageTv.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        String sender_name = snapshot.child("senderName").getValue().toString();
+                        String lastMessageDisplay = sender_name + " : " + lastMessage;
+                        lastMessageTv.setText(lastMessageDisplay);
+                        lastMessage = "default";
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void loadCurrentUserData(){
 
         if(isLoged()){
