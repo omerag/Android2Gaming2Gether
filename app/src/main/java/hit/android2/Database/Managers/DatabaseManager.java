@@ -847,11 +847,16 @@ public class DatabaseManager {
 
     }
 
-    static public void addGroupToUser(String userId,String groupId){
+    static public void addGroupToUser(String userId,String groupId,Listener listener){
 
         DocumentReference userReff = FirebaseFirestore.getInstance().collection("users").document(userId);
 
-        userReff.update("groups",FieldValue.arrayUnion(groupId));
+        userReff.update("groups",FieldValue.arrayUnion(groupId)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                listener.onSuccess();
+            }
+        });
     }
 
 

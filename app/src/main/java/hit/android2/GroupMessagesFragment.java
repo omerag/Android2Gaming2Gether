@@ -35,6 +35,7 @@ import hit.android2.Adapters.GroupAdapter;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 import hit.android2.Database.Model.GroupData;
 import hit.android2.Database.Model.UserData;
 
@@ -50,6 +51,8 @@ public class GroupMessagesFragment extends Fragment {
     private List<String> mUserGroups;
     private List<GroupData> mGroups;
     private List<Boolean> isSelected;
+
+    private String group_name;
 
     @Nullable
     @Override
@@ -143,7 +146,7 @@ public class GroupMessagesFragment extends Fragment {
             createGroupBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String group_name = groupNameET.getText().toString();
+                     group_name = groupNameET.getText().toString();
 
                     if (TextUtils.isEmpty(group_name))
                     {
@@ -187,7 +190,23 @@ public class GroupMessagesFragment extends Fragment {
 
         for (int i = 0; i < group_users_id.size(); i++){
 
-            DatabaseManager.addGroupToUser(group_users_id.get(i), group_id);
+            int finalI = i;
+            DatabaseManager.addGroupToUser(group_users_id.get(i), group_id, new DatabaseManager.Listener(){
+
+                @Override
+                public void onSuccess() {
+                    DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                        @Override
+                        public void onSuccess(UserData userData) {
+
+                            String messege = userData.getName() + "has invited you to the group " + group_name;
+                            MessegingManager.notifyNewMessegInChat(getActivity(),userData.getName(),group_users_id.get(finalI),messege);
+
+                        }
+                    });
+
+                }
+            });
 
         }
     }
@@ -222,7 +241,7 @@ public class GroupMessagesFragment extends Fragment {
         });
     }
 
-    private void addGroupToGroupChats(final String group_id)
+        private void addGroupToGroupChats(final String group_id)
     {
         final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("GroupChats").child(group_id);
 
