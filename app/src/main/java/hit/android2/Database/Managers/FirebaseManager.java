@@ -174,7 +174,7 @@ public class FirebaseManager {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
-                MessegingManager.notifyNewMessegInChat(context,sender,receiver,message);
+                MessegingManager.notifyNewMessegInChat(context,getFireBaseAuth().getCurrentUser().getUid(),receiver,message);
             }
         });
 
