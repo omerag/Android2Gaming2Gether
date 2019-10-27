@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +31,7 @@ import java.util.List;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Model.GroupData;
 import hit.android2.Database.Model.UserData;
 
 public class GroupMessagesFragment extends Fragment {
@@ -95,8 +97,18 @@ public class GroupMessagesFragment extends Fragment {
                         Toast.makeText(getContext(), "Enter group name...", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        group_users_id.add(manager.getFireBaseAuth().getCurrentUser().getUid());
-                        createNewGroup(group_name);
+                        String image_URL = "https://cdn.images.express.co.uk/img/dynamic/galleries/517x/370884.jpg";
+                        String myId = manager.getFireBaseAuth().getCurrentUser().getUid();
+                        group_users_id.add(myId);
+                        GroupData groupData = new GroupData(group_name,image_URL,group_users_id);
+                        DatabaseManager.addGroupToDatabase(myId, groupData, new DatabaseManager.DataListener<String>() {
+                            @Override
+                            public void onSuccess(String s) {
+
+                                Snackbar.make(getView(),"Group created", 3000).show();
+                                addGroupToUsersChatList(s);
+                            }
+                        });
                         dialog.dismiss();
                     }
                 }
@@ -108,36 +120,13 @@ public class GroupMessagesFragment extends Fragment {
         }
     }
 
-    private void createNewGroup(final String group_name) {
 
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups").child(group_name);
-
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists())
-                {
-                    reference.setValue("");
-                    addGroupToUsersChatList(group_name);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
-
-    private void addGroupToUsersChatList(final String group_name) {
-
-        DatabaseReference groupRef = FirebaseDatabase.getInstance().getReference("Chatlist")
-                .child("GroupChatList");
+    private void addGroupToUsersChatList(final String group_id) {
 
         for (int i = 0; i < group_users_id.size(); i++){
 
-            groupRef.child(group_users_id.get(i)).push().setValue(group_name);
+            DatabaseManager.addGroupToUser(group_users_id.get(i), group_id);
+
         }
 
     }

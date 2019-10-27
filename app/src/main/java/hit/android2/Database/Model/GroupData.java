@@ -12,8 +12,7 @@ public class GroupData {
     public GroupData() {
     }
 
-    public GroupData(String key, String group_name, String image_URL, List<String> members) {
-        this.key = key;
+    public GroupData(String group_name, String image_URL, List<String> members) {
         this.group_name = group_name;
         this.image_URL = image_URL;
         this.members = members;

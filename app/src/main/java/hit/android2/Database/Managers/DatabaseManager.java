@@ -791,7 +791,7 @@ public class DatabaseManager {
 
     }
 
-    static private void addGroupToDatabase(String userId, GroupData group, final DataListener<String> listener){
+    static public void addGroupToDatabase(String userId, GroupData group, final DataListener<String> listener){
 
         CollectionReference groupsReff = FirebaseFirestore.getInstance().collection("groups");
         final String groupdId = groupsReff.document().getId();
