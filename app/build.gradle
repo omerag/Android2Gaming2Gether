@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
-    implementation 'com.google.firebase:firebase-firestore:21.1.1'
+    implementation 'com.google.firebase:firebase-firestore:21.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     testImplementation 'junit:junit:4.12'
@@ -54,6 +54,8 @@ dependencies {
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'ru.alexbykov:nopermission:1.1.2'
+    implementation 'com.firebaseui:firebase-ui-firestore:6.0.2'
+
 
 
 }

@@ -193,7 +193,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                         // commentLayout.setVisibility(View.GONE);
                        // recyclerView.setVisibility(View.GONE);
                         commentAdapter.setOpen(false);
-                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_down));
+                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_right));
                     }
                     else {
                         recyclerView.animate()
@@ -223,7 +223,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                         //recyclerView.setVisibility(View.VISIBLE);
 
                         commentAdapter.setOpen(true);
-                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_up));
+                        arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_down));
 
                     }
                     commentAdapter.notifyDataSetChanged();

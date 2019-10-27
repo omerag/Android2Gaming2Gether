@@ -141,7 +141,7 @@ public class MessegingManager {
         try {
             json.put("to", "/topics/" + toUser);
             JSONObject notificationObj = new JSONObject();
-            notificationObj.put("title", fromUser);
+            notificationObj.put("title", "Gaming2Gether");
             notificationObj.put("body", fromUser + " say - " + massage);
             //replace notification with data when went send data
             json.put("notification", notificationObj);
