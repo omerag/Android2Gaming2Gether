@@ -29,6 +29,7 @@ import hit.android2.Adapters.GroupMessageAdapter;
 import hit.android2.Adapters.MessageAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Model.Chat;
 import hit.android2.Model.GroupChat;
@@ -94,6 +95,8 @@ public class GroupMessagingActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        MessegingManager.subscribeToTopic(groupId);
     }
 
     class SendBtnListener implements View.OnClickListener{
