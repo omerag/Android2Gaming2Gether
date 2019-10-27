@@ -50,7 +50,7 @@ public class FirebaseManager {
     private TextView userTv;
     private String lastMessage;
     private Context myContext;
-
+    private CircleImageView profile_pic;
     private UserData currentUserData;
 
     public FirebaseManager() {
@@ -121,12 +121,14 @@ public class FirebaseManager {
                     });
                 }
 
+                loadUserPicture();
                 userTv.setText(currUser.getDisplayName());
                 navigationView.getMenu().findItem(R.id.sign_up).setVisible(false);
                 navigationView.getMenu().findItem(R.id.log_in).setVisible(false);
                 navigationView.getMenu().findItem(R.id.log_out).setVisible(true);
             }
             else {
+                profile_pic.setImageResource(R.drawable.blank_profile_img);
                 userTv.setText(R.string.user_name_tv);
                 navigationView.getMenu().findItem(R.id.sign_up).setVisible(true);
                 navigationView.getMenu().findItem(R.id.log_in).setVisible(true);
@@ -137,11 +139,12 @@ public class FirebaseManager {
     }
 
 
-    public void setReference(NavigationView navigation, TextView userName,Context context)
+    public void setReference(NavigationView navigation, TextView userName,Context context, CircleImageView profile_image)
     {
         navigationView = navigation;
         userTv = userName;
         myContext = context;
+        profile_pic = profile_image;
     }
 
     public void registerAuthListener(){
@@ -332,4 +335,23 @@ public class FirebaseManager {
     static public String getCurrentUserId(){
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+    public void loadUserPicture()
+    {
+
+            DatabaseManager.getUserFromDatabase(getFireBaseAuth().getCurrentUser().getUid(), new DatabaseManager.DataListener<UserData>() {
+                @Override
+                public void onSuccess(UserData userData) {
+
+                    if (userData.getImageUrl().equals(null))
+                    {
+                        profile_pic.setImageResource(R.drawable.blank_profile_img);
+                    }
+                    else {
+
+                        Glide.with(myContext).load(userData.getImageUrl()).into(profile_pic);
+                    }
+                }
+            });
+        }
 }

@@ -82,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         TextView userNameTv = headerView.findViewById(R.id.nav_header_user_name);
         profile_imageView = headerView.findViewById(R.id.drawer_profile_picture);
-        fireBaseManager.setReference(navigationView, userNameTv, getApplicationContext());
+        fireBaseManager.setReference(navigationView, userNameTv, getApplicationContext(), profile_imageView);
 
         pager.setCurrentItem(2);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
-        loadUserPicture();
+        //oadUserPicture();
 
     }
 
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         pager.setVisibility(View.VISIBLE);
     }
 
-    public void loadUserPicture()
+    /*public void loadUserPicture()
     {
         if (FirebaseManager.isLoged())
         {
@@ -299,5 +299,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
-    }
+    }*/
 }
