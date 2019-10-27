@@ -2,34 +2,59 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="390dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_margin="5dp">
 
-    <EditText
-        android:id="@+id/group_name_ET"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="Enter group name"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter group name"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/friends_recycler_view"
-        android:layout_width="390dp"
-        android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/group_name_ET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/create_group_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Group"
-        android:layout_gravity="center_horizontal"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/group_pic_view"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/blank_profile_img"
+            android:layout_marginBottom="10dp"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/friends_recycler_view"
+            android:layout_width="300dp"
+            android:layout_height="250dp"/>
+
+        <Button
+            android:id="@+id/add_group_pic_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add image"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/create_group_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Group"
+            android:layout_gravity="center_horizontal"/>
+
 
     </LinearLayout>
 
