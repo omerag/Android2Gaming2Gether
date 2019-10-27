@@ -17,11 +17,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/background_right"
+            android:layout_alignStart="@id/show_message"
+            android:background="@drawable/group_background_right_up"
             android:text="@string/hello_str"
+            android:gravity="right"
             android:textStyle="bold"
             android:textSize="10sp"
-            android:padding="8dp"
+            android:padding="3dp"
             android:textColor="@color/colorAccent"/>
 
         <TextView
@@ -30,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@id/show_sender_name"
-            android:background="@drawable/background_right"
+            android:background="@drawable/group_background_right_down"
             android:text="@string/hello_str"
             android:textSize="18sp"
             android:padding="8dp"
