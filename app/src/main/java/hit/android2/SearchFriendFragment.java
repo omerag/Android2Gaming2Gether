@@ -96,18 +96,6 @@ public class SearchFriendFragment extends Fragment {
         allGenderIbtn.setTag(R.id.search_friends_dialog_gender_all);
         allGenderIbtn.setOnClickListener(stringFromImageBtn);
 
-        ImageButton totalRankIbtn = getView().findViewById(R.id.search_friends_dialog_overall_level);
-        totalRankIbtn.setTag(R.id.search_friends_dialog_overall_level);
-        totalRankIbtn.setOnClickListener(stringFromImageBtn);
-        ImageButton teammateRankIbtn = getView().findViewById(R.id.search_friends_dialog_teammate_level);
-        teammateRankIbtn.setTag(R.id.search_friends_dialog_teammate_level);
-        teammateRankIbtn.setOnClickListener(stringFromImageBtn);
-        ImageButton spotmanRankIbtn = getView().findViewById(R.id.search_friends_dialog_sportsmanship_level);
-        spotmanRankIbtn.setTag(R.id.search_friends_dialog_sportsmanship_level);
-        spotmanRankIbtn.setOnClickListener(stringFromImageBtn);
-        ImageButton leaderRankIbtn = getView().findViewById(R.id.search_friends_dialog_leader_level);
-        leaderRankIbtn.setTag(R.id.search_friends_dialog_leader_level);
-        leaderRankIbtn.setOnClickListener(stringFromImageBtn);
 
         final TextView ageTv = getView().findViewById(R.id.search_friends_dialog_age_tv);
         SeekBar ageSeekBat = getView().findViewById(R.id.search_friends_seekbar_age);
@@ -211,7 +199,7 @@ public class SearchFriendFragment extends Fragment {
                         helper = new LocationHelper(getActivity(), permissionHelper, new LocationHelper.Listener<Double>() {
                             @Override
                             public void onSuccess(double latitude, double longitude) {
-                                DatabaseManager.searchPlayers(userData, gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), stringFromImageBtn.getResultRank(), age[0], distance[0] * 1000, latitude, longitude, new DatabaseManager.DataListener<List<UserData>>() {
+                                DatabaseManager.searchPlayers(userData, gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), age[0], distance[0] * 1000, latitude, longitude, new DatabaseManager.DataListener<List<UserData>>() {
                                     @Override
                                     public void onSuccess(List<UserData> userData) {
                                         Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
@@ -300,21 +288,6 @@ public class SearchFriendFragment extends Fragment {
                 case R.id.search_friends_dialog_gender_all:
                     resultGener = "all";
                     Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.search_friends_dialog_overall_level:
-                    resultRank = "totalRank";
-                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.search_friends_dialog_teammate_level:
-                    resultRank = "teammate";
-                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.search_friends_dialog_sportsmanship_level:
-                    resultRank = "sportmanship";
-                    break;
-                case R.id.search_friends_dialog_leader_level:
-                    resultRank = "leader";
-                    Toast.makeText(getActivity(), resultRank + "clicked", Toast.LENGTH_SHORT).show();
                     break;
             }
 

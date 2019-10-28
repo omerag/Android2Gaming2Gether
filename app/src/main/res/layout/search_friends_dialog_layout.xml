@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/results_recycler"
@@ -27,7 +27,8 @@
             android:padding="10dp"
             android:textSize="25sp"
             android:textAlignment="center"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
@@ -126,14 +127,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/search_friends_dialog_age_tv"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_marginStart="5dp"
                     android:text="Age: "
                     android:textSize="18sp"
@@ -142,117 +142,38 @@
                     />
                 <androidx.appcompat.widget.AppCompatSeekBar
                     android:id="@+id/search_friends_seekbar_age"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
                     android:max="120"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     />
 
             </LinearLayout>
 
-            //player level
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp">
-
-                    <ImageButton
-                        android:id="@+id/search_friends_dialog_overall_level"
-                        android:layout_width="0dp"
-                        android:layout_height="65dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_end_master"
-                        android:scaleType="fitXY" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp">
-
-
-                    <ImageButton
-                        android:id="@+id/search_friends_dialog_teammate_level"
-                        android:layout_width="0dp"
-                        android:layout_height="85dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_end_good_teammate"
-                        android:scaleType="fitXY"
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp">
-
-                    <ImageButton
-                        android:id="@+id/search_friends_dialog_sportsmanship_level"
-                        android:layout_width="0dp"
-                        android:layout_height="85dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_end_sportsmanship"
-                        android:scaleType="fitXY"
-
-                        />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp">
-
-                    <ImageButton
-                        android:id="@+id/search_friends_dialog_leader_level"
-                        android:layout_width="0dp"
-                        android:layout_height="85dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_end_leader"
-                        android:scaleType="fitXY"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/search_friends_text_view_distance"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Distance: "
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginStart="5dp"
                     />
+
                 <androidx.appcompat.widget.AppCompatSeekBar
                     android:id="@+id/search_friends_seekbar_distance"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_weight="3"
+                    android:layout_margin="10dp"
                     android:max="400"
                     />
 
