@@ -75,4 +75,7 @@
     <string name="all">All</string>
     <string name="language">"Language : "</string>
     <string name="game">"Game : "</string>
+    <string name="skip">Skip</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="enter_new_address_hint">Enter addres...</string>
 </resources>

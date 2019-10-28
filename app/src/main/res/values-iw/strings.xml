@@ -61,4 +61,8 @@
     <string name="all">הכל</string>
     <string name="language">"שפה : "</string>
     <string name="game">"משחק : "</string>
+    <string name="skip">דלג</string>
+    <string name="save_profile">שמור פרופיל</string>
+    <string name="enter_new_address_hint">הכנס כתובת</string>
+
 </resources>

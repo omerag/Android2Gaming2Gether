@@ -292,6 +292,8 @@ public class MainActivity extends AppCompatActivity {
         pager.setVisibility(View.VISIBLE);
     }
 
+
+
     /*public void loadUserPicture()
     {
         if (FirebaseManager.isLoged())

@@ -1,148 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="3dp"
+    >
 
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:src="@drawable/ic_arrow_back"
-        android:background="@android:color/transparent"/>
-
-    <ScrollView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:text="Presonal Info"
+            />
+
+        <RadioGroup
+            android:id="@+id/fragment_sign_up2_edit_details_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RadioButton
+                android:id="@+id/fragment_sign_up2_edit_details_radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+
+                />
+            <RadioButton
+                android:id="@+id/fragment_sign_up2_edit_details_radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+
+                />
+
+
+        </RadioGroup>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:id="@+id/fragment_sign_up2_edit_details_calendar_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_calendar"
+                android:layout_margin="5dp"
+
+                />
 
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/fragment_sign_up2_edit_details_calendar_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MORE INFORMATION"
-                android:textSize="20sp"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp"/>
-
-            <DatePicker
-                android:id="@+id/birth_day_picker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:hint="1970/01/01"
+                android:layout_margin="5dp"
+                />
 
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/arabic"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/chinese"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/english"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/french"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/german"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/hebrew"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/italian"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/japanese"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/korean"/>
-
-                    <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/russian"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/about_me_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter about me"
-                android:textSize="18sp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="10dp">
-
-                <Button
-                    android:id="@+id/update_profile_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Update"
-                    android:textAllCaps="false"/>
-
-                <Button
-                    android:id="@+id/skip_profile_update_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="Skip"
-                    android:textAllCaps="false"/>
-
-            </LinearLayout>
 
         </LinearLayout>
 
-    </ScrollView>
+        <EditText
+            android:id="@+id/fragment_sign_up2_edit_details_about_me_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/about_me"
+            />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/fragment_sign_up2_dit_details_address_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_new_address_hint" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="English"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_hebrew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hebrew"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_arabic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arabic"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_chinese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chinese"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_french"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="French"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_german"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="German"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_italian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Italian"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_japanese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Japanese"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_korean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Korean"
+                    />
+
+                <CheckBox
+                    android:id="@+id/fragment_sign_up2_edit_details_checkbox_russian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Russian"
+                    />
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/fragment_sign_up2_update_profile_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_profile"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/fragment_sign_up2_skip_profile_update_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/skip"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>
+
+
+
+

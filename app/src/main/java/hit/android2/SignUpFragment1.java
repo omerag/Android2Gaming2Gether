@@ -33,6 +33,8 @@ public class SignUpFragment1 extends Fragment {
 
     private FirebaseManager firebaseManager;
 
+    private MainActivity mainActivity;
+
 
     @Nullable
     @Override
@@ -61,6 +63,13 @@ public class SignUpFragment1 extends Fragment {
 
         this.navigationView = bottomNavigationView;
         this.pager = pager;
+    }
+
+    public SignUpFragment1(BottomNavigationView bottomNavigationView, ViewPager pager,MainActivity mainActivity) {
+
+        this.navigationView = bottomNavigationView;
+        this.pager = pager;
+        this.mainActivity = mainActivity;
     }
 
     public class SignUpBtnListener implements View.OnClickListener
