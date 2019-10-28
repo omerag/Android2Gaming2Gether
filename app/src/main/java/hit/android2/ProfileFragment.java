@@ -252,7 +252,18 @@ public class ProfileFragment extends Fragment {
                     if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
                     ageTv.setText(String.valueOf(liveData.getAge()));
                     levelTv.setText(liveData.getLevel());
-                    genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
+                    String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
+                    if (gender.equals(""))
+                    {
+                        genderTv.setText("--");
+                    }
+                    else if (gender.equals("male")){
+                        genderTv.setText(getString(R.string.male));
+                    }
+                    else {
+                        genderTv.setText(getString(R.string.female));
+                    }
+                    //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
 
                     gameDataList.clear();
                     gameAdapter.notifyDataSetChanged();
@@ -301,7 +312,18 @@ public class ProfileFragment extends Fragment {
                 if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
                 ageTv.setText(String.valueOf(liveData.getAge()));
                 levelTv.setText(liveData.getLevel());
-                genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
+                String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
+                if (gender.equals(""))
+                {
+                    genderTv.setText("--");
+                }
+                else if (gender.equals("male")){
+                    genderTv.setText(getString(R.string.male));
+                }
+                else {
+                    genderTv.setText(getString(R.string.female));
+                }
+                //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
 
             }
         });
