@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -134,6 +135,9 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         List<CommentDataHolder> comments;
         ImageButton sendBtn;
 
+        ImageButton notifOn;
+        ImageButton notifOf;
+
 
         public TopicViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -148,6 +152,24 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             gameImage = itemView.findViewById(R.id.tv_parent_item_game_image);
             dateTextView = itemView.findViewById(R.id.tv_parent_item_time);
             arrowIv = itemView.findViewById(R.id.topic_arrow);
+
+            notifOn = itemView.findViewById(R.id.topic_notif);
+            notifOn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
+                    Toast.makeText(context, "subscribed to " + topics.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });
+            notifOf = itemView.findViewById(R.id.topic_notif_off);
+            notifOf.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MessegingManager.unsubscribeFromTopic(topics.get(getAdapterPosition()).getTopicId());
+                    Toast.makeText(context, "unsubscribed from " + topics.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
 
             commentLayout = itemView.findViewById(R.id.parent_item_comment_layout);
