@@ -1,6 +1,5 @@
 package hit.android2;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -101,21 +102,18 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
-                        .setTitle("Delete Friend").setMessage("Are you sure you want to delete this friend?")
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                return;
-                            }
-                        }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                AlertDialog alertDialog= new MaterialAlertDialogBuilder(getContext())
+                        .setTitle(R.string.delete_title)
+                        .setMessage(R.string.delete_message)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                //delete friend from friend list
+                                //delete friend
                             }
-                        });
-                builder.create().show();
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
             }
 
             @Override

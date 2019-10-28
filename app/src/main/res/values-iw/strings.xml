@@ -39,4 +39,8 @@
     <string name="level">"רמה : "</string>
     <string name="message_btn">הודעה</string>
     <string name="profile_btn">פרופיל</string>
+    <string name="delete_title">הסר חבר</string>
+    <string name="delete_message">האם אתה בטוח שאתה רוצה למחוק אותו מרשימת החברים?</string>
+    <string name="delete">הסר</string>
+    <string name="cancel">ביטול</string>
 </resources>
