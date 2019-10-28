@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.BubbleImageView;
+import com.github.siyamed.shapeimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
 
         TextView massage;
         TextView userName;
-        ImageView userImage;
+        RoundedImageView userImage;
 
 
         public CommentViewHolder(@NonNull View itemView) {
