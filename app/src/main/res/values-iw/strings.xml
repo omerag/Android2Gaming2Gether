@@ -50,4 +50,6 @@
     <string name="picked">נבחר</string>
     <string name="not_choose">חובה למלא את כל השדות</string>
     <string name="add_friend">התווסף לרשימת החברים שלך</string>
+    <string name="progress_title">מתבצע חיפוש</string>
+    <string name="progress_message">אנא המתן...</string>
 </resources>

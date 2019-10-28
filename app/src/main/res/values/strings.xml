@@ -64,4 +64,6 @@
     <string name="picked">Picked</string>
     <string name="not_choose">Must enter all fields</string>
     <string name="add_friend">was added to your friends list</string>
+    <string name="progress_title">Searching</string>
+    <string name="progress_message">Please wait...</string>
 </resources>

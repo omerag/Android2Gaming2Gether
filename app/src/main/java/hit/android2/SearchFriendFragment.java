@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,6 +50,7 @@ public class SearchFriendFragment extends Fragment {
     private List<UserData> friendsList;
     private FriendsFragmentLiveData liveData;
     private LocationHelper helper;
+    private ProgressDialog progressDialog;
 
     private PermissionHelper permissionHelper;
 
@@ -182,6 +184,11 @@ public class SearchFriendFragment extends Fragment {
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
+                progressDialog = new ProgressDialog(getContext());
+                progressDialog.setMessage(getString(R.string.progress_message));
+                progressDialog.setTitle(getString(R.string.progress_title));
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
                 LinearLayout linearLayout = getActivity().findViewById(R.id.root_search_view);
                 linearLayout.setVisibility(View.GONE);
                 LinearLayout resultLayout = getActivity().findViewById(R.id.results_view);
@@ -208,6 +215,7 @@ public class SearchFriendFragment extends Fragment {
                                         Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
                                         users.addAll(userData);
                                         friendsResultAdapter.notifyDataSetChanged();
+                                        progressDialog.dismiss();
                                     }
                                 });
                             }
