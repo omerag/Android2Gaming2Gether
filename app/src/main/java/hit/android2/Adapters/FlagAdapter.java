@@ -25,7 +25,7 @@ public class FlagAdapter extends RecyclerView.Adapter<FlagAdapter.FlagViewHolder
     }
 
     public interface Listener{
-        void onClick(String language);
+        void onClick(String language, int position);
     }
 
     public void setListener(Listener listener) {
@@ -64,7 +64,7 @@ public class FlagAdapter extends RecyclerView.Adapter<FlagAdapter.FlagViewHolder
                 @Override
                 public void onClick(View view) {
                     if(listener != null){
-                        listener.onClick(languages.get(getAdapterPosition()));
+                        listener.onClick(languages.get(getAdapterPosition()), getAdapterPosition());
                     }
                 }
             });

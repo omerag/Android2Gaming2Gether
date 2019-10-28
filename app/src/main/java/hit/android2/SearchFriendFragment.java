@@ -5,9 +5,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.media.RatingCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,10 @@ public class SearchFriendFragment extends Fragment {
     private ProgressDialog progressDialog;
     private TextView not_found_tv;
     private MaterialButton gameSearchBtn;
+    private TextView gender_tv;
+    private TextView language_tv;
+    private TextView game_tv;
+    private List<Integer> lan_ids;
 
     private PermissionHelper permissionHelper;
 
@@ -65,7 +71,17 @@ public class SearchFriendFragment extends Fragment {
 
 
         permissionHelper = new PermissionHelper(this);
-
+        lan_ids = new ArrayList<>();
+        lan_ids.add(R.string.hebrew);
+        lan_ids.add(R.string.english);
+        lan_ids.add(R.string.french);
+        lan_ids.add(R.string.chinese);
+        lan_ids.add(R.string.german);
+        lan_ids.add(R.string.italian);
+        lan_ids.add(R.string.japanese);
+        lan_ids.add(R.string.russian);
+        lan_ids.add(R.string.korean);
+        lan_ids.add(R.string.arabic);
 
         return rootView;
     }
@@ -98,6 +114,9 @@ public class SearchFriendFragment extends Fragment {
         allGenderIbtn.setTag(R.id.search_friends_dialog_gender_all);
         allGenderIbtn.setOnClickListener(stringFromImageBtn);
         gameSearchBtn = getView().findViewById(R.id.search_game_btn);
+        gender_tv = getView().findViewById(R.id.search_gender_tv);
+        language_tv = getView().findViewById(R.id.search_language_tv);
+        game_tv = getView().findViewById(R.id.search_game_tv);
 
 
         final TextView ageTv = getView().findViewById(R.id.search_friends_dialog_age_tv);
@@ -106,7 +125,7 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 age[0] = i;
-                ageTv.setText("Age: " + i);
+                ageTv.setText(getString(R.string.age) + i);
             }
 
             @Override
@@ -125,7 +144,7 @@ public class SearchFriendFragment extends Fragment {
         distanceSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                distanceTv.setText("Distance(km): " + i);
+                distanceTv.setText(getString(R.string.distance) + i);
                 distance[0] = i;
 
             }
@@ -151,9 +170,9 @@ public class SearchFriendFragment extends Fragment {
 
         flagAdapter.setListener(new FlagAdapter.Listener() {
             @Override
-            public void onClick(String language) {
-                Toast.makeText(getActivity(), language + " clicked", Toast.LENGTH_SHORT).show();
+            public void onClick(String language, int position) {
                 languegeResult[0] = language;
+                language_tv.setText(getString(R.string.language) + getString(lan_ids.get(position)) );
             }
         });
         flagAdapter.notifyDataSetChanged();
@@ -230,6 +249,7 @@ public class SearchFriendFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 gameGUID[0] = games.get(position).getGuid();
+                game_tv.setText(getString(R.string.game) + games.get(position).getName());
             }
 
             @Override
@@ -275,14 +295,9 @@ public class SearchFriendFragment extends Fragment {
 
 
         String resultGener;
-        String resultRank;
 
         public String getResultGener() {
             return resultGener;
-        }
-
-        public String getResultRank() {
-            return resultRank;
         }
 
         @Override
@@ -292,18 +307,17 @@ public class SearchFriendFragment extends Fragment {
             switch (tag) {
                 case R.id.search_friends_dialog_gender_male:
                     resultGener = "male";
-                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    gender_tv.setText(getString(R.string.gender) + getString(R.string.male));
                     break;
                 case R.id.search_friends_dialog_gender_female:
                     resultGener = "female";
-                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    gender_tv.setText(getString(R.string.gender) + getString(R.string.female));
                     break;
                 case R.id.search_friends_dialog_gender_all:
                     resultGener = "all";
-                    Toast.makeText(getActivity(), resultGener + "clicked", Toast.LENGTH_SHORT).show();
+                    gender_tv.setText(getString(R.string.gender) + getString(R.string.all));
                     break;
             }
-
 
         }
     }

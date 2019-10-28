@@ -55,4 +55,10 @@
     <string name="users_not_found">לא נמצאו משתמשים מתאימים</string>
     <string name="search_btn">חיפוש</string>
     <string name="choose_game">בחר משחק</string>
+    <string name="distance">מרחק (קמ) :</string>
+    <string name="male">זכר</string>
+    <string name="female">נקבה</string>
+    <string name="all">הכל</string>
+    <string name="language">"שפה : "</string>
+    <string name="game">"משחק : "</string>
 </resources>

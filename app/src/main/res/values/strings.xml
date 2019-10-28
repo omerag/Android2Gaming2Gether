@@ -40,16 +40,16 @@
     <string name="gender">Gender :</string>
     <string name="level">Level :</string>
     <string-array name="languages">
-        <item>@string/arabic</item>
-        <item>@string/chinese</item>
+        <item>@string/hebrew</item>
         <item>@string/english</item>
         <item>@string/french</item>
+        <item>@string/chinese</item>
         <item>@string/german</item>
-        <item>@string/hebrew</item>
         <item>@string/italian</item>
         <item>@string/japanese</item>
-        <item>@string/korean</item>
         <item>@string/russian</item>
+        <item>@string/korean</item>
+        <item>@string/arabic</item>
     </string-array>
     <string name="message_btn">Message</string>
     <string name="profile_btn">Profile</string>
@@ -69,4 +69,10 @@
     <string name="users_not_found">No matching users found</string>
     <string name="search_btn">Search</string>
     <string name="choose_game">Choose a game</string>
+    <string name="distance">Distance (km) :</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="all">All</string>
+    <string name="language">"Language : "</string>
+    <string name="game">"Game : "</string>
 </resources>
