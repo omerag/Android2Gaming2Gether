@@ -26,6 +26,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,6 +69,11 @@ public class ProfileFragment extends Fragment {
     private TextView usernameTv;
     private TextView aboutMeTv;
     private ImageView userIv;
+    private TextView ageTv;
+    private TextView genderTv;
+    private TextView levelTv;
+
+
     private ImageButton pic_edit_btn;
     private ImageButton profile_edit_btn;
     private ImageButton editBtn;
@@ -121,6 +127,11 @@ public class ProfileFragment extends Fragment {
         usernameTv = getView().findViewById(R.id.profile_fragment_user_name);
         userIv = getView().findViewById(R.id.user_profile_img);
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
+        ageTv = getView().findViewById(R.id.age_tv);
+        levelTv = getView().findViewById(R.id.level_tv);
+        genderTv = getView().findViewById(R.id.gender_tv);
+
+
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
         profile_edit_btn = getView().findViewById(R.id.profile_edit_btn);
         editBtn = getView().findViewById(R.id.root_profile_edit_btn);
@@ -148,53 +159,29 @@ public class ProfileFragment extends Fragment {
         }
         gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
         recyclerView.setAdapter(gameAdapter);
+        gameAdapter.notifyDataSetChanged();
         //user logged in
-        if (FirebaseManager.isLoged()) {
-            if (liveData.getGameDataList() == null) {
-                Log.d("live data", liveData.toString());
-
-                DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<List<GameData>>() {
-                    @Override
-                    public void onSuccess(List<GameData> gameData) {
-                        gameDataList = gameData;
-                        gameAdapter.setGameDataList(gameDataList);
-                        if (gameAdapter == null) {
-                            liveData.setGameDataList(gameDataList);
-                            liveData.setGameAdapter(gameAdapter);
-                        }
-
-                        gameAdapter.notifyDataSetChanged();
-                        Log.d("live data", "gameData.size() = " + gameData.size());
-
-                    }
-                });
-
-                if (gameAdapter == null) {
-                    liveData.setGameAdapter(gameAdapter);
-                    gameAdapter.notifyDataSetChanged();
-
-                }
-
-                loadUserGames();
-
-                recyclerView.setAdapter(gameAdapter);
-                gameAdapter.notifyDataSetChanged();
-            }
-
-
-        } else { //user NOT logged in
-            gameDataList = liveData.getGameDataList();
-            Log.d("live data 2", gameDataList.toString());
-            loadGameListFromSharedPrefernce();
-
-        }
 
 
     }
 
+
+
     @Override
     public void onStart() {
         super.onStart();
+
+    /*    if (gameAdapter != null) {
+            gameAdapter.notifyDataSetChanged();
+        }
+
+        if (FirebaseManager.isLoged()) {
+            loadUserGamesFromDB();
+            loadUserProfileData();
+        } else {
+            loadGameListFromSharedPrefernce();
+        }*/
+
 
         if (FirebaseManager.isLoged()) {
             userReff = FirebaseFirestore.getInstance().collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -208,39 +195,44 @@ public class ProfileFragment extends Fragment {
                         Log.d("DatabaseManager", e.getMessage());
                         return;
                     }
-                    UserData user = documentSnapshot.toObject(UserData.class);
+                    UserData userData = documentSnapshot.toObject(UserData.class);
 
                     // listener.onSuccess(user);
-                    usernameTv.setText(user.getName());
+                  /*  usernameTv.setText(user.getName());
                     liveData.setUsernameTv(user.getName());
                     aboutMeTv.setText(user.getAboutMe());
                     liveData.setAboutMeTv(user.getAboutMe());
                     // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                     liveData.setUserIv(user.getImageUrl());
+                    Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);*/
 
-                    DatabaseManager.getUserGames(user.getKey(), new DatabaseManager.DataListener<List<GameData>>() {
-                        @Override
-                        public void onSuccess(List<GameData> gameData) {
-                            gameDataList = gameData;
-                            liveData.setGameDataList(gameDataList);
-                            liveData.setGameAdapter(gameAdapter);
-                            gameAdapter.setGameDataList(gameDataList);
-                            gameAdapter.notifyDataSetChanged();
-                        }
-                    });
+                    liveData.setUsernameTv(userData.getName());
+                    liveData.setAboutMeTv(userData.getAboutMe());
+                    liveData.setUserIv(userData.getImageUrl());
+                    liveData.setBirthday(userData.getBirthday_timestamp());
+                    liveData.setLevel(String.valueOf(userData.getTotalRank()));
+                    liveData.setGender(userData.getGender());
 
-                 /*   DatabaseManager.getUserGames(user.getKey(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d("ProfilFragment", "userReff EventListener on Success 2");
 
-                            liveData.setGameDataList(gameDataList);
-                        }
-                    });*/
+                    usernameTv.setText(liveData.getUsernameTv());
+                    aboutMeTv.setText(liveData.getAboutMeTv());
+                    if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
+                    ageTv.setText(String.valueOf(liveData.getAge()));
+                    levelTv.setText(liveData.getLevel());
+                    genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
+
+                    gameDataList.clear();
+                    gameAdapter.notifyDataSetChanged();
+                    loadUserGamesFromDB();
 
                 }//
             });
         }
+        else {
+            loadGameListFromSharedPrefernce();
+        }
+
+
 
     }
 
@@ -251,6 +243,42 @@ public class ProfileFragment extends Fragment {
         if (FirebaseManager.isLoged()) {
             listenerRegistration.remove();
         }
+
+    }
+
+    private void loadUserProfileData() {
+
+        DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+            @Override
+            public void onSuccess(UserData userData) {
+
+                liveData.setUsernameTv(userData.getName());
+                liveData.setAboutMeTv(userData.getAboutMe());
+                liveData.setUserIv(userData.getImageUrl());
+                liveData.setBirthday(userData.getBirthday_timestamp());
+                liveData.setLevel(String.valueOf(userData.getTotalRank()));
+                liveData.setGender(userData.getGender());
+
+
+                usernameTv.setText(liveData.getUsernameTv());
+                aboutMeTv.setText(liveData.getAboutMeTv());
+                if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
+                ageTv.setText(String.valueOf(liveData.getAge()));
+                levelTv.setText(liveData.getLevel());
+                genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
+
+            }
+        });
+    }
+
+    private void loadUserGamesFromDB() {
+
+        DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+            @Override
+            public void onSuccess() {
+                gameAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
@@ -295,11 +323,14 @@ public class ProfileFragment extends Fragment {
                     liveData.setAboutMeTv(userData.getAboutMe());
                     liveData.setUsernameTv(userData.getName());
                     liveData.setUserIv(userData.getImageUrl());
+                    Log.d("loadUserGame", "user profile url = " + liveData.getUserIv());
+                    Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
 
 
                 }
             });
         } else {
+            Log.d("loadUserGame", "user profile url = " + liveData.getUserIv());
             usernameTv.setText(liveData.getUsernameTv());
             Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
             aboutMeTv.setText(liveData.getAboutMeTv());
@@ -501,7 +532,8 @@ public class ProfileFragment extends Fragment {
 
         Gson gson = new Gson();
         String json = sp.getString("game_list", "");
-        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
         localUserGameList = gson.fromJson(json, type);
 
         if (localUserGameList != null) {

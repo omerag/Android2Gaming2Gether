@@ -22,7 +22,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +107,7 @@ public class SearchGameFragment extends Fragment {
                         Log.d("SearchGameFragment","User not Logged");
 
                         localUserGameList = new ArrayList<>();
+                        //loadGameListFromSharedPrefernce();
                         gameDataList.add(gameSearchList.get(position));
                         for(GameData gameData : gameDataList){
                             localUserGameList.add(gameData.getGuid());
@@ -126,6 +129,18 @@ public class SearchGameFragment extends Fragment {
             DataLoader loader = new DataLoader(BuildConfig.GiantBombApi, getContext());
 
             loader.searchGameRequest(searchText.getText().toString(), gameSearchList, gameSearchAdapter);
+        }
+
+        private void loadGameListFromSharedPrefernce() {
+            SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
+
+            System.out.println("activty = " + getActivity());
+
+            Gson gson = new Gson();
+            String json = sp.getString("game_list", "");
+            Type type = new TypeToken<ArrayList<String>>(){}.getType();
+            localUserGameList = gson.fromJson(json, type);
+
         }
 
         private void saveGameListToSharedPrefernce(){
