@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -110,6 +111,20 @@ public class DatabaseManager {
 
             }
         });
+    }
+
+    static public void getAllGamesFromByListFromDatabase(final List<String> gameIds, final DatabaseManager.DataListener<GameData> listener) {
+        Log.d("DatabaseManager", "getGameFromDatabase called");
+
+        CollectionReference gamesReff = FirebaseFirestore.getInstance().collection("games");
+
+        List<Task> tasks = new ArrayList<>();
+
+        for (String gameId : gameIds){
+            tasks.add(gamesReff.document(gameId).get());
+        }
+
+        Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess();
     }
 
     static public void loadGameIntoViews(final String gameGuid, final TextView gameName, final ImageView gameImage, final Context context) {
