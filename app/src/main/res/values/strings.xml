@@ -62,4 +62,5 @@
     <string name="choose_game_topic">Choose a game to create topic about :</string>
     <string name="comment_hint">Enter your comment here</string>
     <string name="picked">Picked</string>
+    <string name="not_choose">Must enter all fields</string>
 </resources>
