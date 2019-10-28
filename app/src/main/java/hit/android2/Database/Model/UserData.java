@@ -25,8 +25,8 @@ public class UserData implements Comparable<UserData>{
     private int totalRank;
 
     private String birthday_timestamp;
-    private double myLatitude;
-    private     double myLongitude;
+    private double mLatitude;
+    private double mLongitude;
 
     public UserData() {
     }
@@ -145,20 +145,20 @@ public class UserData implements Comparable<UserData>{
         this.country = country;
     }
 
-    public double getMyLatitude() {
-        return myLatitude;
+    public double getmLatitude() {
+        return mLatitude;
     }
 
-    public void setMyLatitude(double myLatitude) {
-        this.myLatitude = myLatitude;
+    public void setmLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
     }
 
-    public double getMyLongitude() {
-        return myLongitude;
+    public double getmLongitude() {
+        return mLongitude;
     }
 
-    public void setMyLongitude(double myLongitude) {
-        this.myLongitude = myLongitude;
+    public void setmLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
     }
 
     public String getBirthday_timestamp() {

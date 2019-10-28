@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -28,7 +27,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +36,6 @@ import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.GroupData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
-import hit.android2.Helpers.LocationHelper;
 import hit.android2.Model.Chatlist;
 
 public class DatabaseManager {
@@ -1013,8 +1010,8 @@ public class DatabaseManager {
         for (UserData player : players) {
 
             Location pLocation = new Location("");
-            pLocation.setLatitude(player.getMyLatitude());
-            pLocation.setLongitude(player.getMyLongitude());
+            pLocation.setLatitude(player.getmLatitude());
+            pLocation.setLongitude(player.getmLongitude());
 
             Log.d("DatabaseManager", "filerPlayerList");
             Log.d("DatabaseManager", "player.getBirthday_timestamp() = " + player.getBirthday_timestamp());
@@ -1024,8 +1021,16 @@ public class DatabaseManager {
             Log.d("DatabaseManager", "maxDistance = " + maxDistance);
             Log.d("DatabaseManager", "mLocation.distanceTo(pLocation) = " + mLocation.distanceTo(pLocation));
 
+            Log.d("DatabaseManager", "mLocatain = " + mLocation.toString());
+            Log.d("DatabaseManager", "pLocation = " + pLocation.toString());
+            Log.d("DatabaseManager", "userLat = " + player.getmLatitude() +"\nuserLon = " + player.getmLongitude() );
+
+
+
+
             if((maxDistance == 400000 || maxDistance == 0) && player.getBirthday_timestamp().compareTo(maxBirthday) >= 0) {
                 tempPlayers.add(player);
+
             }
             else if (player.getBirthday_timestamp().compareTo(maxBirthday) >= 0 && maxDistance >= mLocation.distanceTo(pLocation)) {
                 tempPlayers.add(player);

@@ -1,197 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="10dp">
-
-    <ImageButton
-        android:id="@+id/back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:src="@drawable/ic_arrow_back"
-        android:background="@android:color/transparent"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="28sp"
-        android:text="Presonal Info"
-        />
-
-    <RadioGroup
-        android:id="@+id/profile_fragment_edit_details_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-
-        <RadioButton
-            android:id="@+id/profile_fragment_edit_details_radio_male"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Male"
-
-            />
-        <RadioButton
-            android:id="@+id/profile_fragment_edit_details_radio_female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Female"
-
-            />
-
-
-    </RadioGroup>
+    android:layout_margin="3dp"
+    >
 
     <LinearLayout
-        android:id="@+id/profile_fragment_edit_details_calendar_layout"
-        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:clickable="true"
-        android:focusable="true"
-        >
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_calendar"
-            android:layout_margin="5dp"
+        android:layout_margin="3dp">
 
-            />
-
-        <TextView
-            android:id="@+id/profile_fragment_edit_details_calendar_text_view"
+        <ImageButton
+            android:id="@+id/back_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="1970/01/01"
-            android:layout_margin="5dp"
+            android:layout_margin="1dp"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:text="Presonal Info"
+            />
+
+        <RadioGroup
+            android:id="@+id/profile_fragment_edit_details_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <RadioButton
+                android:id="@+id/profile_fragment_edit_details_radio_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+
+                />
+            <RadioButton
+                android:id="@+id/profile_fragment_edit_details_radio_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+
+                />
+
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/profile_fragment_edit_details_calendar_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            >
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_calendar"
+                android:layout_margin="5dp"
+
+                />
+
+            <TextView
+                android:id="@+id/profile_fragment_edit_details_calendar_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="1970/01/01"
+                android:layout_margin="5dp"
+                />
+
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/profile_fragment_edit_details_about_me_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/about_me"
+            />
+
+        <EditText
+            android:id="@+id/profile_fragment_edit_details_address_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="enter new address" />
+
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            >
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="English"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_hebrew"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hebrew"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_arabic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Arabic"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_chinese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chinese"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_french"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="French"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_german"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="German"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_italian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Italian"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_japanese"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Japanese"
+                    />
+
+            </TableRow>
+
+            <TableRow
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_korean"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Korean"
+                    />
+
+                <CheckBox
+                    android:id="@+id/profile_fragment_edit_details_checkbox_russian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Russian"
+                    />
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/profile_fragment_edit_details_save_changes_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="save"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="30dp"
+
             />
 
 
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/profile_fragment_edit_details_about_me_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/about_me"
-        />
 
-    <EditText
-        android:id="@+id/profile_fragment_edit_details_address_et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="enter new address" />
+</ScrollView>
 
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        >
-
-        <TableRow
-            android:gravity="center">
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_english"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="English"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_hebrew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hebrew"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_arabic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Arabic"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_chinese"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chinese"
-                />
-
-        </TableRow>
-
-        <TableRow
-            android:gravity="center">
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_french"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="French"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_german"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="German"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_italian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Italian"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_japanese"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Japanese"
-                />
-
-        </TableRow>
-
-        <TableRow
-            android:gravity="center">
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_korean"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Korean"
-                />
-
-            <CheckBox
-                android:id="@+id/profile_fragment_edit_details_checkbox_russian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Russian"
-                />
-
-
-        </TableRow>
-
-
-    </TableLayout>
-
-    <Button
-        android:id="@+id/profile_fragment_edit_details_save_changes_btn"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:text="save"
-        android:layout_marginTop="30dp"
-        />
-
-
-
-</LinearLayout>
