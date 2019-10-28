@@ -13,8 +13,8 @@
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:src="@mipmap/ic_launcher"
-        app:siBorderColor="@color/colorAccent"
-        app:siBorderWidth="2dp"
+        app:siBorderColor="@color/colorPrimary"
+        app:siBorderWidth="0.7dp"
         app:siRadius="6dp"
         app:siSquare="true"
         />
