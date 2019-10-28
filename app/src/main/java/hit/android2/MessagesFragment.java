@@ -45,7 +45,6 @@ public class MessagesFragment extends Fragment {
     DatabaseReference reference;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,17 +64,19 @@ public class MessagesFragment extends Fragment {
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
         usersList = new ArrayList<>();
+        if (FirebaseManager.isLoged()) {
+            reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
 
-        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
+            messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                    intent.putExtra("user_id", mUsers.get(position).getKey());
+                    getActivity().startActivity(intent);
+                }
+            });
+        }
 
-        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                intent.putExtra("user_id", mUsers.get(position).getKey());
-                getActivity().startActivity(intent);
-            }
-        });
 
         return rootView;
     }
@@ -84,31 +85,34 @@ public class MessagesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        if (FirebaseManager.isLoged()) {
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                usersList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                {
-                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
-                    usersList.add(chatlist);
+                    usersList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                        usersList.add(chatlist);
+                    }
+
+                    readChats();
                 }
 
-                readChats();
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+        } else {
 
-            }
-        });
+        }
+
 
     }
 
-    private void readChats()
-    {
-        if(liveData.getmUsers() == null){
+    private void readChats() {
+        if (liveData.getmUsers() == null) {
             mUsers.clear();
             DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
                 @Override
@@ -117,8 +121,7 @@ public class MessagesFragment extends Fragment {
                     messagesListAdapter.notifyDataSetChanged();
                 }
             });
-        }
-        else {
+        } else {
             mUsers = liveData.getmUsers();
             messagesListAdapter.setUserDataList(mUsers);
             messagesListAdapter.notifyDataSetChanged();

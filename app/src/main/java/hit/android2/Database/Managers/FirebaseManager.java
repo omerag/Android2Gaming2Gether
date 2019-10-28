@@ -1,5 +1,6 @@
 package hit.android2.Database.Managers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -92,12 +93,21 @@ public class FirebaseManager {
 
     public void logInUser(String email, String password){
 
-        fireBaseAuth.signInWithEmailAndPassword(email, password);
+        fireBaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+
+
+            }
+        });
+
+
     }
 
     public void logOutUser(){
 
         fireBaseAuth.signOut();
+
     }
 
 
