@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -213,36 +214,42 @@ public class HomeFragment extends Fragment {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<ChildData> comments = new ArrayList<>();
-                comments.add(new ChildData(massageEt.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
-                final ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
-                DatabaseManager.addTopicToDatabase(chosenGame.getGuid(),topic);
-                List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
-                final CommentDataHolder commentDataHolder = new CommentDataHolder();
-                commentDataHolder.setMassege(massageEt.getText().toString());
-                final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(),System.currentTimeMillis(),commentDataHolderList,FirebaseManager.getCurrentUserId(),chosenGame.getGuid(),topic.getId());
-                DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
-                    @Override
-                    public void onSuccess(UserData userData) {
 
-                        topicDataHolder.setTitle(topic.getTitle());
-                        topicDataHolder.setTopicsOwner(userData.getName());
-                        topicDataHolder.setImageUrl(chosenGame.getImageUrl());
-                        topicDataHolder.setGameName(chosenGame.getName());
-                        topicDataHolder.setUserId(userData.getKey());
-                        topicDataHolder.setGameId(chosenGame.getGuid());
+                if (massageEt.getText().toString().equals("") || topicEt.getText().toString().equals("")) {
+                    Snackbar.make(view, getText(R.string.not_choose), Snackbar.LENGTH_LONG).show();
+                } else {
 
-                        commentDataHolder.setUserName(userData.getName());
-                        commentDataHolder.setImageUrl(userData.getImageUrl());
-                        topicAdapter.notifyDataSetChanged();
+                    List<ChildData> comments = new ArrayList<>();
+                    comments.add(new ChildData(massageEt.getText().toString(), System.currentTimeMillis(), FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    final ParentData topic = new ParentData(topicEt.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid(), chosenGame.getGuid(), comments);
+                    DatabaseManager.addTopicToDatabase(chosenGame.getGuid(), topic);
+                    List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
+                    final CommentDataHolder commentDataHolder = new CommentDataHolder();
+                    commentDataHolder.setMassege(massageEt.getText().toString());
+                    final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(), System.currentTimeMillis(), commentDataHolderList, FirebaseManager.getCurrentUserId(), chosenGame.getGuid(), topic.getId());
+                    DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
+                        @Override
+                        public void onSuccess(UserData userData) {
 
-                    }
-                });
-                commentDataHolderList.add(commentDataHolder);
-                topicDataHolderList.add(0,topicDataHolder);
-                dbTopics.add(0,new ParentData(topicDataHolder.getTitle(),topicDataHolder.getUserId(),topicDataHolder.getGameId(),comments));
-                topicAdapter.notifyDataSetChanged();
-                dialog.dismiss();
+                            topicDataHolder.setTitle(topic.getTitle());
+                            topicDataHolder.setTopicsOwner(userData.getName());
+                            topicDataHolder.setImageUrl(chosenGame.getImageUrl());
+                            topicDataHolder.setGameName(chosenGame.getName());
+                            topicDataHolder.setUserId(userData.getKey());
+                            topicDataHolder.setGameId(chosenGame.getGuid());
+
+                            commentDataHolder.setUserName(userData.getName());
+                            commentDataHolder.setImageUrl(userData.getImageUrl());
+                            topicAdapter.notifyDataSetChanged();
+
+                        }
+                    });
+                    commentDataHolderList.add(commentDataHolder);
+                    topicDataHolderList.add(0, topicDataHolder);
+                    dbTopics.add(0, new ParentData(topicDataHolder.getTitle(), topicDataHolder.getUserId(), topicDataHolder.getGameId(), comments));
+                    topicAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
             }
         });
 
