@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     String userName;
     FirebaseManager fireBaseManager = new FirebaseManager();
 
+    PagerAdapter pagerAdapter;
+
     BroadcastReceiver receiver;
 
     private MenuItem prevMenuItem;
@@ -64,9 +66,21 @@ public class MainActivity extends AppCompatActivity {
         pager = findViewById(R.id.fragment_container);
 
 
+        //oadUserPicture();
+
+        initPager();
+    }
+
+    void initPager(){
+
+
+        if(pagerAdapter != null){
+            pager.setCurrentItem(3);
+        }
         if (Locale.getDefault().toString().equals("iw_IL")) pager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        PagerAdapter pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
+        pagerAdapter = new PageAdapter(getSupportFragmentManager(),1);
         pager.setAdapter(pagerAdapter);
+
 
         PageViewChangeListener pageViewChangeListener = new PageViewChangeListener();
         pager.addOnPageChangeListener(pageViewChangeListener);
@@ -86,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
         pager.setCurrentItem(2);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
-        //oadUserPicture();
-
     }
 
 
@@ -160,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.log_out:
                     fireBaseManager.logOutUser();
+                    initPager();
+
                     break;
             }
 
@@ -212,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
         public PageAdapter(@NonNull FragmentManager fm, int behavior) {
             super(fm, behavior);
+
         }
 
 

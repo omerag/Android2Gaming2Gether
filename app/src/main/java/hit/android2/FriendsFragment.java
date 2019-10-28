@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,6 +65,7 @@ public class FriendsFragment extends Fragment {
         View view1 = getActivity().findViewById(R.id.fragment_container);
         pager = (ViewPager) view1;
 
+
         return rootView;
     }
 
@@ -81,10 +81,50 @@ public class FriendsFragment extends Fragment {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        friendsAdapter = new FriendsAdapter(getActivity(), friendsList);
+        if(FirebaseManager.isLoged()){
+            friendsAdapter = new FriendsAdapter(getActivity(), friendsList);
+            recyclerView.setAdapter(friendsAdapter);
+            friendsAdapter.notifyDataSetChanged();
 
-        recyclerView.setAdapter(friendsAdapter);
-        friendsAdapter.notifyDataSetChanged();
+            ///////////
+            friendsAdapter.setListener(new FriendsAdapter.AdapterListener() {
+                @Override
+                public void onLongClick(View view, int position) {
+
+                    AlertDialog alertDialog= new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(R.string.delete_title)
+                            .setMessage(R.string.delete_message)
+                            .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                    //delete friend
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, null)
+                            .show();
+                }
+
+                @Override
+                public void onMessageBtnClick(View view, int position) {
+
+                    Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                    intent.putExtra("user_id", friendsList.get(position).getKey());
+                    getActivity().startActivity(intent);
+                }
+
+                @Override
+                public void profileBtnClick(View view, int position) {
+
+                    ShowFriendProfile(friendsList.get(position).getKey());
+                }
+            });
+
+
+            //////////
+        }
+
+
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,38 +145,7 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        friendsAdapter.setListener(new FriendsAdapter.AdapterListener() {
-            @Override
-            public void onLongClick(View view, int position) {
 
-                AlertDialog alertDialog= new MaterialAlertDialogBuilder(getContext())
-                        .setTitle(R.string.delete_title)
-                        .setMessage(R.string.delete_message)
-                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                                //delete friend
-                            }
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .show();
-            }
-
-            @Override
-            public void onMessageBtnClick(View view, int position) {
-
-                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                intent.putExtra("user_id", friendsList.get(position).getKey());
-                getActivity().startActivity(intent);
-            }
-
-            @Override
-            public void profileBtnClick(View view, int position) {
-
-                ShowFriendProfile(friendsList.get(position).getKey());
-            }
-        });
 
         if(FirebaseManager.isLoged()){
             loadFriends();
