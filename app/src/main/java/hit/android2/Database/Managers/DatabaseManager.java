@@ -477,7 +477,7 @@ public class DatabaseManager {
         CollectionReference usersReff = FirebaseFirestore.getInstance().collection("users");
         Query query;
 
-        if (gender.equals("all")) {
+        if (gender == null ||gender.equals("all")) {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
                    // .whereGreaterThanOrEqualTo(rankType, 0)

@@ -291,24 +291,37 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
             sendBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(FirebaseManager.isLoged()){
 
-                    databaseTopics.get(getAdapterPosition()).getItems().add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
-
-                    DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
-                        @Override
-                        public void onSuccess(UserData userData) {
-                            CommentDataHolder comment = new CommentDataHolder(userData.getName(),commentEditText.getText().toString(),userData.getImageUrl());
-                            comments.add(comment);
-                            //notifyDataSetChanged();
-                            commentAdapter.notifyDataSetChanged();
-
-                            MessegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
-                            MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
-                            DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), topics.get(getAdapterPosition()).getTopicId(), databaseTopics.get(getAdapterPosition()).getItems());
+                        if(commentEditText.getText().toString().equals("")){
+                            Toast.makeText(context, "Please enter text to comment", Toast.LENGTH_SHORT).show();
 
                         }
-                    });
+                        else {
+                            databaseTopics.get(getAdapterPosition()).getItems().add(new ChildData(commentEditText.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
 
+                            DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                                @Override
+                                public void onSuccess(UserData userData) {
+                                    CommentDataHolder comment = new CommentDataHolder(userData.getName(),commentEditText.getText().toString(),userData.getImageUrl());
+                                    comments.add(comment);
+                                    //notifyDataSetChanged();
+                                    commentAdapter.notifyDataSetChanged();
+
+                                    MessegingManager.notifyNewCommentOnTopic(context,topics.get(getAdapterPosition()),comment);
+                                    MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
+                                    DatabaseManager.updateTopic(topics.get(getAdapterPosition()).getGameId(), topics.get(getAdapterPosition()).getTopicId(), databaseTopics.get(getAdapterPosition()).getItems());
+
+                                    commentEditText.setText("");
+
+                                }
+                            });
+                        }
+
+                    }
+                    else {
+                        Toast.makeText(context, "Please log/sign in", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
