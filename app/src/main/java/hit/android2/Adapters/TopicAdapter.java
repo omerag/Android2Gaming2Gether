@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -120,7 +121,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     class TopicViewHolder extends RecyclerView.ViewHolder {
         TextView title;
         LinearLayout commentLayout;
-        EditText commentEditText;
+        TextInputEditText commentEditText;
         TextView gameTextView;
         TextView userTextView;
         ImageView gameImage;
