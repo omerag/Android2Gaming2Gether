@@ -225,6 +225,9 @@ public class ProfileFragment extends Fragment {
                     gameAdapter.notifyDataSetChanged();
                     loadUserGamesFromDB();
 
+
+                    DatabaseManager.getAllGamesFromByListFromDatabase(userData.getGames(),null);
+
                 }//
             });
         }
@@ -527,9 +530,6 @@ public class ProfileFragment extends Fragment {
 
     private void loadGameListFromSharedPrefernce() {
         SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
-
-        System.out.println("activty = " + getActivity());
-
         Gson gson = new Gson();
         String json = sp.getString("game_list", "");
         Type type = new TypeToken<ArrayList<String>>() {

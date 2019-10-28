@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -113,18 +114,78 @@ public class DatabaseManager {
         });
     }
 
-    static public void getAllGamesFromByListFromDatabase(final List<String> gameIds, final DatabaseManager.DataListener<GameData> listener) {
+    static public void getAllGamesFromByListFromDatabase(final List<String> gameIds, final DatabaseManager.DataListener <List<GameData>> listener) {
         Log.d("DatabaseManager", "getGameFromDatabase called");
 
         CollectionReference gamesReff = FirebaseFirestore.getInstance().collection("games");
 
-        List<Task> tasks = new ArrayList<>();
+
+        ArrayList<Task<?>> tasks = new ArrayList<>();
+        List<GameData> games = new ArrayList<>();
 
         for (String gameId : gameIds){
-            tasks.add(gamesReff.document(gameId).get());
+            tasks.add(gamesReff.whereEqualTo("guid",gameId).get());
         }
 
-        Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess();
+        Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
+        allTasks.addOnSuccessListener(new OnSuccessListener<List<QuerySnapshot>>() {
+            @Override
+            public void onSuccess(List<QuerySnapshot> querySnapshots) {
+                for(QuerySnapshot queryDocumentSnapshots : querySnapshots){
+                    if(queryDocumentSnapshots.size() > 0){
+                        GameData game = queryDocumentSnapshots.getDocuments().get(0).toObject(GameData.class);
+                        games.add(game);
+                    }
+
+                }
+
+                if(listener != null){
+                    listener.onSuccess(games);
+                }
+
+                Log.d("DatabaseManager", "games = " + games.toString());
+
+                for(GameData gameData: games){
+                    Log.d("DatabaseManager", "AllGames = " + gameData.getName());
+
+                }
+            }
+        });
+    }
+
+    static public void getAllTopicsByGameListFromDatabase(final List<String> gameIds, final DatabaseManager.DataListener <List<ParentData>> listener) {
+        Log.d("DatabaseManager", "getGameFromDatabase called");
+
+        CollectionReference gamesReff = FirebaseFirestore.getInstance().collection("games");
+
+
+        ArrayList<Task<?>> tasks = new ArrayList<>();
+        List<ParentData> topics = new ArrayList<>();
+
+        for (String gameId : gameIds){
+            tasks.add(gamesReff.document(gameId).collection("topics").get());
+        }
+
+        Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(tasks);
+        allTasks.addOnSuccessListener(new OnSuccessListener<List<QuerySnapshot>>() {
+            @Override
+            public void onSuccess(List<QuerySnapshot> querySnapshots) {
+                for(QuerySnapshot queryDocumentSnapshots : querySnapshots){
+
+                    for(DocumentSnapshot snapshot : queryDocumentSnapshots){
+                        ParentData game = snapshot.toObject(ParentData.class);
+                        topics.add(game);
+                    }
+                }
+
+                if(listener != null){
+                    listener.onSuccess(topics);
+                }
+
+                Log.d("DatabaseManager", "games = " + topics.toString());
+
+            }
+        });
     }
 
     static public void loadGameIntoViews(final String gameGuid, final TextView gameName, final ImageView gameImage, final Context context) {

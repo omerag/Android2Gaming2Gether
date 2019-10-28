@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,10 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -84,7 +88,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if(FirebaseManager.isLoged()){
+/*        if(FirebaseManager.isLoged()){
             if(liveData.getTopics() == null){
                 DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(), dbTopics, new DatabaseManager.Listener() {
                     @Override
@@ -109,14 +113,19 @@ public class HomeFragment extends Fragment {
                 topicAdapter.setTopics(topicDataHolderList);
                 topicAdapter.notifyDataSetChanged();
             }
-        }
+        }*/
+        getGames();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void initTopicDataHolderList(List<ParentData> topics, List<TopicDataHolder> topicDataHolderList){
 
 
-        Collections.sort(topics);
+       // Collections.sort(topics);
 
         for(ParentData topic : topics){
 
@@ -246,28 +255,37 @@ public class HomeFragment extends Fragment {
                 @Override
                 public void onSuccess(UserData userData) {
                     List<String> gamesIDs = userData.getGames();
+                    Log.d("HomeFragment","getGame - " + gamesIDs);
 
-
-
+                    loadDBTopics(gamesIDs);
 
                 }
             });
         }
         else {
+            SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
+            Gson gson = new Gson();
+            String json = sp.getString("game_list", "");
+            Type type = new TypeToken<ArrayList<String>>() {
+            }.getType();
+            List<String> localUserGameList = gson.fromJson(json, type);
+
+            loadDBTopics(localUserGameList);
 
         }
     }
 
     private void loadDBTopics(List<String> gamesIds){
 
-        for (String gameId : gamesIds){
-            DatabaseManager.getTopicsByGame(gameId, dbTopics, new DatabaseManager.Listener() {
-                @Override
-                public void onSuccess() {
-                    loadLocalTopics();
-                }
-            });
-        }
+        DatabaseManager.getAllTopicsByGameListFromDatabase(gamesIds, new DatabaseManager.DataListener<List<ParentData>>() {
+            @Override
+            public void onSuccess(List<ParentData> parentData) {
+                Log.d("HomeFragment","loadDBTopics - " + parentData);
+
+                dbTopics.addAll(parentData);
+                loadLocalTopics();
+            }
+        });
 
     }
 
