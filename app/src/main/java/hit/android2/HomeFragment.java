@@ -6,8 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +38,7 @@ import hit.android2.Database.TopicDataHolder;
 
 public class HomeFragment extends Fragment {
 
-    private List<ParentData> topics;
+    private List<ParentData> dbTopics;
     private List<TopicDataHolder> topicDataHolderList;
     private HomeFragmentLiveData liveData;
     private TopicAdapter topicAdapter;
@@ -69,12 +65,12 @@ public class HomeFragment extends Fragment {
         FloatingActionButton addBtn = getActivity().findViewById(R.id.home_fragment_add_btn);
 
         recyclerView = getActivity().findViewById(R.id.home_recycler);
-
-        topics = new ArrayList<>(); //getList();
+        topicDataHolderList = new ArrayList<>();
+        dbTopics = new ArrayList<>(); //getList();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        topicAdapter = new TopicAdapter(getActivity(),topicDataHolderList,topics,liveData);
+        topicAdapter = new TopicAdapter(getActivity(),topicDataHolderList, dbTopics,liveData);
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
@@ -90,14 +86,14 @@ public class HomeFragment extends Fragment {
 
         if(FirebaseManager.isLoged()){
             if(liveData.getTopics() == null){
-                DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(), topics, new DatabaseManager.Listener() {
+                DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(), dbTopics, new DatabaseManager.Listener() {
                     @Override
                     public void onSuccess() {
-                        liveData.setTopics(topics);
-                        topicDataHolderList = initTopicDataHolderList(topics);
+                        liveData.setTopics(dbTopics);
+                        initTopicDataHolderList(dbTopics,topicDataHolderList);
                         liveData.setTopicDataHolderList(topicDataHolderList);
                         Collections.sort(topicDataHolderList);
-                        Collections.sort(topics);
+                        Collections.sort(dbTopics);
                         topicAdapter.setTopics(topicDataHolderList);
                         topicAdapter.notifyDataSetChanged();
                     }
@@ -106,10 +102,10 @@ public class HomeFragment extends Fragment {
                 Log.d("HomeFragment", "livedata set list");
             }
             else {
-                topics = liveData.getTopics();
+                dbTopics = liveData.getTopics();
                 topicDataHolderList = liveData.getTopicDataHolderList();
                 Collections.sort(topicDataHolderList);
-                Collections.sort(topics);
+                Collections.sort(dbTopics);
                 topicAdapter.setTopics(topicDataHolderList);
                 topicAdapter.notifyDataSetChanged();
             }
@@ -117,10 +113,10 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private List<TopicDataHolder> initTopicDataHolderList(List<ParentData> topics){
+    private void initTopicDataHolderList(List<ParentData> topics, List<TopicDataHolder> topicDataHolderList){
 
-        List<TopicDataHolder> topicDataHolderList = new ArrayList<>();
 
+        Collections.sort(topics);
 
         for(ParentData topic : topics){
 
@@ -163,12 +159,8 @@ public class HomeFragment extends Fragment {
                     }
                 });
             }
-
-
-
-
+            topicAdapter.notifyDataSetChanged();
         }
-        return topicDataHolderList;
     }
 
     private void showCreateTopicDialog() {
@@ -238,7 +230,7 @@ public class HomeFragment extends Fragment {
                 });
                 commentDataHolderList.add(commentDataHolder);
                 topicDataHolderList.add(0,topicDataHolder);
-                topics.add(0,new ParentData(topicDataHolder.getTitle(),topicDataHolder.getUserId(),topicDataHolder.getGameId(),comments));
+                dbTopics.add(0,new ParentData(topicDataHolder.getTitle(),topicDataHolder.getUserId(),topicDataHolder.getGameId(),comments));
                 topicAdapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -246,6 +238,43 @@ public class HomeFragment extends Fragment {
 
 
         dialog.show();
+    }
+
+    void getGames(){
+        if(FirebaseManager.isLoged()){
+            DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                @Override
+                public void onSuccess(UserData userData) {
+                    List<String> gamesIDs = userData.getGames();
+
+
+
+
+                }
+            });
+        }
+        else {
+
+        }
+    }
+
+    private void loadDBTopics(List<String> gamesIds){
+
+        for (String gameId : gamesIds){
+            DatabaseManager.getTopicsByGame(gameId, dbTopics, new DatabaseManager.Listener() {
+                @Override
+                public void onSuccess() {
+                    loadLocalTopics();
+                }
+            });
+        }
+
+    }
+
+    private void loadLocalTopics(){
+
+        initTopicDataHolderList(dbTopics,topicDataHolderList);
+
     }
 
 
