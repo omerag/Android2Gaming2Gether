@@ -1,6 +1,7 @@
 package hit.android2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class MessagesRootFragment extends Fragment {
         @NonNull
         @Override
         public Fragment getItem(int position) {
+            Log.d("insideFragment","create");
 
             switch (position)
             {

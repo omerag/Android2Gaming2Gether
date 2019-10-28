@@ -2,6 +2,7 @@ package hit.android2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class MessagesFragment extends Fragment {
     FirebaseManager manager = new FirebaseManager();
     DatabaseReference reference;
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,45 +65,49 @@ public class MessagesFragment extends Fragment {
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
         usersList = new ArrayList<>();
-        if(FirebaseManager.isLoged()){
-            reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    usersList.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                    {
-                        Chatlist chatlist = snapshot.getValue(Chatlist.class);
-                        usersList.add(chatlist);
-                    }
+        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
 
-                    readChats();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-            messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                    intent.putExtra("user_id", mUsers.get(position).getKey());
-                    getActivity().startActivity(intent);
-                }
-            });
-        }
-
+        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                intent.putExtra("user_id", mUsers.get(position).getKey());
+                getActivity().startActivity(intent);
+            }
+        });
 
         return rootView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                usersList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                {
+                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                    usersList.add(chatlist);
+                }
+
+                readChats();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void readChats()
     {
-
         if(liveData.getmUsers() == null){
             mUsers.clear();
             DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
