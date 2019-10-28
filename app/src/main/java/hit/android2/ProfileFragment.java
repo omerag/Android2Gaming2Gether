@@ -3,6 +3,7 @@ package hit.android2;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,6 +37,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -159,6 +162,36 @@ public class ProfileFragment extends Fragment {
         }
         gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
         recyclerView.setAdapter(gameAdapter);
+        gameAdapter.setListener(new GameAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.dialog_fragments_container, new GameTopicsFragment(gameDataList.get(position).getGuid()))
+                        .addToBackStack("gameTopicsFragment").commit();
+
+                bottomNavigationView.setVisibility(View.INVISIBLE);
+                pager.setVisibility(View.INVISIBLE);
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                AlertDialog alertDialog= new MaterialAlertDialogBuilder(getContext())
+                        .setTitle("Delete game")
+                        .setMessage("Are you sure you wont to delete " + gameDataList.get(position).getName() +" from game list?")
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                //delete game
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
+            }
+        });
         gameAdapter.notifyDataSetChanged();
         //user logged in
 
@@ -420,6 +453,11 @@ public class ProfileFragment extends Fragment {
                         characterSelectAdapter.notifyDataSetChanged();
                     }
                 });
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
 
             }
         });

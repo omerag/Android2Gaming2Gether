@@ -225,6 +225,11 @@ public class SearchFriendFragment extends Fragment {
                 });
 
             }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
         });
         gameAdapter.notifyDataSetChanged();
         /////////////

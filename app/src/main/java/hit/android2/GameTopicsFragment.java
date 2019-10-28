@@ -12,8 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,29 +31,37 @@ import java.util.List;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.TopicAdapter;
 import hit.android2.Database.CommentDataHolder;
-import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Model.ChildData;
 import hit.android2.Database.Model.GameData;
 import hit.android2.Database.Model.ParentData;
 import hit.android2.Database.Model.UserData;
 import hit.android2.Database.TopicDataHolder;
 
-public class HomeFragment extends Fragment {
+public class GameTopicsFragment extends Fragment {
 
-    private List<ParentData> dbTopics;
-    private List<TopicDataHolder> topicDataHolderList;
-    private HomeFragmentLiveData liveData;
+    private List<ParentData> dbTopics = new ArrayList();
+    private List<TopicDataHolder> topicDataHolderList = new ArrayList<>();
+    //private HomeFragmentLiveData liveData;
     private TopicAdapter topicAdapter;
 
     private RecyclerView recyclerView;
     private GameData chosenGame = new GameData();
 
+    private FloatingActionButton addBtn;
+
+    private List<String> gameId = new ArrayList<>();
+
+    public GameTopicsFragment(String gameId) {
+        this.gameId.add(gameId);
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.home_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_game_topics, container, false);
 
 
         return rootView;
@@ -65,64 +71,48 @@ public class HomeFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        liveData = ViewModelProviders.of(this).get(HomeFragmentLiveData.class);
 
-        FloatingActionButton addBtn = getActivity().findViewById(R.id.home_fragment_add_btn);
+        recyclerView = getView().findViewById(R.id.fragment_game_topics_recycler);
 
-        recyclerView = getActivity().findViewById(R.id.home_recycler);
-        topicDataHolderList = new ArrayList<>();
-        dbTopics = new ArrayList<>(); //getList();
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        topicAdapter = new TopicAdapter(getActivity(), topicDataHolderList, dbTopics, liveData);
-        recyclerView.setAdapter(topicAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        topicAdapter = new TopicAdapter(getActivity(),topicDataHolderList,dbTopics);
         recyclerView.setAdapter(topicAdapter);
         recyclerView.setHasFixedSize(true);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+    }
+
+
+    void getGames() {
+
+        loadDBTopics(gameId);
+    }
+
+    private void loadDBTopics(List<String> gamesIds) {
+
+        DatabaseManager.getAllTopicsByGameListFromDatabase(gamesIds, new DatabaseManager.DataListener<List<ParentData>>() {
             @Override
-            public void onClick(View view) {
-                showCreateTopicDialog();
+            public void onSuccess(List<ParentData> parentData) {
+                Log.d("HomeFragment", "loadDBTopics - " + parentData);
+
+                dbTopics.addAll(parentData);
+                Collections.sort(dbTopics);
+                loadLocalTopics();
             }
         });
 
-/*        if(FirebaseManager.isLoged()){
-            if(liveData.getTopics() == null){
-                DatabaseManager.getHomeTopics(FirebaseAuth.getInstance().getCurrentUser().getUid(), dbTopics, new DatabaseManager.Listener() {
-                    @Override
-                    public void onSuccess() {
-                        liveData.setTopics(dbTopics);
-                        initTopicDataHolderList(dbTopics,topicDataHolderList);
-                        liveData.setTopicDataHolderList(topicDataHolderList);
-                        Collections.sort(topicDataHolderList);
-                        Collections.sort(dbTopics);
-                        topicAdapter.setTopics(topicDataHolderList);
-                        topicAdapter.notifyDataSetChanged();
-                    }
-                });
-
-                Log.d("HomeFragment", "livedata set list");
-            }
-            else {
-                dbTopics = liveData.getTopics();
-                topicDataHolderList = liveData.getTopicDataHolderList();
-                Collections.sort(topicDataHolderList);
-                Collections.sort(dbTopics);
-                topicAdapter.setTopics(topicDataHolderList);
-                topicAdapter.notifyDataSetChanged();
-            }
-        }*/
-        getGames();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void loadLocalTopics() {
+
+        initTopicDataHolderList(dbTopics, topicDataHolderList);
+
     }
+
 
     private void initTopicDataHolderList(List<ParentData> topics, List<TopicDataHolder> topicDataHolderList) {
 
@@ -174,6 +164,7 @@ public class HomeFragment extends Fragment {
             topicAdapter.notifyDataSetChanged();
         }
     }
+
 
     private void showCreateTopicDialog() {
 
@@ -267,52 +258,5 @@ public class HomeFragment extends Fragment {
 
         dialog.show();
     }
-
-    void getGames() {
-        if (FirebaseManager.isLoged()) {
-            DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
-                @Override
-                public void onSuccess(UserData userData) {
-                    List<String> gamesIDs = userData.getGames();
-                    Log.d("HomeFragment", "getGame - " + gamesIDs);
-
-                    loadDBTopics(gamesIDs);
-
-                }
-            });
-        } else {
-            SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
-            Gson gson = new Gson();
-            String json = sp.getString("game_list", "");
-            Type type = new TypeToken<ArrayList<String>>() {
-            }.getType();
-            List<String> localUserGameList = gson.fromJson(json, type);
-
-            loadDBTopics(localUserGameList);
-
-        }
-    }
-
-    private void loadDBTopics(List<String> gamesIds) {
-
-        DatabaseManager.getAllTopicsByGameListFromDatabase(gamesIds, new DatabaseManager.DataListener<List<ParentData>>() {
-            @Override
-            public void onSuccess(List<ParentData> parentData) {
-                Log.d("HomeFragment", "loadDBTopics - " + parentData);
-
-                dbTopics.addAll(parentData);
-                Collections.sort(dbTopics);
-                loadLocalTopics();
-            }
-        });
-
-    }
-
-    private void loadLocalTopics() {
-
-        initTopicDataHolderList(dbTopics, topicDataHolderList);
-
-    }
-
 
 }

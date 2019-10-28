@@ -52,6 +52,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
         this.databaseTopics = databaseTopics;
     }
 
+    public TopicAdapter(Context context, /*List<ParentData> topics*/ List<TopicDataHolder> topics, List<ParentData> databaseTopics) {
+        this.context = context;
+        this.topics = topics;
+        this.liveData = liveData;
+        this.databaseTopics = databaseTopics;
+    }
+
     public interface AdapterListener{
         void onClick(View view, int position);
 

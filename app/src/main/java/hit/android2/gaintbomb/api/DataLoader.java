@@ -48,7 +48,7 @@ public class DataLoader {
         void onSuccess(String string);
     }
 
-    public void searchGameRequest(final String gameName, final List<GameData> gameDataList, final GameAdapter gameAdapter){
+    public void searchGameRequest(final String gameName, final List<GameData> gameDataList, final GameAdapter gameAdapter, Listener listener){
 
         System.out.println("searchGameRequest called");
 
@@ -68,6 +68,8 @@ public class DataLoader {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+                listener.onSuccess(null);
 
             }
         }, new Response.ErrorListener() {

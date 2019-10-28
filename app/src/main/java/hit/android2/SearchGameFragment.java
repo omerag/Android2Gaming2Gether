@@ -120,6 +120,11 @@ public class SearchGameFragment extends Fragment {
                     DatabaseManager.addGameToDatabase(gameSearchList.get(position));
 
                 }
+
+                @Override
+                public void onLongClick(View view, int position) {
+
+                }
             });
 
             gameListRecyclerView.setAdapter(gameSearchAdapter);
@@ -128,7 +133,12 @@ public class SearchGameFragment extends Fragment {
 
             DataLoader loader = new DataLoader(BuildConfig.GiantBombApi, getContext());
 
-            loader.searchGameRequest(searchText.getText().toString(), gameSearchList, gameSearchAdapter);
+            loader.searchGameRequest(searchText.getText().toString(), gameSearchList, gameSearchAdapter, new DataLoader.Listener() {
+                @Override
+                public void onSuccess(String string) {
+
+                }
+            });
         }
 
         private void loadGameListFromSharedPrefernce() {

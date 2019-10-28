@@ -34,6 +34,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
 
     public interface AdapterListener{
         void onClick(View view, int position);
+        void onLongClick(View view, int position);
 
     }
 
@@ -101,6 +102,17 @@ public class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameItemViewHo
                         listener.onClick(view,getAdapterPosition());
                     }
 
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (listener != null)
+                    {
+                        listener.onLongClick(view, getAdapterPosition());
+                    }
+                    return false;
                 }
             });
         }
