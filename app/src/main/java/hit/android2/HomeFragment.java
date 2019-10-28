@@ -168,6 +168,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
             }
+            Collections.sort(topicDataHolderList);
             topicAdapter.notifyDataSetChanged();
         }
     }
@@ -283,6 +284,7 @@ public class HomeFragment extends Fragment {
                 Log.d("HomeFragment","loadDBTopics - " + parentData);
 
                 dbTopics.addAll(parentData);
+                Collections.sort(dbTopics);
                 loadLocalTopics();
             }
         });
