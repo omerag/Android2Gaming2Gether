@@ -182,11 +182,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        fireBaseManager.registerAuthListener();
-
-        MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
 
         if(FirebaseManager.isLoged()){
+            fireBaseManager.registerAuthListener();
+
+            MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
             receiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        fireBaseManager.unRegisterAuthListener();
         if(FirebaseManager.isLoged()){
+            fireBaseManager.unRegisterAuthListener();
             MessegingManager.unRegisterReciver(this,receiver);
         }
     }

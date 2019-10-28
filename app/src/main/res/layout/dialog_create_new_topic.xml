@@ -2,15 +2,17 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="350dp"
+    android:layout_width="375dp"
     android:layout_height="match_parent"
     android:gravity="center">
+
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:text="Please choose a game to create topic about:"
+        android:text="Choose a game to create topic about:"
         android:padding="5dp"
 
         />
@@ -41,9 +43,10 @@
         android:id="@+id/create_new_topic_dialog_imageBtn"
         android:layout_width="100dp"
         android:layout_height="70dp"
-        android:src="@drawable/ic_send"
+        android:background="@drawable/ic_send"
         android:layout_gravity="center"
         android:layout_margin="10dp"
+
         />
 
     <androidx.recyclerview.widget.RecyclerView

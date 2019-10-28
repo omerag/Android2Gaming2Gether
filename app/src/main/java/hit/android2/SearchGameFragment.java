@@ -1,5 +1,7 @@
 package hit.android2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,7 @@ public class SearchGameFragment extends Fragment {
     private RecyclerView gameListRecyclerView;
     private List<GameData> gameDataList;
     private GameAdapter gameAdapter;
+    private ArrayList<String>localUserGameList;
 
     //private ProfileFragmentLiveData liveData;
 
@@ -57,20 +61,19 @@ public class SearchGameFragment extends Fragment {
         return rootView;
     }
 
-    public SearchGameFragment(BottomNavigationView bottomNavigationView, ViewPager pager, List<GameData> gameDataList,GameAdapter gameAdapter,ProfileFragmentLiveData liveData) {
+    public SearchGameFragment(BottomNavigationView bottomNavigationView, ViewPager pager, List<GameData> gameDataList, GameAdapter gameAdapter, ProfileFragmentLiveData liveData) {
         this.bottomNavigationView = bottomNavigationView;
         this.pager = pager;
         this.gameDataList = gameDataList;
         this.gameAdapter = gameAdapter;
-       // this.liveData = liveData;
+        // this.liveData = liveData;
     }
 
-    class SearchBtnListener implements View.OnClickListener
-    {
+    class SearchBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
 
-            gameListRecyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
+            gameListRecyclerView.setLayoutManager(new GridLayoutManager((getContext()), 2));
 
             final List<GameData> gameSearchList = new ArrayList<>();
             final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
@@ -78,21 +81,39 @@ public class SearchGameFragment extends Fragment {
             gameSearchAdapter.setListener(new GameAdapter.AdapterListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
-                            new DatabaseManager.Listener() {
-                                @Override
-                                public void onSuccess() {
-                                    DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            //liveData.setGameDataList(gameDataList);
 
-                                            Log.d("ProfileFragment","Loading List from server");
-                                        }
-                                    });
-                                    Snackbar.make(getView(),"The game has been added to your game list",Snackbar.LENGTH_LONG).setDuration(3000).show();
-                                }
-                            });
+                    if (FirebaseManager.isLoged()) {
+                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
+                                new DatabaseManager.Listener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                //liveData.setGameDataList(gameDataList);
+                                                gameAdapter.notifyDataSetChanged();
+
+                                                Log.d("ProfileFragment", "Loading List from server");
+                                            }
+                                        });
+                                        Snackbar.make(getView(), "The game has been added to your game list", Snackbar.LENGTH_LONG).setDuration(3000).show();
+                                    }
+                                });
+                    }
+                    else {//user NOT logged
+
+                        Log.d("SearchGameFragment","User not Logged");
+
+                        localUserGameList = new ArrayList<>();
+                        gameDataList.add(gameSearchList.get(position));
+                        for(GameData gameData : gameDataList){
+                            localUserGameList.add(gameData.getGuid());
+                        }
+                        gameAdapter.notifyDataSetChanged();
+                        saveGameListToSharedPrefernce();
+
+                    }
+
                     DatabaseManager.addGameToDatabase(gameSearchList.get(position));
 
                 }
@@ -102,10 +123,28 @@ public class SearchGameFragment extends Fragment {
             gameListRecyclerView.setHasFixedSize(true);
             gameSearchAdapter.notifyDataSetChanged();
 
-            DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
+            DataLoader loader = new DataLoader(BuildConfig.GiantBombApi, getContext());
 
-            loader.searchGameRequest(searchText.getText().toString(),gameSearchList,gameSearchAdapter);
+            loader.searchGameRequest(searchText.getText().toString(), gameSearchList, gameSearchAdapter);
         }
 
+        private void saveGameListToSharedPrefernce(){
+            SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
+
+            System.out.println("activty = " + getActivity());
+
+            SharedPreferences.Editor editor = sp.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(localUserGameList);
+            editor.putString("game_list",json);
+            editor.apply();
+
+            Log.d("SearchGameFragment","localGameList = " + localUserGameList.toString());
+            Log.d("SearchGameFragment","json = " + json);
+
+
+
         }
+
     }
+}
