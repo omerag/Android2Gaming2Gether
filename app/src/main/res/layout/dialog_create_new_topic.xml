@@ -7,15 +7,23 @@
     android:gravity="center"
     android:padding="5dp">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:text="@string/new_topic"
+        android:padding="5dp"
+        />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:text="Choose a game to create topic about:"
+        android:textSize="12sp"
+        android:text="@string/choose_game_topic"
+        android:layout_gravity="start"
         android:padding="5dp"
-
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -23,7 +31,6 @@
         android:layout_width="320dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
-
         />
 
     <com.google.android.material.textfield.TextInputLayout

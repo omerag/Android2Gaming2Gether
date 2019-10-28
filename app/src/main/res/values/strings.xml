@@ -58,4 +58,6 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="post_btn">Post</string>
+    <string name="new_topic">New Topic</string>
+    <string name="choose_game_topic">Choose a game to create topic about :</string>
 </resources>
