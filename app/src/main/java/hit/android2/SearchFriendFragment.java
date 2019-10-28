@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -52,6 +53,7 @@ public class SearchFriendFragment extends Fragment {
     private LocationHelper helper;
     private ProgressDialog progressDialog;
     private TextView not_found_tv;
+    private MaterialButton gameSearchBtn;
 
     private PermissionHelper permissionHelper;
 
@@ -95,6 +97,7 @@ public class SearchFriendFragment extends Fragment {
         ImageButton allGenderIbtn = getView().findViewById(R.id.search_friends_dialog_gender_all);
         allGenderIbtn.setTag(R.id.search_friends_dialog_gender_all);
         allGenderIbtn.setOnClickListener(stringFromImageBtn);
+        gameSearchBtn = getView().findViewById(R.id.search_game_btn);
 
 
         final TextView ageTv = getView().findViewById(R.id.search_friends_dialog_age_tv);
@@ -170,54 +173,63 @@ public class SearchFriendFragment extends Fragment {
         FriendsResultAdapter friendsResultAdapter = new FriendsResultAdapter(getActivity(),users);
         gamesRecycler.setAdapter(gameAdapter);
 
+        gameSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (gameGUID[0] == null) {
+                    Snackbar.make(getView(),getString(R.string.choose_game),Snackbar.LENGTH_LONG).show();
+                } else {
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setMessage(getString(R.string.progress_message));
+                    progressDialog.setTitle(getString(R.string.progress_title));
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
+                    LinearLayout linearLayout = getActivity().findViewById(R.id.root_search_view);
+                    linearLayout.setVisibility(View.GONE);
+                    LinearLayout resultLayout = getActivity().findViewById(R.id.results_view);
+                    resultLayout.setVisibility(View.VISIBLE);
+                    not_found_tv = getActivity().findViewById(R.id.users_not_found);
+
+                    //gameGUID[0] = games.get(position).getGuid();
+                    resultRecycler.setAdapter(friendsResultAdapter);
+                    friendsResultAdapter.notifyDataSetChanged();
+
+                    //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
+
+                    DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
+                        @Override
+                        public void onSuccess(final UserData userData) {
+                            final double mLongitude = 0;
+                            final double mLatitude = 0;
+
+                            helper = new LocationHelper(getActivity(), permissionHelper, new LocationHelper.Listener<Double>() {
+                                @Override
+                                public void onSuccess(double latitude, double longitude) {
+                                    DatabaseManager.searchPlayers(userData, gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), age[0], distance[0] * 1000, latitude, longitude, new DatabaseManager.DataListener<List<UserData>>() {
+                                        @Override
+                                        public void onSuccess(List<UserData> userData) {
+                                            Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
+                                            users.addAll(userData);
+                                            friendsResultAdapter.notifyDataSetChanged();
+                                            progressDialog.dismiss();
+                                            if (users.size() == 0) {
+                                                not_found_tv.setVisibility(View.VISIBLE);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+                    });
+
+                }
+            }
+        });
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setMessage(getString(R.string.progress_message));
-                progressDialog.setTitle(getString(R.string.progress_title));
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                progressDialog.show();
-                LinearLayout linearLayout = getActivity().findViewById(R.id.root_search_view);
-                linearLayout.setVisibility(View.GONE);
-                LinearLayout resultLayout = getActivity().findViewById(R.id.results_view);
-                resultLayout.setVisibility(View.VISIBLE);
-                not_found_tv = getActivity().findViewById(R.id.users_not_found);
-
                 gameGUID[0] = games.get(position).getGuid();
-                resultRecycler.setAdapter(friendsResultAdapter);
-                friendsResultAdapter.notifyDataSetChanged();
-
-                //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
-
-                DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
-                    @Override
-                    public void onSuccess(final UserData userData) {
-                        final double mLongitude = 0;
-                        final double mLatitude = 0;
-
-                        helper = new LocationHelper(getActivity(), permissionHelper, new LocationHelper.Listener<Double>() {
-                            @Override
-                            public void onSuccess(double latitude, double longitude) {
-                                DatabaseManager.searchPlayers(userData, gameGUID[0], languegeResult[0], stringFromImageBtn.getResultGener(), age[0], distance[0] * 1000, latitude, longitude, new DatabaseManager.DataListener<List<UserData>>() {
-                                    @Override
-                                    public void onSuccess(List<UserData> userData) {
-                                        Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
-                                        users.addAll(userData);
-                                        friendsResultAdapter.notifyDataSetChanged();
-                                        progressDialog.dismiss();
-                                        if (users.size() == 0)
-                                        {
-                                            not_found_tv.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                    }
-                });
-
             }
 
             @Override
@@ -256,6 +268,7 @@ public class SearchFriendFragment extends Fragment {
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), games, gameAdapter);
 
         super.onViewCreated(view, savedInstanceState);
+
     }
 
     class GetStringFromImageBtn implements View.OnClickListener {
