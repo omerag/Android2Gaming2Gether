@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -164,6 +165,10 @@ public class SearchFriendFragment extends Fragment {
         ///games recycler
         final RecyclerView gamesRecycler = getView().findViewById(R.id.search_friends_dialog_games_recycler_view);
         gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
+        RecyclerView resultRecycler = getView().findViewById(R.id.results_recycler);
+        resultRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
@@ -174,8 +179,14 @@ public class SearchFriendFragment extends Fragment {
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
             @Override
             public void onClick(View view, int position) {
+                LinearLayout linearLayout = getActivity().findViewById(R.id.root_search_view);
+                linearLayout.setVisibility(View.GONE);
+                LinearLayout resultLayout = getActivity().findViewById(R.id.results_view);
+                resultLayout.setVisibility(View.VISIBLE);
+
                 gameGUID[0] = games.get(position).getGuid();
-                gamesRecycler.setAdapter(userSearchAdapter);
+                //gamesRecycler.setAdapter(userSearchAdapter);
+                resultRecycler.setAdapter(userSearchAdapter);
                 userSearchAdapter.notifyDataSetChanged();
                 //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
 
