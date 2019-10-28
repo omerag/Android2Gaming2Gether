@@ -38,7 +38,11 @@ public class LocationHelper {
         this.fragment = fragment;
         this.permissionHelper = permissionHelper;
 
-        getLocation();
+        permissionHelper.check(Manifest.permission.ACCESS_FINE_LOCATION)
+                .onSuccess(this::onSuccess)
+                .onDenied(this::onDenied)
+                .onNeverAskAgain(this::onNeverAskAgain)
+                .run();
     }
 
     public void getLocation() {
@@ -67,17 +71,14 @@ public class LocationHelper {
             }
         };
 
-        permissionHelper.check(Manifest.permission.ACCESS_COARSE_LOCATION)
-                .onSuccess(this::onSuccess)
-                .onDenied(this::onDenied)
-                .onNeverAskAgain(this::onNeverAskAgain)
-                .run();
+        client.requestLocationUpdates(request, callback, null);
+
+
 
 
       /*  if (Build.VERSION.SDK_INT >= 23) {
             if(activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 System.out.println("sending request for location");
-                client.requestLocationUpdates(request, callback, null);
             }
             else {
                 requestPermissions
@@ -112,5 +113,6 @@ public class LocationHelper {
 
     private void onSuccess() {
         Log.d("locationHelper", "PermissionHelper - onSuccess");
+        getLocation();
     }
 }
