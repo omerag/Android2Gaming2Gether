@@ -127,12 +127,13 @@ public class HomeFragment extends Fragment {
 
        // Collections.sort(topics);
 
-        for(ParentData topic : topics){
+        for (int i = 0; i < topics.size(); i++) {
+            ParentData topic = topics.get(i);
 
             List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
 
 
-            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(),topic.getTimestamp(),commentDataHolderList,topic.getGame_key(),topic.getGame_key(),topic.getId());
+            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(), topic.getTimestamp(), commentDataHolderList, topic.getGame_key(), topic.getGame_key(), topic.getId());
             topicDataHolderList.add(dataHolder);
 
             DatabaseManager.getGameFromDatabase(topic.getGame_key(), new DatabaseManager.DataListener<GameData>() {
@@ -154,7 +155,7 @@ public class HomeFragment extends Fragment {
                 }
             });
 
-            for(final ChildData comment : topic.getItems()){
+            for (final ChildData comment : topic.getItems()) {
 
                 final CommentDataHolder commentDataHolder = new CommentDataHolder();
                 commentDataHolderList.add(commentDataHolder);
@@ -169,7 +170,16 @@ public class HomeFragment extends Fragment {
                 });
             }
             Collections.sort(topicDataHolderList);
+            Collections.sort(dbTopics);
             topicAdapter.notifyDataSetChanged();
+        }
+
+
+        for(int i = 0; i < dbTopics.size(); i++){
+            Log.d("HomeTest", i + " - " + topicDataHolderList.get(i).getTopicId());
+        }
+        for(int i = 0; i < dbTopics.size(); i++){
+            Log.d("HomeTest", i + " - " + dbTopics.get(i).getId());
         }
     }
 
@@ -214,12 +224,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 List<ChildData> comments = new ArrayList<>();
+
                 comments.add(new ChildData(massageEt.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
+
                 final ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
                 DatabaseManager.addTopicToDatabase(chosenGame.getGuid(),topic);
                 List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
+
                 final CommentDataHolder commentDataHolder = new CommentDataHolder();
                 commentDataHolder.setMassege(massageEt.getText().toString());
+
                 final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(),System.currentTimeMillis(),commentDataHolderList,FirebaseManager.getCurrentUserId(),chosenGame.getGuid(),topic.getId());
                 DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
                     @Override

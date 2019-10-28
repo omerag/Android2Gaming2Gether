@@ -95,13 +95,13 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
     @Override
     public void onBindViewHolder(@NonNull TopicViewHolder holder, int position) {
 
-
         holder.initRecycleview(position);
         holder.title.setText(topics.get(position).getTitle());
         holder.gameTextView.setText(topics.get(position).getGameName());
         holder.userTextView.setText(topics.get(position).getTopicsOwner());
         holder.dateTextView.setText(topics.get(position).getDate());
 
+        Log.d("TOPIC TEST",topics.get(position).getTopicId() + " ==" + databaseTopics.get(position).getId());
 
         //DatabaseManager.loadGameIntoViews(topics.get(position).getGame_key(),holder.gameTextView,holder.gameImage,context);
         Glide.with(context).load(topics.get(position).getImageUrl()).into(holder.gameImage);
@@ -225,6 +225,32 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
 
                         commentAdapter.setOpen(true);
                         arrowIv.setImageDrawable(context.getDrawable(R.drawable.ic_arrow_down));
+                        DatabaseManager.loadCommentFromDB(topics.get(getAdapterPosition()).getGameId(), topics.get(getAdapterPosition()).getTopicId(), new DatabaseManager.DataListener<List<ChildData>>() {
+                            @Override
+                            public void onSuccess(List<ChildData> childData) {
+                                List<CommentDataHolder> commentDataHolderList = topics.get(getAdapterPosition()).getComments();
+
+                                commentDataHolderList.clear();
+
+                                for(final ChildData comment : childData){
+
+                                    final CommentDataHolder commentDataHolder = new CommentDataHolder();
+                                    commentDataHolderList.add(commentDataHolder);
+                                    DatabaseManager.getUserFromDatabase(comment.getUser_key(), new DatabaseManager.DataListener<UserData>() {
+                                        @Override
+                                        public void onSuccess(UserData userData) {
+                                            commentDataHolder.setUserName(userData.getName());
+                                            commentDataHolder.setImageUrl(userData.getImageUrl());
+                                            commentDataHolder.setMassege(comment.getMassage());
+                                            commentAdapter.notifyDataSetChanged();
+
+                                        }
+                                    });
+                                }
+
+
+                            }
+                        });
 
                     }
                     commentAdapter.notifyDataSetChanged();

@@ -123,9 +123,9 @@ public class TopicDataHolder implements Comparable<TopicDataHolder>{
         Date date1 = format.parse(topicDataHolder.getDate(), new ParsePosition(0));
         Date date2 = format.parse(getDate(), new ParsePosition(0));
 
-        if(date1.getTime() - date2.getTime() >= 0){
-            return 1;
+        if(date2.getTime() - date1.getTime()   >= 0){
+            return -1;
         }
-        return -1;
+        return 1;
     }
 }

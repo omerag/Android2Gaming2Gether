@@ -82,8 +82,8 @@ public class ParentData implements Comparable<ParentData> {
     @Override
     public int compareTo(ParentData parentData) {
         if(timestamp - parentData.timestamp >= 0){
-            return 1;
+            return -1;
         }
-        return  -1;
+        return  1;
     }
 }

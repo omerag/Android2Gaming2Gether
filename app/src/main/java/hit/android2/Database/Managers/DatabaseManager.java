@@ -1035,5 +1035,31 @@ public class DatabaseManager {
         return tempPlayers;
     }
 
+    static public void loadCommentFromDB(String gameId,String topicId, DataListener<List<ChildData>> listener) {
+
+        FirebaseFirestore.getInstance().collection("games")
+                .document(gameId).collection("topics").document(topicId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            ParentData topic = documentSnapshot.toObject(ParentData.class);
+
+                            listener.onSuccess(topic.getItems());
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
+
+    }
+
 
 }
