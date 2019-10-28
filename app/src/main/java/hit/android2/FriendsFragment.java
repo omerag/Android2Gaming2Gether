@@ -89,12 +89,19 @@ public class FriendsFragment extends Fragment {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.dialog_fragments_container, new SearchFriendFragment(friendsAdapter, friendsList, liveData))
-                        .addToBackStack("searchFriendFragment").commit();
 
-                bottomNavigationView.setVisibility(View.INVISIBLE);
-                pager.setVisibility(View.INVISIBLE);
+                if(FirebaseManager.isLoged()){
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.dialog_fragments_container, new SearchFriendFragment(friendsAdapter, friendsList, liveData))
+                            .addToBackStack("searchFriendFragment").commit();
+
+                    bottomNavigationView.setVisibility(View.INVISIBLE);
+                    pager.setVisibility(View.INVISIBLE);
+                }
+                else {
+
+                }
+
             }
         });
 
