@@ -5,86 +5,109 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TableLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="vertical">
 
-            <TableRow
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
                 <TextView
                     android:id="@+id/search_friends_dialog_textview"
-                    android:layout_width="225dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center"
-                    android:text="Choose a game to find friend who also play it" />
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Search For Friends" />
 
-                <ImageButton
+                <!--<ImageButton
                     android:id="@+id/search_button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/transparent"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_search_black_24dp" />
+                    android:src="@drawable/ic_search_black_24dp" />-->
 
-            </TableRow>
+            </LinearLayout>
 
             //gender select
-            <TableRow
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_gender_male"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_male"
-                    android:scaleType="fitXY"
-                    />
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_gender_female"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_gender_male"
+                        android:layout_width="65dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/ic_male"
+                        android:scaleType="fitXY"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_female"
-                    android:scaleType="fitXY"
+                    android:gravity="center">
 
-                    />
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_gender_all"
+
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_gender_female"
+                        android:layout_width="65dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/ic_female"
+                        android:scaleType="fitXY"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_both_genders"
-                    android:scaleType="fitXY"
+                    android:gravity="center">
 
-                    />
-            </TableRow>
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_gender_all"
+                        android:layout_width="65dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/ic_both_genders"
+                        android:scaleType="fitXY" />
 
-            <TableRow
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp">
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/search_friends_dialog_age_tv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
+                    android:layout_marginStart="5dp"
                     android:text="Age: "
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -96,83 +119,123 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:max="120"
+                    android:layout_marginEnd="5dp"
                     />
 
-            </TableRow>
+            </LinearLayout>
 
             //player level
-            <TableRow
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_overall_level"
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_end_master"
-                    android:scaleType="fitXY"
-                    />
+                    android:gravity="center"
+                    android:padding="5dp">
 
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_teammate_level"
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_overall_level"
+                        android:layout_width="0dp"
+                        android:layout_height="65dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_end_master"
+                        android:scaleType="fitXY" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_end_good_teammate"
-                    android:scaleType="fitXY"
-                    />
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_sportsmanship_level"
+                    android:gravity="center"
+                    android:padding="5dp">
+
+
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_teammate_level"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_end_good_teammate"
+                        android:scaleType="fitXY"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_end_sportsmanship"
-                    android:scaleType="fitXY"
+                    android:gravity="center"
+                    android:padding="5dp">
 
-                    />
-                <ImageButton
-                    android:id="@+id/search_friends_dialog_leader_level"
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_sportsmanship_level"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_end_sportsmanship"
+                        android:scaleType="fitXY"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="85dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ic_end_leader"
-                    android:scaleType="fitXY"
+                    android:gravity="center"
+                    android:padding="5dp">
 
-                    />
+                    <ImageButton
+                        android:id="@+id/search_friends_dialog_leader_level"
+                        android:layout_width="0dp"
+                        android:layout_height="85dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_end_leader"
+                        android:scaleType="fitXY"
+                        />
+                </LinearLayout>
 
-            </TableRow>
+            </LinearLayout>
 
-            <TableRow
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/search_friends_text_view_distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
                     android:text="Distance: "
                     android:textSize="18sp"
                     android:textStyle="bold"
-
+                    android:layout_marginStart="5dp"
                     />
                 <androidx.appcompat.widget.AppCompatSeekBar
                     android:id="@+id/search_friends_seekbar_distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="3"
                     android:max="400"
                     />
 
-            </TableRow>
+            </LinearLayout>
 
             //language select
-            <TableRow
-                android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_friends_dialog_flags_recycler_view"
@@ -182,22 +245,27 @@
                     android:layout_margin="5dp" />
 
 
-            </TableRow>
+            </LinearLayout>
 
             //game select
-            <TableRow
-                android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/search_friends_dialog_games_recycler_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_margin="5dp" />
-            </TableRow>
+            </LinearLayout>
 
 
-        </TableLayout>
+        </LinearLayout>
+
 
     </ScrollView>
+
 
 </LinearLayout>

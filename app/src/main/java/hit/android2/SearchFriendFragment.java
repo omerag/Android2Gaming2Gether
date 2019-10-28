@@ -74,8 +74,8 @@ public class SearchFriendFragment extends Fragment {
         String rankTypeResult = "totalRank";
         final int[] age = {0};
 
-        ImageButton searchBtn = getView().findViewById(R.id.search_button);
-        searchBtn.setTag(R.id.search_button);
+        /*ImageButton searchBtn = getView().findViewById(R.id.search_button);
+        searchBtn.setTag(R.id.search_button);*/
 
 
         final GetStringFromImageBtn stringFromImageBtn = new GetStringFromImageBtn();
