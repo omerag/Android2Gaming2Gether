@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,7 +65,6 @@ public class FriendsFragment extends Fragment {
 
         View view1 = getActivity().findViewById(R.id.fragment_container);
         pager = (ViewPager) view1;
-
 
         return rootView;
     }

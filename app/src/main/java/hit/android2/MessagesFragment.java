@@ -2,6 +2,7 @@ package hit.android2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,8 @@ public class MessagesFragment extends Fragment {
     FirebaseManager manager = new FirebaseManager();
     DatabaseReference reference;
 
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,6 +67,23 @@ public class MessagesFragment extends Fragment {
         usersList = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
+
+        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                intent.putExtra("user_id", mUsers.get(position).getKey());
+                getActivity().startActivity(intent);
+            }
+        });
+
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -84,21 +104,10 @@ public class MessagesFragment extends Fragment {
             }
         });
 
-        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                intent.putExtra("user_id", mUsers.get(position).getKey());
-                getActivity().startActivity(intent);
-            }
-        });
-
-        return rootView;
     }
 
     private void readChats()
     {
-
         if(liveData.getmUsers() == null){
             mUsers.clear();
             DatabaseManager.getUsersFromList(usersList, mUsers, new DatabaseManager.Listener() {
