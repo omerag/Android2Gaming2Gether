@@ -1,5 +1,6 @@
 package hit.android2;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ public class SearchGameFragment extends Fragment {
     private List<GameData> gameDataList;
     private GameAdapter gameAdapter;
     private ArrayList<String>localUserGameList;
+    private ProgressDialog progressDialog;
+
 
     //private ProfileFragmentLiveData liveData;
 
@@ -74,6 +77,11 @@ public class SearchGameFragment extends Fragment {
     class SearchBtnListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage(getString(R.string.progress_message));
+            progressDialog.setTitle(getString(R.string.progress_title));
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
 
             gameListRecyclerView.setLayoutManager(new GridLayoutManager((getContext()), 2));
 
@@ -137,6 +145,7 @@ public class SearchGameFragment extends Fragment {
                 @Override
                 public void onSuccess(String string) {
 
+                    progressDialog.dismiss();
                 }
             });
         }
