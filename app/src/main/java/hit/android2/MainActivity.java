@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
     CircleImageView profile_imageView;
-    ViewPager pager;
+    public ViewPager pager;
     String userName;
     FirebaseManager fireBaseManager = new FirebaseManager();
 
@@ -65,13 +65,14 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.navigation_view);
         pager = findViewById(R.id.fragment_container);
 
-
+        NavigationViewListener navigationViewListener = new NavigationViewListener();
+        navigationView.setNavigationItemSelectedListener(navigationViewListener);
         //oadUserPicture();
 
         initPager();
     }
 
-    void initPager(){
+    public void initPager(){
 
 
         if(pagerAdapter != null){
@@ -86,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
         pager.addOnPageChangeListener(pageViewChangeListener);
 
 
-        NavigationViewListener navigationViewListener = new NavigationViewListener();
-        navigationView.setNavigationItemSelectedListener(navigationViewListener);
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_bar);
         bottomNavBarListener bottomNavBarListener = new bottomNavBarListener();
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.dialog_fragments_container, new LoginFragment(bottomNavigationView, pager))
+                            .replace(R.id.dialog_fragments_container, new LoginFragment(bottomNavigationView, pager,MainActivity.this))
                             .addToBackStack("loginFragment").commit();
 
                     bottomNavigationView.setVisibility(View.GONE);

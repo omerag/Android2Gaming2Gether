@@ -91,11 +91,14 @@ public class FirebaseManager {
 
     }
 
-    public void logInUser(String email, String password){
+    public void logInUser(String email, String password, Listener listener){
 
         fireBaseAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
+                listener.onSuccess();
+
+
 
 
             }

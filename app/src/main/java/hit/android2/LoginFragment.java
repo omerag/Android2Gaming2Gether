@@ -31,6 +31,8 @@ public class LoginFragment extends Fragment {
 
     private FirebaseManager firebaseManager;
 
+    private MainActivity mainActivity;
+
 
     @Nullable
     @Override
@@ -61,6 +63,13 @@ public class LoginFragment extends Fragment {
         this.pager = pager;
     }
 
+    public LoginFragment(BottomNavigationView bottomNavigationView, ViewPager pager, MainActivity mainActivity) {
+
+        this.navigationView = bottomNavigationView;
+        this.pager = pager;
+        this.mainActivity = mainActivity;
+    }
+
 
     public class LoginBtnListener implements View.OnClickListener
     {
@@ -70,7 +79,12 @@ public class LoginFragment extends Fragment {
             String email = emailInput.getText().toString();
             String password = passwordInput.getText().toString();
 
-            firebaseManager.logInUser(email, password);
+            firebaseManager.logInUser(email, password, new FirebaseManager.Listener() {
+                @Override
+                public void onSuccess() {
+                    mainActivity.initPager();
+                }
+            });
             getActivity().getSupportFragmentManager().popBackStack();
             navigationView.setVisibility(View.VISIBLE);
             pager.setVisibility(View.VISIBLE);
