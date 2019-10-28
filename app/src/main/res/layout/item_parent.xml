@@ -18,36 +18,98 @@
 
             <ImageView
                 android:id="@+id/tv_parent_item_game_image"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
                 android:layout_margin="5dp"
-                android:src="@mipmap/ic_launcher" />
-
-            <TextView
-                android:id="@+id/tv_parent_item_topic_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:gravity="start|center"
-                android:padding="10dp"
-                android:text="topic's massage"
-                android:textColor="#0784b1"
-                android:textSize="20sp"
-
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="fitXY"
                 />
 
-            <ImageView
-                android:id="@+id/topic_arrow"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                android:layout_gravity="center|end"
-                />
+                android:orientation="vertical"
+                android:layout_marginStart="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_parent_item_topic_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:gravity="start|center"
+                        android:text="topic's massage"
+                        android:textColor="#0784b1"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"/>
+
+                    <ImageView
+                        android:id="@+id/topic_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        android:layout_gravity="center|end"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/tv_parent_item_game_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:gravity="start|center"
+                        android:text="game"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:paddingBottom="3dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/tv_parent_item_topic_owner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:gravity="start|center"
+                        android:text="topic's owner title"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_parent_item_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:gravity="end"
+                        android:text="06\\06\\2006"
+                        android:textSize="14sp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginBottom="3dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </TableRow>
 
 
-        <TableRow android:gravity="start|center">
+       <!-- <TableRow android:gravity="start|center">
 
 
             <TextView
@@ -86,7 +148,7 @@
                 android:textColor="#0784b1"
                 android:textSize="14sp" />
 
-        </TableRow>
+        </TableRow>-->
     </TableLayout>
 
 
@@ -102,7 +164,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="enter your comment here"
+            android:hint="@string/comment_hint"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
