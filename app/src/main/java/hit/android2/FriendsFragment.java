@@ -1,6 +1,8 @@
 package hit.android2;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -31,6 +34,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hit.android2.Adapters.FlagAdapter;
+import hit.android2.Adapters.FriendsAdapter;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
@@ -40,7 +44,7 @@ import hit.android2.Adapters.UserAdapter;
 
 public class FriendsFragment extends Fragment {
 
-    private UserAdapter userAdapter;
+    private FriendsAdapter friendsAdapter;
     private List<UserData> friendsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FloatingActionButton floatingActionButton;
@@ -73,55 +77,59 @@ public class FriendsFragment extends Fragment {
 
         recyclerView =getView().findViewById(R.id.friends_fragment_recycler_users);
         floatingActionButton = getView().findViewById(R.id.friends_fragment_floating_action_btn);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),2);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
-        userAdapter = new UserAdapter(getActivity(), friendsList); //friendsList is empty, needs to be loaded from server
+        friendsAdapter = new FriendsAdapter(getActivity(), friendsList);
 
-        recyclerView.setAdapter(userAdapter);
-        userAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(friendsAdapter);
+        friendsAdapter.notifyDataSetChanged();
 
-        userAdapter.setListener(new UserAdapter.AdapterListener() {
-
-            @Override
-            public void onClick(final View view, int position) {
-
-                final int viewPosition = position;
-                PopupMenu popupMenu = new PopupMenu(getContext(), view);
-                popupMenu.getMenuInflater().inflate(R.menu.friends_popup_menu, popupMenu.getMenu());
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId())
-                        {
-                            case R.id.menu_item_view_profile:
-                                ShowFriendProfile(friendsList.get(viewPosition).getKey());
-                                break;
-
-                            case R.id.menu_item_send_message:
-                                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                                intent.putExtra("user_id", friendsList.get(viewPosition).getKey());
-                                getActivity().startActivity(intent);
-                                break;
-                        }
-                        return true;
-                    }
-                });
-                popupMenu.show();
-            }
-        });
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showSearchFriendDialog();
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.dialog_fragments_container, new SearchFriendFragment(userAdapter, friendsList, liveData))
+                        .replace(R.id.dialog_fragments_container, new SearchFriendFragment(friendsAdapter, friendsList, liveData))
                         .addToBackStack("searchFriendFragment").commit();
 
                 bottomNavigationView.setVisibility(View.INVISIBLE);
                 pager.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        friendsAdapter.setListener(new FriendsAdapter.AdapterListener() {
+            @Override
+            public void onLongClick(View view, int position) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+                        .setTitle("Delete Friend").setMessage("Are you sure you want to delete this friend?")
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                return;
+                            }
+                        }).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                //delete friend from friend list
+                            }
+                        });
+                builder.create().show();
+            }
+
+            @Override
+            public void onMessageBtnClick(View view, int position) {
+
+                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                intent.putExtra("user_id", friendsList.get(position).getKey());
+                getActivity().startActivity(intent);
+            }
+
+            @Override
+            public void profileBtnClick(View view, int position) {
+
+                ShowFriendProfile(friendsList.get(position).getKey());
             }
         });
 
@@ -179,14 +187,14 @@ public class FriendsFragment extends Fragment {
                 @Override
                 public void onSuccess() {
                     liveData.setFriendsList(friendsList);
-                    userAdapter.notifyDataSetChanged();
+                    friendsAdapter.notifyDataSetChanged();
                 }
             });
         }
         else {
             friendsList = liveData.getFriendsList();
-            userAdapter.setUserDataList(friendsList);
-            userAdapter.notifyDataSetChanged();
+            friendsAdapter.setUserDataList(friendsList);
+            friendsAdapter.notifyDataSetChanged();
         }
 
 
@@ -393,4 +401,36 @@ public class FriendsFragment extends Fragment {
 
         }
     }*/
+
+    /*        userAdapter.setListener(new UserAdapter.AdapterListener() {
+
+            @Override
+            public void onClick(final View view, int position) {
+
+                final int viewPosition = position;
+                PopupMenu popupMenu = new PopupMenu(getContext(), view);
+                popupMenu.getMenuInflater().inflate(R.menu.friends_popup_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId())
+                        {
+                            case R.id.menu_item_view_profile:
+                                ShowFriendProfile(friendsList.get(viewPosition).getKey());
+                                break;
+
+                            case R.id.menu_item_send_message:
+                                Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                                intent.putExtra("user_id", friendsList.get(viewPosition).getKey());
+                                getActivity().startActivity(intent);
+                                break;
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
+            }
+        });*/
 }

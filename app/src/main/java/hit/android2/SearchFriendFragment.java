@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hit.android2.Adapters.FlagAdapter;
+import hit.android2.Adapters.FriendsAdapter;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
@@ -40,7 +41,7 @@ import ru.alexbykov.nopermission.PermissionHelper;
 public class SearchFriendFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST = 1;
-    private UserAdapter userAdapter;
+    private FriendsAdapter userAdapter;
     private List<UserData> friendsList;
     private FriendsFragmentLiveData liveData;
     private LocationHelper helper;
@@ -60,7 +61,7 @@ public class SearchFriendFragment extends Fragment {
         return rootView;
     }
 
-    public SearchFriendFragment(UserAdapter userAdapter, List<UserData> friendsList, FriendsFragmentLiveData liveData) {
+    public SearchFriendFragment(FriendsAdapter userAdapter, List<UserData> friendsList, FriendsFragmentLiveData liveData) {
         this.userAdapter = userAdapter;
         this.friendsList = friendsList;
         this.liveData = liveData;
