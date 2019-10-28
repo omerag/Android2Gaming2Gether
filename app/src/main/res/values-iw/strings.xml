@@ -47,4 +47,5 @@
     <string name="new_topic">פוסט חדש</string>
     <string name="choose_game_topic">בחר משחק שהפוסט יעסוק בו :</string>
     <string name="comment_hint">הכנס תגובה חדשה כאן</string>
+    <string name="picked">נבחר</string>
 </resources>

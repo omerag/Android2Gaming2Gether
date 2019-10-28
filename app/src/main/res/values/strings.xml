@@ -61,4 +61,5 @@
     <string name="new_topic">New Topic</string>
     <string name="choose_game_topic">Choose a game to create topic about :</string>
     <string name="comment_hint">Enter your comment here</string>
+    <string name="picked">Picked</string>
 </resources>

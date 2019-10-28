@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -78,7 +79,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
-        //recyclerView.setHasFixedSize(true);
 
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -177,9 +177,11 @@ public class HomeFragment extends Fragment {
 
         final Dialog dialog = new Dialog(getActivity());
 
-        dialog.setContentView(R.layout.dialog_create_new_topic);
+        View view = getLayoutInflater().inflate(R.layout.dialog_create_new_topic,null);
+        dialog.setContentView(view);
 
         dialog.setTitle("New Topic Dialog");
+
 
         final TextInputEditText topicEt = dialog.findViewById(R.id.create_new_topic_dialog_topic_name_edit_text);
         final TextInputEditText massageEt = dialog.findViewById(R.id.create_new_topic_dialog_massage_edit_text);
@@ -187,7 +189,6 @@ public class HomeFragment extends Fragment {
         recyclerView = dialog.findViewById(R.id.create_new_topic_dialog_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-        //recyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
 
         final List<GameData> gameDataList = new ArrayList<>();
         GameAdapter gameAdapter = new GameAdapter(getContext(), gameDataList, chosenGame);
@@ -199,7 +200,8 @@ public class HomeFragment extends Fragment {
                 chosenGame.setImageUrl(tempGame.getImageUrl());
                 chosenGame.setGuid(tempGame.getGuid());
 
-                Toast.makeText(getActivity(), chosenGame.getName() + " picked", Toast.LENGTH_SHORT).show();
+
+                Snackbar.make(view, chosenGame.getName() + " " + getString(R.string.picked),Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -213,6 +215,7 @@ public class HomeFragment extends Fragment {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 List<ChildData> comments = new ArrayList<>();
                 comments.add(new ChildData(massageEt.getText().toString(),System.currentTimeMillis(),FirebaseAuth.getInstance().getCurrentUser().getUid()));
                 final ParentData topic = new ParentData(topicEt.getText().toString(),FirebaseAuth.getInstance().getCurrentUser().getUid(),chosenGame.getGuid(),comments);
