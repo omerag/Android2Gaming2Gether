@@ -57,4 +57,5 @@
     <string name="delete_message">Are you sure you want to delete this friend?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
+    <string name="post_btn">Post</string>
 </resources>

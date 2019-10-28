@@ -43,4 +43,5 @@
     <string name="delete_message">האם אתה בטוח שאתה רוצה למחוק אותו מרשימת החברים?</string>
     <string name="delete">הסר</string>
     <string name="cancel">ביטול</string>
+    <string name="post_btn">פרסם</string>
 </resources>

@@ -19,7 +19,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -177,13 +179,13 @@ public class HomeFragment extends Fragment {
 
         dialog.setTitle("New Topic Dialog");
 
-        final EditText topicEt = dialog.findViewById(R.id.create_new_topic_dialog_topic_name_edit_text);
-        final EditText massageEt = dialog.findViewById(R.id.create_new_topic_dialog_massage_edit_text);
-        ImageButton sendBtn = dialog.findViewById(R.id.create_new_topic_dialog_imageBtn);
+        final TextInputEditText topicEt = dialog.findViewById(R.id.create_new_topic_dialog_topic_name_edit_text);
+        final TextInputEditText massageEt = dialog.findViewById(R.id.create_new_topic_dialog_massage_edit_text);
+        MaterialButton sendBtn = dialog.findViewById(R.id.create_new_topic_dialog_imageBtn);
         recyclerView = dialog.findViewById(R.id.create_new_topic_dialog_recycler);
 
-       // recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+        //recyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
 
         final List<GameData> gameDataList = new ArrayList<>();
         GameAdapter gameAdapter = new GameAdapter(getContext(), gameDataList, chosenGame);
