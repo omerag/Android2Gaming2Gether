@@ -102,12 +102,14 @@ public class LocationHelper {
     private void onNeverAskAgain() {
         Log.d("locationHelper", "PermissionHelper - onNeverAskAgain");
         permissionHelper.startApplicationSettingsActivity();
+        listener.onSuccess(0,0);
 
 
     }
 
     private void onDenied() {
         Log.d("locationHelper", "PermissionHelper - onDenied");
+        listener.onSuccess(0,0);
 
     }
 
