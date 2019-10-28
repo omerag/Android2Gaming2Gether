@@ -98,6 +98,7 @@ public class DatabaseManager {
 
 
                     GameData gameData = documentSnapshot.toObject(GameData.class);
+                    Log.d("DatabaseManager", "game.getName() = " + gameData.getName());
                     listener.onSuccess(gameData);
                 }
             }
@@ -316,10 +317,14 @@ public class DatabaseManager {
                 if (documentSnapshot.exists()) {
                     Log.d("DatabaseManager", "game already exists in database");
 
-                    gameRef.update("users", FieldValue.arrayUnion(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    if(FirebaseManager.isLoged()){
+                        gameRef.update("users", FieldValue.arrayUnion(FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                    }
                 } else {
-                    List<String> users = game.getUsers();
-                    users.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    if(FirebaseManager.isLoged()){
+                        List<String> users = game.getUsers();
+                        users.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    }
                     gameRef.set(game);
                 }
 

@@ -2,7 +2,9 @@ package hit.android2;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -40,10 +42,15 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import hit.android2.Adapters.CharacterSelectAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
@@ -84,6 +91,8 @@ public class ProfileFragment extends Fragment {
 
     private int CAMERA_CODE = 0;
     private int GALLERY_CODE = 1;
+
+    private ArrayList<String> localUserGameList;
 
 
     @Nullable
@@ -132,16 +141,24 @@ public class ProfileFragment extends Fragment {
         RecyclerView recyclerView = getView().findViewById(R.id.profile_fragment_recycler_games);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        if(FirebaseManager.isLoged()){
-            if(liveData.getGameDataList() == null){
+
+        if (liveData.getGameDataList() == null) {
+            gameDataList = new ArrayList<>();
+            liveData.setGameDataList(gameDataList);
+        }
+        gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
+        recyclerView.setAdapter(gameAdapter);
+        //user logged in
+        if (FirebaseManager.isLoged()) {
+            if (liveData.getGameDataList() == null) {
                 Log.d("live data", liveData.toString());
 
                 DatabaseManager.getUserGames(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<List<GameData>>() {
                     @Override
                     public void onSuccess(List<GameData> gameData) {
                         gameDataList = gameData;
-                        if(gameAdapter == null) {
-                            gameAdapter = new GameAdapter(getActivity(),gameDataList);
+                        gameAdapter.setGameDataList(gameDataList);
+                        if (gameAdapter == null) {
                             liveData.setGameDataList(gameDataList);
                             liveData.setGameAdapter(gameAdapter);
                         }
@@ -151,27 +168,26 @@ public class ProfileFragment extends Fragment {
 
                     }
                 });
-            }
-            else {
-                gameDataList = liveData.getGameDataList();
-                Log.d("live data 2", gameDataList.toString());
 
+                if (gameAdapter == null) {
+                    liveData.setGameAdapter(gameAdapter);
+                    gameAdapter.notifyDataSetChanged();
 
-            }
+                }
 
-            if(gameAdapter == null){
-                gameAdapter = new GameAdapter(getActivity(), gameDataList); //gameDataList is empty, needs to be loaded from server
-                liveData.setGameAdapter(gameAdapter);
+                loadUserGames();
+
+                recyclerView.setAdapter(gameAdapter);
                 gameAdapter.notifyDataSetChanged();
-
             }
 
-            loadUserGames();
 
-            recyclerView.setAdapter(gameAdapter);
-            gameAdapter.notifyDataSetChanged();
+        } else { //user NOT logged in
+            gameDataList = liveData.getGameDataList();
+            Log.d("live data 2", gameDataList.toString());
+            loadGameListFromSharedPrefernce();
+
         }
-
 
 
     }
@@ -225,6 +241,7 @@ public class ProfileFragment extends Fragment {
                 }//
             });
         }
+
     }
 
     @Override
@@ -466,62 +483,42 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-}
 
+    private void saveGameListToSharedPrefernce() {
+        SharedPreferences sp = getActivity().getSharedPreferences("game_list", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(localUserGameList);
+        editor.putString("game_list", json);
+        editor.apply();
 
-/*private void showSearchDialog() {
+    }
 
-        final Dialog dialog = new Dialog(getActivity());
+    private void loadGameListFromSharedPrefernce() {
+        SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
 
-        dialog.setContentView(R.layout.search_game_fragment);
+        System.out.println("activty = " + getActivity());
 
-        dialog.setTitle("Search Dialog");
+        Gson gson = new Gson();
+        String json = sp.getString("game_list", "");
+        Type type = new TypeToken<ArrayList<String>>(){}.getType();
+        localUserGameList = gson.fromJson(json, type);
 
-        final EditText searchText = dialog.findViewById(R.id.search_game_edit_text);
-        final ImageButton searchBtn = dialog.findViewById(R.id.search_button);
-
-        searchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recyclerView = dialog.findViewById(R.id.search_game_recycler_view);
-
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-                final List<GameData> gameSearchList = new ArrayList<>();
-                final GameAdapter gameSearchAdapter = new GameAdapter(getContext(), gameSearchList);
-                gameSearchAdapter.setListener(new GameAdapter.AdapterListener() {
+        if (localUserGameList != null) {
+            for (int i = 0; i < localUserGameList.size(); i++) {
+                gameDataList.clear();
+                DatabaseManager.getGameFromDatabase(localUserGameList.get(i), new DatabaseManager.DataListener<GameData>() {
                     @Override
-                    public void onClick(View view, int position) {
-                        DatabaseManager.userAddGame(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameSearchList.get(position).getGuid(),
-                                new DatabaseManager.Listener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter, new DatabaseManager.Listener() {
-                                            @Override
-                                            public void onSuccess() {
-                                                liveData.setGameDataList(gameDataList);
-
-                                                Log.d("ProfileFragment","Loading List from server");
-                                                dialog.dismiss();
-                                            }
-                                        });
-                                    }
-                                });
-                        DatabaseManager.addGameToDatabase(gameSearchList.get(position));
+                    public void onSuccess(GameData gameData) {
+                        gameDataList.add(gameData);
+                        gameAdapter.setGameDataList(gameDataList);
+                        gameAdapter.notifyDataSetChanged();
                     }
                 });
+                Log.d("ProfileFragment", "localGameList = " + localUserGameList.toString());
 
-                recyclerView.setAdapter(gameSearchAdapter);
-                recyclerView.setHasFixedSize(true);
-                gameSearchAdapter.notifyDataSetChanged();
-
-                DataLoader loader = new DataLoader(BuildConfig.GiantBombApi,getContext());
-
-                loader.searchGameRequest(searchText.getText().toString(),gameSearchList,gameSearchAdapter);
-
-                //searchBtn.setVisibility(View.GONE);
             }
-        });
 
-        dialog.show();
-    }*/
+        }
+    }
+}
