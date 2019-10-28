@@ -79,9 +79,22 @@ public class GameTopicsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        addBtn = getView().findViewById(R.id.fragment_game_topics_add_btn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(FirebaseManager.isLoged()){
+                    showCreateTopicDialog();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Please log/sign in", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
-
+        getGames();
 
 
     }
@@ -205,7 +218,14 @@ public class GameTopicsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         gameAdapter.notifyDataSetChanged();
 
-        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter);
+        //DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter);
+        DatabaseManager.getGameFromDatabase(gameId.get(0), new DatabaseManager.DataListener<GameData>() {
+            @Override
+            public void onSuccess(GameData gameData) {
+                gameDataList.add(gameData);
+                gameAdapter.notifyItemInserted(0);
+            }
+        });
 
 
         sendBtn.setOnClickListener(new View.OnClickListener() {

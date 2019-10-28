@@ -452,7 +452,7 @@ public class DatabaseManager {
         });
     }
 
-    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, String rankType, int maxAge, final float maxDistance, final double mLatitude, final double mLongitude, final DataListener<List<UserData>> listener) {
+    static public void searchPlayers(final UserData mUser, final String gameGuid, String language, String gender, int maxAge, final float maxDistance, final double mLatitude, final double mLongitude, final DataListener<List<UserData>> listener) {
         Log.d("DatabaseManager", "searchPlayers called\nsearching for players , game = " + gameGuid);
 
         //////////
@@ -467,7 +467,7 @@ public class DatabaseManager {
         final String maxBirthday = format.format(calendar.getTime());
         Log.d("searchPlayers", "MaxAge = " + maxBirthday);
         ///////////
-        Log.d("searchPlayers", "rankType = " + rankType);
+        //Log.d("searchPlayers", "rankType = " + rankType);
         Log.d("searchPlayers", "language = " + language);
         Log.d("searchPlayers", "gender = " + gender);
         Log.d("searchPlayers", "maxDistance = " + maxDistance);
@@ -480,18 +480,18 @@ public class DatabaseManager {
         if (gender.equals("all")) {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
-                    .whereGreaterThanOrEqualTo(rankType, 0)
+                   // .whereGreaterThanOrEqualTo(rankType, 0)
                     // .whereGreaterThan("birthday_timestamp", birthdayTimestamp)
-                    .orderBy(rankType, Query.Direction.DESCENDING)
+                  //  .orderBy(rankType, Query.Direction.DESCENDING)
             // .orderBy("birthday_timestamp", Query.Direction.DESCENDING)
             ;
         } else {
             query = usersReff.whereArrayContains("games", gameGuid)
                     .whereEqualTo(language, true)
                     .whereEqualTo("gender", gender)
-                    .whereGreaterThanOrEqualTo(rankType, 0)
+                  //  .whereGreaterThanOrEqualTo(rankType, 0)
                     //.whereGreaterThan("birthday_timestamp", birthdayTimestamp)
-                    .orderBy(rankType, Query.Direction.DESCENDING)
+                   // .orderBy(rankType, Query.Direction.DESCENDING)
             // .orderBy("birthday_timestamp", Query.Direction.DESCENDING);
             ;
         }

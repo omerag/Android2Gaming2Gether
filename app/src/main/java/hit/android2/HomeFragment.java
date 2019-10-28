@@ -86,7 +86,12 @@ public class HomeFragment extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCreateTopicDialog();
+                if(FirebaseManager.isLoged()){
+                    showCreateTopicDialog();
+                }
+                else {
+                    Toast.makeText(getActivity(), "Please log/sign in", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
