@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        topicAdapter = new TopicAdapter(getActivity(),topicDataHolderList, dbTopics,liveData);
+        topicAdapter = new TopicAdapter(getActivity(), topicDataHolderList, dbTopics, liveData);
         recyclerView.setAdapter(topicAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(topicAdapter);
@@ -123,17 +123,17 @@ public class HomeFragment extends Fragment {
         super.onStart();
     }
 
-    private void initTopicDataHolderList(List<ParentData> topics, List<TopicDataHolder> topicDataHolderList){
+    private void initTopicDataHolderList(List<ParentData> topics, List<TopicDataHolder> topicDataHolderList) {
 
 
-       // Collections.sort(topics);
+        // Collections.sort(topics);
 
-        for(ParentData topic : topics){
+        for (ParentData topic : topics) {
 
             List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
 
 
-            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(),topic.getTimestamp(),commentDataHolderList,topic.getGame_key(),topic.getGame_key(),topic.getId());
+            final TopicDataHolder dataHolder = new TopicDataHolder(topic.getTitle(), topic.getTimestamp(), commentDataHolderList, topic.getGame_key(), topic.getGame_key(), topic.getId());
             topicDataHolderList.add(dataHolder);
 
             DatabaseManager.getGameFromDatabase(topic.getGame_key(), new DatabaseManager.DataListener<GameData>() {
@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment {
                 }
             });
 
-            for(final ChildData comment : topic.getItems()){
+            for (final ChildData comment : topic.getItems()) {
 
                 final CommentDataHolder commentDataHolder = new CommentDataHolder();
                 commentDataHolderList.add(commentDataHolder);
@@ -187,7 +187,7 @@ public class HomeFragment extends Fragment {
         MaterialButton sendBtn = dialog.findViewById(R.id.create_new_topic_dialog_imageBtn);
         recyclerView = dialog.findViewById(R.id.create_new_topic_dialog_recycler);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         //recyclerView.setLayoutManager(new GridLayoutManager((getContext()),2));
 
         final List<GameData> gameDataList = new ArrayList<>();
@@ -208,7 +208,7 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         gameAdapter.notifyDataSetChanged();
 
-        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(),gameDataList,gameAdapter);
+        DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), gameDataList, gameAdapter);
 
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
@@ -217,8 +217,10 @@ public class HomeFragment extends Fragment {
 
                 if (massageEt.getText().toString().equals("") || topicEt.getText().toString().equals("")) {
                     Snackbar.make(view, getText(R.string.not_choose), Snackbar.LENGTH_LONG).show();
-                } else {
+                } else if (chosenGame.getGuid() == null) {
+                    Snackbar.make(view, "Choose a game!!!!", Snackbar.LENGTH_LONG).show();
 
+                } else {
                     List<ChildData> comments = new ArrayList<>();
                     comments.add(new ChildData(massageEt.getText().toString(), System.currentTimeMillis(), FirebaseAuth.getInstance().getCurrentUser().getUid()));
                     final ParentData topic = new ParentData(topicEt.getText().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid(), chosenGame.getGuid(), comments);
@@ -226,7 +228,8 @@ public class HomeFragment extends Fragment {
                     List<CommentDataHolder> commentDataHolderList = new ArrayList<>();
                     final CommentDataHolder commentDataHolder = new CommentDataHolder();
                     commentDataHolder.setMassege(massageEt.getText().toString());
-                    final TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(), System.currentTimeMillis(), commentDataHolderList, FirebaseManager.getCurrentUserId(), chosenGame.getGuid(), topic.getId());
+
+                    TopicDataHolder topicDataHolder = new TopicDataHolder(topic.getTitle(), System.currentTimeMillis(), commentDataHolderList, FirebaseManager.getCurrentUserId(), chosenGame.getGuid(), topic.getId());
                     DatabaseManager.getUserFromDatabase(topic.getUser_key(), new DatabaseManager.DataListener<UserData>() {
                         @Override
                         public void onSuccess(UserData userData) {
@@ -249,6 +252,8 @@ public class HomeFragment extends Fragment {
                     dbTopics.add(0, new ParentData(topicDataHolder.getTitle(), topicDataHolder.getUserId(), topicDataHolder.getGameId(), comments));
                     topicAdapter.notifyDataSetChanged();
                     dialog.dismiss();
+
+
                 }
             }
         });
@@ -257,20 +262,19 @@ public class HomeFragment extends Fragment {
         dialog.show();
     }
 
-    void getGames(){
-        if(FirebaseManager.isLoged()){
+    void getGames() {
+        if (FirebaseManager.isLoged()) {
             DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
                 @Override
                 public void onSuccess(UserData userData) {
                     List<String> gamesIDs = userData.getGames();
-                    Log.d("HomeFragment","getGame - " + gamesIDs);
+                    Log.d("HomeFragment", "getGame - " + gamesIDs);
 
                     loadDBTopics(gamesIDs);
 
                 }
             });
-        }
-        else {
+        } else {
             SharedPreferences sp = getActivity().getSharedPreferences("sp", 0);
             Gson gson = new Gson();
             String json = sp.getString("game_list", "");
@@ -283,12 +287,12 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void loadDBTopics(List<String> gamesIds){
+    private void loadDBTopics(List<String> gamesIds) {
 
         DatabaseManager.getAllTopicsByGameListFromDatabase(gamesIds, new DatabaseManager.DataListener<List<ParentData>>() {
             @Override
             public void onSuccess(List<ParentData> parentData) {
-                Log.d("HomeFragment","loadDBTopics - " + parentData);
+                Log.d("HomeFragment", "loadDBTopics - " + parentData);
 
                 dbTopics.addAll(parentData);
                 Collections.sort(dbTopics);
@@ -298,9 +302,9 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void loadLocalTopics(){
+    private void loadLocalTopics() {
 
-        initTopicDataHolderList(dbTopics,topicDataHolderList);
+        initTopicDataHolderList(dbTopics, topicDataHolderList);
 
     }
 
