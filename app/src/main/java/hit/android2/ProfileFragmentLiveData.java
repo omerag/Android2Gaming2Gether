@@ -6,6 +6,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import hit.android2.Adapters.GameAdapter;
@@ -25,7 +31,7 @@ public class ProfileFragmentLiveData extends ViewModel {
 
 
     public ProfileFragmentLiveData() {
-        Log.d("LiveData","ProfileFragmentLiveData constructor called");
+        Log.d("LiveData", "ProfileFragmentLiveData constructor called");
 
     }
 
@@ -66,6 +72,8 @@ public class ProfileFragmentLiveData extends ViewModel {
     }
 
     public void setGameAdapter(GameAdapter gameAdapter) {
+
+
         this.gameAdapter = gameAdapter;
     }
 
@@ -74,6 +82,9 @@ public class ProfileFragmentLiveData extends ViewModel {
     }
 
     public void setBirthday(String birthday) {
+
+        age = calculateAge(birthday);
+
         this.birthday = birthday;
     }
 
@@ -96,4 +107,37 @@ public class ProfileFragmentLiveData extends ViewModel {
     public int getAge() {
         return age;
     }
+
+
+    private int calculateAge(String birthDate) {
+
+
+        int age = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+
+        try {
+            Date date = format.parse(birthDate);
+
+            Calendar a = Calendar.getInstance();
+            a.setTime(date);
+            Calendar b = Calendar.getInstance();
+            b.setTime(new Date());
+
+            age = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+
+            if(b.get(Calendar.MONTH) > a.get(Calendar.MONTH)){
+                age++;
+            }
+            else if(b.get(Calendar.MONTH) == a.get(Calendar.MONTH) && b.get(Calendar.DAY_OF_MONTH) >= a.get(Calendar.DAY_OF_MONTH)){
+                age++;
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return age;
+    }
+
 }
