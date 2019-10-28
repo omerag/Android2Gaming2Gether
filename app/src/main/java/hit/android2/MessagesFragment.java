@@ -62,36 +62,38 @@ public class MessagesFragment extends Fragment {
         fuser = manager.getFireBaseAuth().getCurrentUser();
 
         usersList = new ArrayList<>();
+        if(FirebaseManager.isLoged()){
+            reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-        reference = FirebaseDatabase.getInstance().getReference("Chatlist").child("userChatList").child(fuser.getUid());
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    usersList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren())
+                    {
+                        Chatlist chatlist = snapshot.getValue(Chatlist.class);
+                        usersList.add(chatlist);
+                    }
 
-                usersList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren())
-                {
-                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
-                    usersList.add(chatlist);
+                    readChats();
                 }
 
-                readChats();
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
 
-            }
-        });
+            messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                    intent.putExtra("user_id", mUsers.get(position).getKey());
+                    getActivity().startActivity(intent);
+                }
+            });
+        }
 
-        messagesListAdapter.setListener(new MessagesListAdapter.AdapterListener() {
-            @Override
-            public void onClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), MessagingActivity.class);
-                intent.putExtra("user_id", mUsers.get(position).getKey());
-                getActivity().startActivity(intent);
-            }
-        });
 
         return rootView;
     }
