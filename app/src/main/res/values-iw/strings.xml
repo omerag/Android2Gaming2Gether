@@ -49,4 +49,5 @@
     <string name="comment_hint">הכנס תגובה חדשה כאן</string>
     <string name="picked">נבחר</string>
     <string name="not_choose">חובה למלא את כל השדות</string>
+    <string name="add_friend">התווסף לרשימת החברים שלך</string>
 </resources>

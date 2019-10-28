@@ -20,9 +20,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.List;
 
 import hit.android2.Adapters.FlagAdapter;
 import hit.android2.Adapters.FriendsAdapter;
+import hit.android2.Adapters.FriendsResultAdapter;
 import hit.android2.Adapters.GameAdapter;
 import hit.android2.Adapters.UserAdapter;
 import hit.android2.Database.Managers.DatabaseManager;
@@ -167,13 +170,13 @@ public class SearchFriendFragment extends Fragment {
         gamesRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         RecyclerView resultRecycler = getView().findViewById(R.id.results_recycler);
-        resultRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        resultRecycler.setLayoutManager(new GridLayoutManager(getActivity(),2));
 
         final List<UserData> users = new ArrayList<>();
         final List<GameData> games = new ArrayList<>();
         final String[] gameGUID = new String[1];
         GameAdapter gameAdapter = new GameAdapter(getActivity(), games);
-        final UserAdapter userSearchAdapter = new UserAdapter(getActivity(), users);
+        FriendsResultAdapter friendsResultAdapter = new FriendsResultAdapter(getActivity(),users);
         gamesRecycler.setAdapter(gameAdapter);
 
         gameAdapter.setListener(new GameAdapter.AdapterListener() {
@@ -185,9 +188,9 @@ public class SearchFriendFragment extends Fragment {
                 resultLayout.setVisibility(View.VISIBLE);
 
                 gameGUID[0] = games.get(position).getGuid();
-                //gamesRecycler.setAdapter(userSearchAdapter);
-                resultRecycler.setAdapter(userSearchAdapter);
-                userSearchAdapter.notifyDataSetChanged();
+                resultRecycler.setAdapter(friendsResultAdapter);
+                friendsResultAdapter.notifyDataSetChanged();
+
                 //DatabaseManager.searchPlayers(gameGUID[0],users,userSearchAdapter);
 
                 DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
@@ -204,7 +207,7 @@ public class SearchFriendFragment extends Fragment {
                                     public void onSuccess(List<UserData> userData) {
                                         Log.d("SearchFriendsFragment", "onSuccess - userDataList =" + userData.toString());
                                         users.addAll(userData);
-                                        userSearchAdapter.notifyDataSetChanged();
+                                        friendsResultAdapter.notifyDataSetChanged();
                                     }
                                 });
                             }
@@ -218,10 +221,9 @@ public class SearchFriendFragment extends Fragment {
         gameAdapter.notifyDataSetChanged();
         /////////////
 
-        userSearchAdapter.setListener(new UserAdapter.AdapterListener() {
+        friendsResultAdapter.setListener(new FriendsResultAdapter.AdapterListener() {
             @Override
-            public void onClick(View view, int position) {
-
+            public void onAddAsFriendClick(View view, int position) {
 
                 DatabaseManager.userAddFriend(FirebaseAuth.getInstance().getCurrentUser().getUid(), users.get(position).getKey(),
                         new DatabaseManager.Listener() {
@@ -236,9 +238,11 @@ public class SearchFriendFragment extends Fragment {
                                 });
                             }
                         });
-                Toast.makeText(getActivity(), users.get(position).getName() + "was added to friends list", Toast.LENGTH_SHORT).show();
+
+                Snackbar.make(getView(),users.get(position).getName() + " " + getString(R.string.add_friend),3000).show();
             }
         });
+
 
 
         DatabaseManager.getUserGames(FirebaseAuth.getInstance().getCurrentUser().getUid(), games, gameAdapter);

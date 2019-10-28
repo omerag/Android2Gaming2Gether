@@ -63,4 +63,5 @@
     <string name="comment_hint">Enter your comment here</string>
     <string name="picked">Picked</string>
     <string name="not_choose">Must enter all fields</string>
+    <string name="add_friend">was added to your friends list</string>
 </resources>
