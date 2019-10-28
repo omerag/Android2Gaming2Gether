@@ -66,4 +66,5 @@
     <string name="add_friend">was added to your friends list</string>
     <string name="progress_title">Searching</string>
     <string name="progress_message">Please wait...</string>
+    <string name="users_not_found">No matching users found</string>
 </resources>

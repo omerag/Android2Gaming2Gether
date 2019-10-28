@@ -52,4 +52,5 @@
     <string name="add_friend">התווסף לרשימת החברים שלך</string>
     <string name="progress_title">מתבצע חיפוש</string>
     <string name="progress_message">אנא המתן...</string>
+    <string name="users_not_found">לא נמצאו משתמשים מתאימים</string>
 </resources>

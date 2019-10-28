@@ -51,6 +51,7 @@ public class SearchFriendFragment extends Fragment {
     private FriendsFragmentLiveData liveData;
     private LocationHelper helper;
     private ProgressDialog progressDialog;
+    private TextView not_found_tv;
 
     private PermissionHelper permissionHelper;
 
@@ -193,6 +194,7 @@ public class SearchFriendFragment extends Fragment {
                 linearLayout.setVisibility(View.GONE);
                 LinearLayout resultLayout = getActivity().findViewById(R.id.results_view);
                 resultLayout.setVisibility(View.VISIBLE);
+                not_found_tv = getActivity().findViewById(R.id.users_not_found);
 
                 gameGUID[0] = games.get(position).getGuid();
                 resultRecycler.setAdapter(friendsResultAdapter);
@@ -216,6 +218,10 @@ public class SearchFriendFragment extends Fragment {
                                         users.addAll(userData);
                                         friendsResultAdapter.notifyDataSetChanged();
                                         progressDialog.dismiss();
+                                        if (users.size() == 0)
+                                        {
+                                            not_found_tv.setVisibility(View.VISIBLE);
+                                        }
                                     }
                                 });
                             }
@@ -231,6 +237,7 @@ public class SearchFriendFragment extends Fragment {
 
             }
         });
+
         gameAdapter.notifyDataSetChanged();
         /////////////
 
