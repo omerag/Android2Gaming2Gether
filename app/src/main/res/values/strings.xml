@@ -51,4 +51,6 @@
         <item>@string/korean</item>
         <item>@string/russian</item>
     </string-array>
+    <string name="message_btn">Message</string>
+    <string name="profile_btn">Profile</string>
 </resources>

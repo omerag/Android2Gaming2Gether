@@ -37,4 +37,6 @@
     <string name="age">"גיל : "</string>
     <string name="gender">"מין : "</string>
     <string name="level">"רמה : "</string>
+    <string name="message_btn">הודעה</string>
+    <string name="profile_btn">פרופיל</string>
 </resources>
