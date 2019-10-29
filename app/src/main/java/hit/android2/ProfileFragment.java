@@ -305,7 +305,9 @@ public class ProfileFragment extends Fragment {
         super.onStop();
 
         if (FirebaseManager.isLoged()) {
-            listenerRegistration.remove();
+            if(listenerRegistration != null){
+                listenerRegistration.remove();
+            }
         }
 
     }

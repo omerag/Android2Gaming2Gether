@@ -42,7 +42,7 @@ public class NotificationTopicDispatch {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,channelId);
 
-   /*//     final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_topic_layout);
+        final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.notification_topic_layout);
 
 
 
@@ -53,13 +53,13 @@ public class NotificationTopicDispatch {
 
         remoteViews.setOnClickPendingIntent(R.id.notification_topic_layout,pendingIntent);
 
-        builder.setSmallIcon(R.drawable.ic_small_news)
+        builder.setSmallIcon(R.drawable.ic_flag_israel)
                 .setCustomContentView(remoteViews)
                 .setCustomBigContentView(remoteViews);
 
         manager.notify(1,builder.build());
 
-        System.out.println("notif topic send???");*/
+        System.out.println("notif topic send???");
     }
 
 

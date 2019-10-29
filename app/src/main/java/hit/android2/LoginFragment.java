@@ -1,5 +1,8 @@
 package hit.android2;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 
 public class LoginFragment extends Fragment {
 
@@ -82,6 +86,17 @@ public class LoginFragment extends Fragment {
             firebaseManager.logInUser(email, password, new FirebaseManager.Listener() {
                 @Override
                 public void onSuccess() {
+                    mainActivity.fireBaseManager.registerAuthListener();
+                    MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
+                    mainActivity.receiver = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            System.out.println("messege receive");
+
+                        }
+                    };
+                    MessegingManager.registerReceiver(mainActivity,mainActivity.receiver);
+
                     mainActivity.initPager();
                 }
             });

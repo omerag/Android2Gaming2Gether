@@ -41,11 +41,11 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView profile_imageView;
     public ViewPager pager;
     String userName;
-    FirebaseManager fireBaseManager = new FirebaseManager();
+    public FirebaseManager fireBaseManager = new FirebaseManager();
 
     PagerAdapter pagerAdapter;
 
-    BroadcastReceiver receiver;
+    public BroadcastReceiver receiver;
 
     private MenuItem prevMenuItem;
 

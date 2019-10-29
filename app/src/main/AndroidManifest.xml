@@ -27,6 +27,7 @@
             </intent-filter>
         </service>
         <service android:name=".Services.GeocodeAddressIntentService" />
+        <service android:name=".Services.BackroundUpdatesService" />
     </application>
     <uses-feature
         android:name="android.hardware.camera"

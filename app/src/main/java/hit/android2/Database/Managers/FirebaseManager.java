@@ -45,7 +45,7 @@ public class FirebaseManager {
     private FirebaseAuth fireBaseAuth = FirebaseAuth.getInstance();
 
     //UserState
-    private FirebaseAuth.AuthStateListener authStateListener = new AuthStateChangeListener();
+    public FirebaseAuth.AuthStateListener authStateListener = new AuthStateChangeListener();
     private String userName;
     private NavigationView navigationView;
     private TextView userTv;

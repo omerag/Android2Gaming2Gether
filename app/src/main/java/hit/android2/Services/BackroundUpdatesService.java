@@ -110,23 +110,21 @@ public class BackroundUpdatesService extends Service {
 
         System.out.println("All right lets go");
 
-        if(!firstNotify){
-            loadUpdates(RSS_link, isNewsUpdatable, isWeatherUpdatable);
-        }
+
 
         AlarmManager manager = (AlarmManager)context.getSystemService(ALARM_SERVICE);
 
 
-        Intent intent = new Intent(context,AlarmReceiver.class);
+        Intent intent = new Intent(context,AlarmReciver.class);
 
 
        // intent.putExtra("topic",topic);
        // intent.putExtra("topic_link",RSS_link);
        // intent.putExtra("isNewsUpdatable", isNewsUpdatable);
-        intent.putExtra("isWeatherUpdatable", isWeatherUpdatable);
+       // intent.putExtra("isWeatherUpdatable", isWeatherUpdatable);
        // intent.putExtra("time_to_update",timeUpdateInSeconds);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         manager.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + timeUpdateInSeconds*1000,pendingIntent);

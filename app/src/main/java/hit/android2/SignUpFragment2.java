@@ -1,6 +1,9 @@
 package hit.android2;
 
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -30,6 +34,7 @@ import java.util.Map;
 
 import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
+import hit.android2.Database.Managers.MessegingManager;
 import hit.android2.Helpers.GeoHelper;
 
 public class SignUpFragment2 extends Fragment {
@@ -195,7 +200,7 @@ public class SignUpFragment2 extends Fragment {
         korean.setTag("Korean");
 
         russian = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_russian);
-        rootView.setTag("Russian");
+        russian.setTag("Russian");
 
 
 
@@ -203,9 +208,35 @@ public class SignUpFragment2 extends Fragment {
 
         ///////////////////////////////////////
 
+        mainActivity.fireBaseManager.registerAuthListener();
+        MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
+        mainActivity.receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                System.out.println("messege receive");
+
+            }
+        };
+        MessegingManager.registerReceiver(getActivity(),mainActivity.receiver);
+
+
+
+
+
+
+
+
+
+
+
+
+        //////////////////////////////////
+
 
         return rootView;
     }
+
+
 
     public SignUpFragment2(BottomNavigationView bottomNavigationView, ViewPager pager) {
 
