@@ -70,5 +70,6 @@
     <string name="delete_game_msg_2">" מרשימת המשחקים שלך?"</string>
     <string name="sub_txt_1">"נרשמת לקבל עדכונים מ : "</string>
     <string name="sub_txt_2">"ביטלת קבלת עדכונים מ : "</string>
+    <string name="game_added">"המשחק התווסף לרשימת המשחקים שלך "</string>
 
 </resources>

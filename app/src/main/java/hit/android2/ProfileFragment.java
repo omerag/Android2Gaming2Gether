@@ -445,7 +445,7 @@ public class ProfileFragment extends Fragment {
 
         final RecyclerView recyclerView = dialog.findViewById(R.id.dialog_character_select_recycler_view);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(dialog.getContext(),RecyclerView.HORIZONTAL,false));
 
         final List<String> characterUrlList = new ArrayList<>();
         final CharacterSelectAdapter characterSelectAdapter = new CharacterSelectAdapter(dialog.getContext(), characterUrlList);

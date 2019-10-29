@@ -106,7 +106,7 @@ public class SearchGameFragment extends Fragment {
                                                 Log.d("ProfileFragment", "Loading List from server");
                                             }
                                         });
-                                        Snackbar.make(getView(), "The game has been added to your game list", Snackbar.LENGTH_LONG).setDuration(3000).show();
+                                        Snackbar.make(getView(), getString(R.string.game_added), Snackbar.LENGTH_LONG).setDuration(3000).show();
                                     }
                                 });
                     }
