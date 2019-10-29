@@ -74,7 +74,6 @@ public class ProfileFragment extends Fragment {
     private ImageView userIv;
     private TextView ageTv;
     //private TextView genderTv;
-    private TextView levelTv;
     private ImageView gender_img;
 
 
@@ -132,7 +131,6 @@ public class ProfileFragment extends Fragment {
         userIv = getView().findViewById(R.id.user_profile_img);
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
         ageTv = getView().findViewById(R.id.age_tv);
-        levelTv = getView().findViewById(R.id.level_tv);
         //genderTv = getView().findViewById(R.id.gender_tv);
         gender_img = getView().findViewById(R.id.gender_image);
 
@@ -253,7 +251,6 @@ public class ProfileFragment extends Fragment {
                     aboutMeTv.setText(liveData.getAboutMeTv());
                     if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
                     ageTv.setText(String.valueOf(liveData.getAge()));
-                    levelTv.setText(liveData.getLevel());
                     String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
                     if (gender.equals(""))
                     {
@@ -313,7 +310,6 @@ public class ProfileFragment extends Fragment {
                 aboutMeTv.setText(liveData.getAboutMeTv());
                 if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
                 ageTv.setText(String.valueOf(liveData.getAge()));
-                levelTv.setText(liveData.getLevel());
                 String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
                 if (gender.equals(""))
                 {

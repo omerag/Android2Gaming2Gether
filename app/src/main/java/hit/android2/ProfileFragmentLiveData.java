@@ -137,7 +137,7 @@ public class ProfileFragmentLiveData extends ViewModel {
             e.printStackTrace();
         }
 
-        return age;
+        return age - 1;
     }
 
 }

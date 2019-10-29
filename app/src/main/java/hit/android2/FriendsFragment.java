@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -164,6 +169,8 @@ public class FriendsFragment extends Fragment {
         final CircleImageView profile_image = dialog.findViewById(R.id.user_profile_img);
         final TextView user_name = dialog.findViewById(R.id.profile_fragment_user_name);
         final TextView user_about_me = dialog.findViewById(R.id.about_me_tv);
+        ImageView genderImg = dialog.findViewById(R.id.gender_image);
+        TextView ageTv = dialog.findViewById(R.id.age_tv);
         List<GameData> games = new ArrayList<>();
         final GameAdapter gameAdapter = new GameAdapter(getActivity(),games);
         final RecyclerView recyclerView = dialog.findViewById(R.id.profile_fragment_recycler_games);
@@ -178,7 +185,20 @@ public class FriendsFragment extends Fragment {
             public void onSuccess() {
                 user_name.setText(userData.get(0).getName());
                 user_about_me.setText(userData.get(0).getAboutMe());
+                int age = calculateAge(userData.get(0).getBirthday_timestamp());
+                ageTv.setText(age+"");
                 Glide.with(getContext()).load(userData.get(0).getImageUrl()).into(profile_image);
+                String gender = userData.get(0).getGender();
+                if (gender.equals(""))
+                {
+                    genderImg.setVisibility(View.INVISIBLE);
+                }
+                else if (gender.equals("male")){
+                    genderImg.setImageResource(R.drawable.ic_male);
+                }
+                else {
+                    genderImg.setImageResource(R.drawable.ic_female);
+                }
             }
         });
 
@@ -193,6 +213,37 @@ public class FriendsFragment extends Fragment {
 
         dialog.show();
         dialog.getCurrentFocus();
+    }
+
+    private int calculateAge(String birthDate) {
+
+
+        int age = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+
+        try {
+            Date date = format.parse(birthDate);
+
+            Calendar a = Calendar.getInstance();
+            a.setTime(date);
+            Calendar b = Calendar.getInstance();
+            b.setTime(new Date());
+
+            age = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
+
+            if(b.get(Calendar.MONTH) > a.get(Calendar.MONTH)){
+                age++;
+            }
+            else if(b.get(Calendar.MONTH) == a.get(Calendar.MONTH) && b.get(Calendar.DAY_OF_MONTH) >= a.get(Calendar.DAY_OF_MONTH)){
+                age++;
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return age - 1;
     }
 
     private void loadFriends(){
