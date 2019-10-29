@@ -229,7 +229,7 @@ public class HomeFragment extends Fragment {
                 if (massageEt.getText().toString().equals("") || topicEt.getText().toString().equals("")) {
                     Snackbar.make(view, getText(R.string.not_choose), Snackbar.LENGTH_LONG).show();
                 } else if (chosenGame.getGuid() == null) {
-                    Snackbar.make(view, "Choose a game!!!!", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, getString(R.string.choose_game), Snackbar.LENGTH_LONG).show();
 
                 } else {
                     List<ChildData> comments = new ArrayList<>();

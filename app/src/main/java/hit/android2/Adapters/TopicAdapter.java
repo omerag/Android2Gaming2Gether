@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -165,7 +166,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 @Override
                 public void onClick(View view) {
                     MessegingManager.subscribeToTopic(topics.get(getAdapterPosition()).getTopicId());
-                    Toast.makeText(context, "subscribed to " + topics.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, context.getString(R.string.sub_txt_1) + topics.get(getAdapterPosition()).getTitle(),3000).show();
                 }
             });
             notifOf = itemView.findViewById(R.id.topic_notif_off);
@@ -173,8 +174,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.TopicViewHol
                 @Override
                 public void onClick(View view) {
                     MessegingManager.unsubscribeFromTopic(topics.get(getAdapterPosition()).getTopicId());
-                    Toast.makeText(context, "unsubscribed from " + topics.get(getAdapterPosition()).getTitle(), Toast.LENGTH_SHORT).show();
-
+                    Snackbar.make(view, context.getString(R.string.sub_txt_2) + topics.get(getAdapterPosition()).getTitle(),3000).show();
                 }
             });
 
