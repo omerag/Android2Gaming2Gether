@@ -73,8 +73,9 @@ public class ProfileFragment extends Fragment {
     private TextView aboutMeTv;
     private ImageView userIv;
     private TextView ageTv;
-    private TextView genderTv;
+    //private TextView genderTv;
     private TextView levelTv;
+    private ImageView gender_img;
 
 
     private ImageButton pic_edit_btn;
@@ -132,7 +133,8 @@ public class ProfileFragment extends Fragment {
         aboutMeTv = getView().findViewById(R.id.about_me_tv);
         ageTv = getView().findViewById(R.id.age_tv);
         levelTv = getView().findViewById(R.id.level_tv);
-        genderTv = getView().findViewById(R.id.gender_tv);
+        //genderTv = getView().findViewById(R.id.gender_tv);
+        gender_img = getView().findViewById(R.id.gender_image);
 
 
         pic_edit_btn = getView().findViewById(R.id.image_edit_btn);
@@ -255,13 +257,13 @@ public class ProfileFragment extends Fragment {
                     String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
                     if (gender.equals(""))
                     {
-                        genderTv.setText("--");
+                        gender_img.setVisibility(View.INVISIBLE);
                     }
                     else if (gender.equals("male")){
-                        genderTv.setText(getString(R.string.male));
+                        gender_img.setImageResource(R.drawable.ic_male);
                     }
                     else {
-                        genderTv.setText(getString(R.string.female));
+                        gender_img.setImageResource(R.drawable.ic_female);
                     }
                     //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
 
@@ -315,13 +317,13 @@ public class ProfileFragment extends Fragment {
                 String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
                 if (gender.equals(""))
                 {
-                    genderTv.setText("--");
+                    gender_img.setVisibility(View.INVISIBLE);
                 }
                 else if (gender.equals("male")){
-                    genderTv.setText(getString(R.string.male));
+                    gender_img.setImageResource(R.drawable.ic_male);
                 }
                 else {
-                    genderTv.setText(getString(R.string.female));
+                    gender_img.setImageResource(R.drawable.ic_female);
                 }
                 //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
 

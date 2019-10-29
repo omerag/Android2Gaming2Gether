@@ -64,5 +64,6 @@
     <string name="skip">דלג</string>
     <string name="save_profile">שמור פרופיל</string>
     <string name="enter_new_address_hint">הכנס כתובת</string>
+    <string name="about_me_title">"עליי : "</string>
 
 </resources>
