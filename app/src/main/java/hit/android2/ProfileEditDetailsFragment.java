@@ -175,7 +175,7 @@ public class ProfileEditDetailsFragment extends Fragment {
         korean = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_korean);
         korean.setTag("Korean");
         russian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_russian);
-        rootView.setTag("Russian");
+        russian.setTag("Russian");
 
 
         initDetails();
