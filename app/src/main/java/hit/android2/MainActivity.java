@@ -12,6 +12,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -32,6 +36,7 @@ import hit.android2.Database.Managers.DatabaseManager;
 import hit.android2.Database.Managers.FirebaseManager;
 import hit.android2.Database.Managers.MessegingManager;
 import hit.android2.Database.Model.UserData;
+import hit.android2.Services.AlertReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     CircleImageView profile_imageView;
     public ViewPager pager;
     String userName;
+    int start_hour = 19;
+    NotificationManager manager;
     public FirebaseManager fireBaseManager = new FirebaseManager();
 
     PagerAdapter pagerAdapter;
@@ -68,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationViewListener navigationViewListener = new NavigationViewListener();
         navigationView.setNavigationItemSelectedListener(navigationViewListener);
         //oadUserPicture();
+
+        onTimeSet(start_hour);
+
 
         initPager();
     }
@@ -290,6 +300,31 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         bottomNavigationView.setVisibility(View.VISIBLE);
         pager.setVisibility(View.VISIBLE);
+    }
+
+    public void onTimeSet(int hour)
+    {
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (now.after(calendar))
+        {
+            calendar.add(Calendar.DATE,1);
+        }
+
+        starAlarm(calendar);
+    }
+
+    private void starAlarm(Calendar calendar) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(MainActivity.this, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,1, intent,PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 

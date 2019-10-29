@@ -74,5 +74,7 @@
     <string name="progress_title_2">מתבצע רישום</string>
     <string name="personal">"מידע אישי "</string>
     <string name="saved">השינויים נשמרו</string>
+    <string name="hello_notif">שלום שחקן!</string>
+    <string name="msg_notif">כנס להתעדכן בפוסטים חדשים אשר פורסמו!</string>
 
 </resources>

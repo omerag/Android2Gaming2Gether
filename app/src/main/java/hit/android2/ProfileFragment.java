@@ -298,8 +298,6 @@ public class ProfileFragment extends Fragment {
             loadGameListFromSharedPrefernce();
         }
 
-
-
     }
 
     @Override
@@ -311,7 +309,6 @@ public class ProfileFragment extends Fragment {
                 listenerRegistration.remove();
             }
         }
-
     }
 
     private void loadUserProfileData() {
@@ -344,7 +341,6 @@ public class ProfileFragment extends Fragment {
                     gender_img.setImageResource(R.drawable.ic_female);
                 }
                 //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
-
             }
         });
     }

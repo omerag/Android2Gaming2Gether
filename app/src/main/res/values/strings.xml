@@ -88,4 +88,6 @@
     <string name="progress_title_2">Signing up</string>
     <string name="personal">Personal info</string>
     <string name="saved">Changes saved</string>
+    <string name="hello_notif">Hey Gamer!</string>
+    <string name="msg_notif">Check out some of the new posts!</string>
 </resources>

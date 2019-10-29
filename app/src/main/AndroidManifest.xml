@@ -28,6 +28,7 @@
         </service>
         <service android:name=".Services.GeocodeAddressIntentService" />
         <service android:name=".Services.BackroundUpdatesService" />
+        <receiver android:name=".Services.AlertReceiver"/>
     </application>
     <uses-feature
         android:name="android.hardware.camera"
