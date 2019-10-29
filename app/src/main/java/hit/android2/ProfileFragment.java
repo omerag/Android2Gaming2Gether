@@ -186,18 +186,32 @@ public class ProfileFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 //delete game
-                                DatabaseManager.userRemoveGame(FirebaseManager.getCurrentUserId(), gameDataList.get(position).getGuid(), new DatabaseManager.Listener() {
-                                    @Override
-                                    public void onSuccess() {
+                                if(FirebaseManager.isLoged()) {
+                                    DatabaseManager.userRemoveGame(FirebaseManager.getCurrentUserId(), gameDataList.get(position).getGuid(), new DatabaseManager.Listener() {
+                                        @Override
+                                        public void onSuccess() {
 
-                                        if(position < gameDataList.size()){
-                                            gameDataList.remove(position);
+
+                                            if (position < gameDataList.size()) {
+                                                gameDataList.remove(position);
+
+                                            }
+                                            gameAdapter.notifyDataSetChanged();
 
                                         }
-                                        gameAdapter.notifyDataSetChanged();
+
+
+                                    });
+                                }
+                                else {
+                                    if (position < gameDataList.size()) {
+                                        gameDataList.remove(position);
+                                        localUserGameList.remove(position);
+                                        saveGameListToSharedPrefernce();
 
                                     }
-                                });
+                                    gameAdapter.notifyDataSetChanged();
+                                }
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
