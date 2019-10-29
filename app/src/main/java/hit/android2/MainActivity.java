@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
     CircleImageView profile_imageView;
     public ViewPager pager;
     String userName;

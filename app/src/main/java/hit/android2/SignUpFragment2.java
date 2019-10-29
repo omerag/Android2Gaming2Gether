@@ -96,6 +96,11 @@ public class SignUpFragment2 extends Fragment {
                 if(addressEt.getText().toString().equals("")){
                     DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, 0, 0);
                     Snackbar.make(getView(),getString(R.string.saved),3000).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().remove(SignUpFragment2.this).commit();
+                    mainActivity.initPager();
+                    mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                    pager.setVisibility(View.VISIBLE);
+
                 }
                 else {
                     new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
@@ -103,6 +108,11 @@ public class SignUpFragment2 extends Fragment {
                         public void onSuccess(Double latitude, Double longitude) {
                             DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, latitude, longitude);
                             Snackbar.make(getView(),getString(R.string.saved),3000).show();
+                            getActivity().getSupportFragmentManager().beginTransaction().remove(SignUpFragment2.this).commit();
+                            mainActivity.initPager();
+                            mainActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                            pager.setVisibility(View.VISIBLE);
+
                         }
                     });
                 }
