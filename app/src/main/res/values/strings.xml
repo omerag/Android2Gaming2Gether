@@ -87,4 +87,5 @@
     <string name="game_added">The game has been added to your game list</string>
     <string name="progress_title_2">Signing up</string>
     <string name="personal">Personal info</string>
+    <string name="saved">Changes saved</string>
 </resources>

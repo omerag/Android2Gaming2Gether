@@ -73,5 +73,6 @@
     <string name="game_added">"המשחק התווסף לרשימת המשחקים שלך "</string>
     <string name="progress_title_2">מתבצע רישום</string>
     <string name="personal">"מידע אישי "</string>
+    <string name="saved">השינויים נשמרו</string>
 
 </resources>

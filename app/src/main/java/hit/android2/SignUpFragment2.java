@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -94,14 +95,14 @@ public class SignUpFragment2 extends Fragment {
 
                 if(addressEt.getText().toString().equals("")){
                     DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, 0, 0);
-                    Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getView(),getString(R.string.saved),3000).show();
                 }
                 else {
                     new GeoHelper(getActivity(), null, addressEt.getText().toString(), new GeoHelper.Listener<Double>() {
                         @Override
                         public void onSuccess(Double latitude, Double longitude) {
                             DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(), aboutMeEt.getText().toString(), setLangueges(), birthday, gender, latitude, longitude);
-                            Toast.makeText(getActivity(), "changes saved", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(getView(),getString(R.string.saved),3000).show();
                         }
                     });
                 }
