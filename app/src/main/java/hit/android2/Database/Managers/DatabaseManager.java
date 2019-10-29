@@ -160,7 +160,7 @@ public class DatabaseManager {
         List<ParentData> topics = new ArrayList<>();
 
         for (String gameId : gameIds){
-            tasks.add(gamesReff.document(gameId).collection("topics").get());
+            tasks.add(gamesReff.document(gameId).collection("topics").limit(5).get());
         }
 
         Task<List<QuerySnapshot>> allTasks = Tasks.whenAllSuccess(tasks);

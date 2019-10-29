@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.dialog_fragments_container,new SignUpFragment1(bottomNavigationView, pager))
+                            .replace(R.id.dialog_fragments_container,new SignUpFragment1(bottomNavigationView, pager,MainActivity.this))
                             .addToBackStack("signUpFragment").commit();
 
                     bottomNavigationView.setVisibility(View.GONE);

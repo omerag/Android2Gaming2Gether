@@ -122,6 +122,7 @@ public class HomeFragment extends Fragment {
             }
         }*/
         getGames();
+
     }
 
     @Override
@@ -273,7 +274,7 @@ public class HomeFragment extends Fragment {
         dialog.show();
     }
 
-    void getGames() {
+    private void getGames() {
         if (FirebaseManager.isLoged()) {
             DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
                 @Override
