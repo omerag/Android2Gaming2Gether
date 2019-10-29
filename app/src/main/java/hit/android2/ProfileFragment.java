@@ -251,7 +251,9 @@ public class ProfileFragment extends Fragment {
                     // Glide.with(getActivity()).load(user.getImageUrl()).into(userIv);
                     liveData.setUserIv(user.getImageUrl());
                     Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);*/
-
+                    if(userData == null){
+                        return;
+                    }
                     liveData.setUsernameTv(userData.getName());
                     liveData.setAboutMeTv(userData.getAboutMe());
                     liveData.setUserIv(userData.getImageUrl());

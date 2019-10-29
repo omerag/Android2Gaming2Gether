@@ -750,13 +750,19 @@ public class DatabaseManager {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Log.d("DatabaseManager", "getUserFriends OnSuccess called");
 
-                UserData user = documentSnapshot.toObject(UserData.class);
-                List<String> freinds = user.getFriends();
+                if(documentSnapshot.exists()){
+                    UserData user = documentSnapshot.toObject(UserData.class);
+                    List<String> freinds = user.getFriends();
 
-                users.clear();
-                for (String friend : freinds) {
-                    getUserFromDatabase(friend, users, listener);
+                    if(freinds != null){
+                        users.clear();
+                        for (String friend : freinds) {
+                            getUserFromDatabase(friend, users, listener);
+                        }
+                    }
+
                 }
+
 
                 // adapter.notifyDataSetChanged();
             }
