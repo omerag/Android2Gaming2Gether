@@ -70,29 +70,22 @@ public class SignUpFragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.sign_up_fragment2, container, false);
 
-        skip_update_btn = rootView.findViewById(R.id.fragment_sign_up2_skip_profile_update_btn);
-        update_profile_btn = rootView.findViewById(R.id.sign_up);
         aboutMeEt = rootView.findViewById(R.id.fragment_sign_up2_edit_details_about_me_et);
 
 
-        SkipUpdateBtnListener skipUpdateBtnListener = new SkipUpdateBtnListener();
-        skip_update_btn.setOnClickListener(skipUpdateBtnListener);
-
-        UpdateProfileBtnListener updateProfileBtnListener = new UpdateProfileBtnListener();
-        update_profile_btn.setOnClickListener(updateProfileBtnListener);
 
         ///////////////////////////////////////
 
 
-        update_profile_btn = rootView.findViewById(R.id.profile_fragment_edit_details_save_changes_btn);
+        update_profile_btn = rootView.findViewById(R.id.fragment_sign_up2_update_profile_btn);
         update_profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 genderSelectBtn = rootView.findViewById(genderSelectGroup.getCheckedRadioButtonId());
-                if (genderSelectBtn.getId() == R.id.profile_fragment_edit_details_radio_male) {
+                if (genderSelectBtn.getId() == R.id.fragment_sign_up2_edit_details_radio_male) {
                     gender = "male";
-                } else if (genderSelectBtn.getId() == R.id.profile_fragment_edit_details_radio_female) {
+                } else if (genderSelectBtn.getId() == R.id.fragment_sign_up2_edit_details_radio_female) {
                     gender = "female";
                 } else {
                     gender = "all";
@@ -116,11 +109,11 @@ public class SignUpFragment2 extends Fragment {
             }
         });
 
-        genderSelectGroup = rootView.findViewById(R.id.profile_fragment_edit_details_radio_group);
+        genderSelectGroup = rootView.findViewById(R.id.fragment_sign_up2_edit_details_radio_group);
         //genderSelectBtn = rootView.findViewById();
 
-        calendarTv = rootView.findViewById(R.id.profile_fragment_edit_details_calendar_text_view);
-        calendarBtn = rootView.findViewById(R.id.profile_fragment_edit_details_calendar_layout);
+        calendarTv = rootView.findViewById(R.id.fragment_sign_up2_edit_details_calendar_text_view);
+        calendarBtn = rootView.findViewById(R.id.fragment_sign_up2_edit_details_calendar_layout);
         calendarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,22 +154,19 @@ public class SignUpFragment2 extends Fragment {
 
 
 
-        aboutMeEt = rootView.findViewById(R.id.profile_fragment_edit_details_about_me_et);
-        addressEt = rootView.findViewById(R.id.profile_fragment_edit_details_address_et);
+        aboutMeEt = rootView.findViewById(R.id.fragment_sign_up2_edit_details_about_me_et);
+        addressEt = rootView.findViewById(R.id.fragment_sign_up2_dit_details_address_et);
 
-        arabic = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_arabic);
-        chinese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_chinese);
-        english = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_english);
-        french = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_french);
-        german = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_german);
-        hebrew = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_hebrew);
-        italian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_italian);
-        japanese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_japanese);
-        korean = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_korean);
-        russian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_russian);
-
-
-
+        arabic = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_arabic);
+        chinese = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_chinese);
+        english = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_english);
+        french = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_french);
+        german = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_german);
+        hebrew = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_hebrew);
+        italian = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_italian);
+        japanese = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_japanese);
+        korean = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_korean);
+        russian = rootView.findViewById(R.id.fragment_sign_up2_edit_details_checkbox_russian);
 
 
 
@@ -201,59 +191,6 @@ public class SignUpFragment2 extends Fragment {
 
     }
 
-    public class SkipUpdateBtnListener implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-
-            getActivity().getSupportFragmentManager().popBackStack();
-            navigationView.setVisibility(View.VISIBLE);
-            pager.setVisibility(View.VISIBLE);
-
-            mainActivity.initPager();
-        }
-    }
-
-    public class UpdateProfileBtnListener implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-
-
-            String monthStr = "";
-            String dayStr = "";
-
-   /*         int year = birth_day_picker.getYear();
-            int month = birth_day_picker.getMonth() + 1;
-            int day = birth_day_picker.getDayOfMonth();
-
-            if (month < 10)
-            {
-                monthStr = "0" + month;
-            }
-            if (day < 10)
-            {
-                dayStr = "0" + day;
-            }*/
-           // birthday = year + "/" + monthStr + "/" + dayStr;
-            Log.d("myBirthday", birthday);
-
-            String about_me = aboutMeEt.getText().toString();
-
-            DatabaseManager.updateUserData(FirebaseManager.getCurrentUserId(),about_me,null,birthday,null,0,0);
-            mainActivity.initPager();
-        }
-    }
-
-    public class BackBtnListener implements View.OnClickListener
-    {
-        @Override
-        public void onClick(View v) {
-            getActivity().getSupportFragmentManager().popBackStack();
-            navigationView.setVisibility(View.VISIBLE);
-            pager.setVisibility(View.VISIBLE);
-        }
-    }
 
     private Map<String, Boolean> setLangueges() {
 

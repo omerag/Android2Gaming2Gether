@@ -228,6 +228,7 @@ public class ProfileFragment extends Fragment {
                         Log.d("DatabaseManager", e.getMessage());
                         return;
                     }
+                    System.out.println("documentSnapshot.id = " + documentSnapshot.getId());
                     UserData userData = documentSnapshot.toObject(UserData.class);
 
                     // listener.onSuccess(user);
@@ -251,16 +252,21 @@ public class ProfileFragment extends Fragment {
                     aboutMeTv.setText(liveData.getAboutMeTv());
                     if(getActivity() != null) Glide.with(getActivity()).load(liveData.getUserIv()).into(userIv);
                     ageTv.setText(String.valueOf(liveData.getAge()));
-                    String gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
-                    if (gender.equals(""))
-                    {
-                        gender_img.setVisibility(View.INVISIBLE);
+                    String gender;
+                    if(liveData.getGender() != null){
+                        gender = liveData.getGender().equals("all") ? "--" : liveData.getGender();
+                        if (gender.equals(""))
+                        {
+                            gender_img.setVisibility(View.INVISIBLE);
+                        }
+                        else if (gender.equals("male")){
+                            gender_img.setImageResource(R.drawable.ic_male);
+                        }
+                        else {
+                            gender_img.setImageResource(R.drawable.ic_female);
                     }
-                    else if (gender.equals("male")){
-                        gender_img.setImageResource(R.drawable.ic_male);
-                    }
-                    else {
-                        gender_img.setImageResource(R.drawable.ic_female);
+
+
                     }
                     //genderTv.setText(liveData.getGender().equals("all") ? "--" : liveData.getGender());
 

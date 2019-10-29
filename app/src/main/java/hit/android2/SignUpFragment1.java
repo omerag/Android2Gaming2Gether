@@ -89,7 +89,7 @@ public class SignUpFragment1 extends Fragment {
                     MessegingManager.subscribeToTopic(FirebaseManager.getCurrentUserId());
 
                     getActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager))
+                            .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager,mainActivity))
                             .addToBackStack("myFragment").commit();
                 }
             });

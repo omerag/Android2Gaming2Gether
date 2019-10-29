@@ -356,7 +356,7 @@ public class FirebaseManager {
                 @Override
                 public void onSuccess(UserData userData) {
 
-                    if (userData.getImageUrl().equals(null))
+                    if (userData.getImageUrl() == null)
                     {
                         profile_pic.setImageResource(R.drawable.blank_profile_img);
                     }

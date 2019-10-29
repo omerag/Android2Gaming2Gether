@@ -208,9 +208,13 @@ public class ProfileEditDetailsFragment extends Fragment {
 
     private void initDetails() {
 
+
+
         DatabaseManager.getUserFromDatabase(FirebaseManager.getCurrentUserId(), new DatabaseManager.DataListener<UserData>() {
             @Override
             public void onSuccess(UserData userData) {
+
+
 
                 Map<String, Boolean> langMap = userData.getLanguage();
 

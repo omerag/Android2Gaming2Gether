@@ -169,6 +169,7 @@ public class UserData implements Comparable<UserData>{
         this.birthday_timestamp = birthday_timestamp;
     }
 
+
     public Map<String, Boolean> getLanguage() {
         return language;
     }
@@ -176,6 +177,7 @@ public class UserData implements Comparable<UserData>{
     public void setLanguage(Map<String, Boolean> language) {
         this.language = language;
     }
+
 
     public List<String> getGroups() {
         return groups;

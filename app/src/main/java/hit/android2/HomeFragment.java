@@ -293,7 +293,10 @@ public class HomeFragment extends Fragment {
             }.getType();
             List<String> localUserGameList = gson.fromJson(json, type);
 
-            loadDBTopics(localUserGameList);
+            if(localUserGameList != null){
+                loadDBTopics(localUserGameList);
+
+            }
 
         }
     }

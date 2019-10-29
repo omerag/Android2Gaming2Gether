@@ -111,6 +111,9 @@ public class ProfileFragmentLiveData extends ViewModel {
 
     private int calculateAge(String birthDate) {
 
+        if(birthDate == null){
+            return 0;
+        }
 
         int age = 0;
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
