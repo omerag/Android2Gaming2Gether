@@ -157,15 +157,25 @@ public class ProfileEditDetailsFragment extends Fragment {
         addressEt = rootView.findViewById(R.id.profile_fragment_edit_details_address_et);
 
         arabic = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_arabic);
+        arabic.setTag("Arabic");
         chinese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_chinese);
+        chinese.setTag("Chinese");
         english = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_english);
+        english.setTag("English");
         french = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_french);
+        french.setTag("French");
         german = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_german);
+        german.setTag("German");
         hebrew = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_hebrew);
+        hebrew.setTag("Hebrew");
         italian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_italian);
+        italian.setTag("Italian");
         japanese = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_japanese);
+        japanese.setTag("Japanese");
         korean = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_korean);
+        korean.setTag("Korean");
         russian = rootView.findViewById(R.id.profile_fragment_edit_details_checkbox_russian);
+        rootView.setTag("Russian");
 
 
         initDetails();
@@ -191,16 +201,16 @@ public class ProfileEditDetailsFragment extends Fragment {
     private Map<String, Boolean> setLangueges() {
 
         Map<String, Boolean> langeuges = new HashMap<>();
-        langeuges.put(arabic.getText().toString(), arabic.isChecked());
-        langeuges.put(chinese.getText().toString(), chinese.isChecked());
-        langeuges.put(english.getText().toString(), english.isChecked());
-        langeuges.put(french.getText().toString(), french.isChecked());
-        langeuges.put(german.getText().toString(), german.isChecked());
-        langeuges.put(hebrew.getText().toString(), hebrew.isChecked());
-        langeuges.put(italian.getText().toString(), italian.isChecked());
-        langeuges.put(japanese.getText().toString(), japanese.isChecked());
-        langeuges.put(korean.getText().toString(), korean.isChecked());
-        langeuges.put(russian.getText().toString(), russian.isChecked());
+        langeuges.put(arabic.getTag().toString(), arabic.isChecked());
+        langeuges.put(chinese.getTag().toString(), chinese.isChecked());
+        langeuges.put(english.getTag().toString(), english.isChecked());
+        langeuges.put(french.getTag().toString(), french.isChecked());
+        langeuges.put(german.getTag().toString(), german.isChecked());
+        langeuges.put(hebrew.getTag().toString(), hebrew.isChecked());
+        langeuges.put(italian.getTag().toString(), italian.isChecked());
+        langeuges.put(japanese.getTag().toString(), japanese.isChecked());
+        langeuges.put(korean.getTag().toString(), korean.isChecked());
+        langeuges.put(russian.getTag().toString(), russian.isChecked());
 
 
         return langeuges;

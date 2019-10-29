@@ -186,6 +186,18 @@ public class ProfileFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 //delete game
+                                DatabaseManager.userRemoveGame(FirebaseManager.getCurrentUserId(), gameDataList.get(position).getGuid(), new DatabaseManager.Listener() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                        if(position < gameDataList.size()){
+                                            gameDataList.remove(position);
+
+                                        }
+                                        gameAdapter.notifyDataSetChanged();
+
+                                    }
+                                });
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)

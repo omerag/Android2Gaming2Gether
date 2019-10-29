@@ -410,6 +410,64 @@ public class DatabaseManager {
         });
     }
 
+
+    static public void gameRemoveUser(String userId, final String gameId, final Listener listener) {
+        final DocumentReference gameReff = FirebaseFirestore.getInstance().collection("games").document(gameId);
+        gameReff.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+       /*         UserData user = documentSnapshot.toObject(UserData.class);
+
+                List<String> friends = user.getFriends();
+                friends.add(friendID);*/
+
+                gameReff.update("users", FieldValue.arrayRemove(userId))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                listener.onSuccess();
+                            }
+                        });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+            }
+        });
+    }
+
+    static public void userRemoveGame(String userId, final String gameId, final Listener listener) {
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+       /*         UserData user = documentSnapshot.toObject(UserData.class);
+
+                List<String> friends = user.getFriends();
+                friends.add(friendID);*/
+
+                userRef.update("games", FieldValue.arrayRemove(gameId))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                gameRemoveUser(userId,gameId,listener);
+
+                               // listener.onSuccess();
+                            }
+                        });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+            }
+        });
+    }
+
+
     static public void addUserToDatabase(final UserData user) {
         System.out.println("user id = " + user.getKey());
         FirebaseFirestore.getInstance().collection("users").document(user.getKey()).set(user);
@@ -532,6 +590,33 @@ public class DatabaseManager {
                 friends.add(friendID);*/
 
                 userRef.update("friends", FieldValue.arrayUnion(friendID))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                listener.onSuccess();
+                            }
+                        });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("DatabaseManager", e.getMessage());
+            }
+        });
+    }
+
+    static public void userRemoveFriend(String userId, final String friendID, final Listener listener) {
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+        userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+       /*         UserData user = documentSnapshot.toObject(UserData.class);
+
+                List<String> friends = user.getFriends();
+                friends.add(friendID);*/
+
+                userRef.update("friends", FieldValue.arrayRemove(friendID))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

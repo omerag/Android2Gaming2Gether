@@ -104,6 +104,16 @@ public class FriendsFragment extends Fragment {
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
                                     //delete friend
+                                    DatabaseManager.userRemoveFriend(FirebaseManager.getCurrentUserId(), friendsList.get(position).getKey(), new DatabaseManager.Listener() {
+                                        @Override
+                                        public void onSuccess() {
+
+                                            if(position < friendsList.size()){
+                                                friendsList.remove(position);
+                                            }
+                                            friendsAdapter.notifyDataSetChanged();
+                                        }
+                                    });
                                 }
                             })
                             .setNegativeButton(R.string.cancel, null)
