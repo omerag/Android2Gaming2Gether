@@ -85,4 +85,6 @@
     <string name="sub_txt_1">"You subscribed to get notification from : "</string>
     <string name="sub_txt_2">"You unsubscribed from getting notification from : "</string>
     <string name="game_added">The game has been added to your game list</string>
+    <string name="progress_title_2">Signing up</string>
+    <string name="personal">Personal info</string>
 </resources>

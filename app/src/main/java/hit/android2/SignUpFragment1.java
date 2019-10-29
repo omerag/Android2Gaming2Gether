@@ -1,5 +1,6 @@
 package hit.android2;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,6 +35,8 @@ public class SignUpFragment1 extends Fragment {
     private FirebaseManager firebaseManager;
 
     private MainActivity mainActivity;
+    private ProgressDialog progressDialog;
+
 
 
     @Nullable
@@ -76,6 +79,11 @@ public class SignUpFragment1 extends Fragment {
     {
         @Override
         public void onClick(View v) {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage(getString(R.string.progress_message));
+            progressDialog.setTitle(getString(R.string.progress_title_2));
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
 
             String userName = userNameInput.getText().toString();
             String email = emailInput.getText().toString();
@@ -91,6 +99,8 @@ public class SignUpFragment1 extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.dialog_fragments_container, new SignUpFragment2(navigationView, pager,mainActivity))
                             .addToBackStack("myFragment").commit();
+                    progressDialog.dismiss();
+
                 }
             });
 

@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="28sp"
-            android:text="Presonal Info"
+            android:text="@string/personal"
             />
 
         <RadioGroup
@@ -31,17 +31,16 @@
 
             <RadioButton
                 android:id="@+id/fragment_sign_up2_edit_details_radio_male"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Male"
+                android:text="@string/male"
 
                 />
             <RadioButton
                 android:id="@+id/fragment_sign_up2_edit_details_radio_female"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Female"
-
+                android:text="@string/female"
                 />
 
 
@@ -102,28 +101,28 @@
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_english"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="English"
+                    android:text="@string/english"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_hebrew"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hebrew"
+                    android:text="@string/hebrew"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_arabic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Arabic"
+                    android:text="@string/arabic"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_chinese"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chinese"
+                    android:text="@string/chinese"
                     />
 
             </TableRow>
@@ -135,28 +134,28 @@
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_french"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="French"
+                    android:text="@string/french"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_german"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="German"
+                    android:text="@string/german"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_italian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Italian"
+                    android:text="@string/italian"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_japanese"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Japanese"
+                    android:text="@string/japanese"
                     />
 
             </TableRow>
@@ -168,14 +167,14 @@
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_korean"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Korean"
+                    android:text="@string/korean"
                     />
 
                 <CheckBox
                     android:id="@+id/fragment_sign_up2_edit_details_checkbox_russian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Russian"
+                    android:text="@string/russian"
                     />
 
 
