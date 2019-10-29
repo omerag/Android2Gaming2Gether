@@ -179,8 +179,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onLongClick(View view, int position) {
                 AlertDialog alertDialog= new MaterialAlertDialogBuilder(getContext())
-                        .setTitle("Delete game")
-                        .setMessage("Are you sure you wont to delete " + gameDataList.get(position).getName() +" from game list?")
+                        .setTitle(getString(R.string.delete_game_title))
+                        .setMessage(getString(R.string.delete_game_msg_1) + gameDataList.get(position).getName() + getString(R.string.delete_game_msg_2))
                         .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

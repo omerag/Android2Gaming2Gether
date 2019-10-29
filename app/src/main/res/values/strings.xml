@@ -79,4 +79,7 @@
     <string name="save_profile">Save Profile</string>
     <string name="enter_new_address_hint">Enter addres...</string>
     <string name="about_me_title">About me :</string>
+    <string name="delete_game_title">Delete Game</string>
+    <string name="delete_game_msg_1">Are you sure you want to delete</string>
+    <string name="delete_game_msg_2">from game list?</string>
 </resources>
